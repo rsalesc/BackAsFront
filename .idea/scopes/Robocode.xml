@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Robocode" pattern="src:rsalesc.mega..*||src:rsalesc.melee..*" />
+</component>

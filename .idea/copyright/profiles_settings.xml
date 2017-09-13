@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <settings default="ZLIB">
+    <module2copyright>
+      <element module="Robocode" copyright="ZLIB" />
+      <element module="Baf2" copyright="ZLIB" />
+    </module2copyright>
+  </settings>
+</component>

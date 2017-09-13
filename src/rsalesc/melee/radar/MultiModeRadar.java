@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2017. Roberto Sales @ rsalesc
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ *    1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ *
+ *    2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ *
+ *    3. This notice may not be removed or altered from any source
+ *    distribution.
+ */
+
+package rsalesc.melee.radar;
+
+import robocode.ScannedRobotEvent;
+import rsalesc.baf2.core.Component;
+import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.listeners.ScannedRobotListener;
+import rsalesc.mega.radar.PerfectLockRadar;
+
+/**
+ * Created by Roberto Sales on 12/09/17.
+ */
+public class MultiModeRadar extends Component implements RoundStartedListener, ScannedRobotListener {
+    private MeleeRadar meleeRadar;
+    private PerfectLockRadar perfectRadar;
+
+    @Override
+    public void onRoundStarted(int round) {
+        meleeRadar = new MeleeRadar();
+        perfectRadar = new PerfectLockRadar();
+
+        meleeRadar.init(getMediator());
+        perfectRadar.init(getMediator());
+    }
+
+    @Override
+    public void run() {
+        if (getMediator().getOthers() == 1)
+            perfectRadar.run();
+        else
+            meleeRadar.run();
+    }
+
+    @Override
+    public void onScannedRobot(ScannedRobotEvent e) {
+        if (getMediator().getOthers() == 1)
+            perfectRadar.onScannedRobot(e);
+    }
+}
