@@ -21,7 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.mega.movement;
 
 import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
@@ -33,87 +33,60 @@ import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.movement.DynamicClusteringSurfer;
-import rsalesc.mega.movement.KnightSurfer;
-import rsalesc.mega.movement.Surfer;
-import rsalesc.mega.movement.TrueSurfing;
-import rsalesc.mega.movement.strategies.UnsegStrats;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnSet;
-import rsalesc.mega.utils.structures.KnnTree;
 
 import java.awt.*;
 
 /**
- * Created by Roberto Sales on 12/09/17.
+ * Created by Roberto Sales on 13/09/17.
  */
-public class MonkFeet extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener {
-    private MinimumRiskMovement driver;
+public class KnightStance extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener {
     private TrueSurfing surfing;
 
-    public MonkFeet(WaveManager manager) {
+    public KnightStance(WaveManager manager) {
         Surfer surfer = new KnightSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
-                return getGlobalStorage().namespace("knn-monk-feet");
+                return getGlobalStorage().namespace("knight-stance-surfer");
             }
         };
 
-        driver = new MinimumRiskMovement();
         surfing = new TrueSurfing(surfer, manager);
-    }
-
-    private boolean isMelee() {
-        return getMediator().getOthers() > 1;
-    }
-
-    @Override
-    public void run() {
-        if (isMelee())
-            driver.run();
-        else
-            surfing.run();
     }
 
     @Override
     public void onRoundStarted(int round) {
-        driver.init(getMediator());
         surfing.init(getMediator());
-
-        driver.onRoundStarted(round);
     }
-
 
     @Override
     public void onPaint(Graphics2D gr) {
-        if (isMelee())
-            driver.onPaint(gr);
-        else
-            surfing.onPaint(gr);
+        surfing.onPaint(gr);
+    }
+
+    @Override
+    public void run() {
+        surfing.run();
     }
 
     @Override
     public void onEnemyWaveFired(EnemyWave wave) {
-        if (!isMelee())
-            surfing.onEnemyWaveFired(wave);
+        surfing.onEnemyWaveFired(wave);
     }
 
     @Override
     public void onEnemyWaveBreak(EnemyWave wave, MyRobot me) {
-        if (!isMelee())
-            surfing.onEnemyWaveBreak(wave, me);
+        surfing.onEnemyWaveBreak(wave, me);
     }
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
-        if (!isMelee())
-            surfing.onEnemyWaveHitMe(wave, e);
+        surfing.onEnemyWaveHitMe(wave, e);
     }
 
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
-        if (!isMelee())
-            surfing.onEnemyWaveHitBullet(wave, e);
+        surfing.onEnemyWaveHitBullet(wave, e);
     }
 }

@@ -62,6 +62,9 @@ public class PerfectLockRadar extends Component implements ScannedRobotListener 
             }
         }
 
+        if(getMediator().getRadarTurnRemainingRadians() == 0)
+            controller.setTurnGunRightRadians(Math.toRadians(1));
+
         controller.release();
     }
 
