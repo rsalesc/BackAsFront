@@ -33,6 +33,7 @@ import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.WaveManager;
+import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.structures.KnnSet;
 
@@ -44,7 +45,7 @@ import java.awt.*;
 public class KnightStance extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener {
     private TrueSurfing surfing;
 
-    public KnightStance(WaveManager manager) {
+    public KnightStance(WaveManager manager, StatTracker statTracker) {
         Surfer surfer = new KnightSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
@@ -52,7 +53,7 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
             }
         };
 
-        surfing = new TrueSurfing(surfer, manager);
+        surfing = new TrueSurfing(surfer, manager, statTracker);
     }
 
     @Override
@@ -88,5 +89,10 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
         surfing.onEnemyWaveHitBullet(wave, e);
+    }
+
+    @Override
+    public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
+        surfing.onEnemyWavePass(wave, me);
     }
 }

@@ -29,6 +29,7 @@ import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
+import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.WinDance;
 import rsalesc.melee.gunning.MonkGun;
 import rsalesc.melee.gunning.MovieTracker;
@@ -50,19 +51,23 @@ public class Monk extends BackAsFrontRobot2 {
         MovieTracker tracker = new MovieTracker(105, 8);
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
+        StatTracker statTracker = new StatTracker();
 
         MonkGun gun = new MonkGun();
-        MonkFeet move = new MonkFeet(waveManager);
+        MonkFeet move = new MonkFeet(waveManager, statTracker);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
         tracker.addListener(gun);
 
+        waveManager.addListener(statTracker);
         waveManager.addListener(move);
 
         add(tracker);
         add(bulletManager);
         add(waveManager);
+        add(statTracker);
+
         add(move);
         add(gun);
         add(new MultiModeRadar());

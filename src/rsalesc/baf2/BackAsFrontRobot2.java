@@ -74,7 +74,8 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
                 if (!component.isVirtual()) component.run();
             }
 
-            for (Component component : components) {
+            for (int i = components.size() - 1; i >= 0; i--) {
+                Component component = components.get(i);
                 if (!component.isVirtual()) component.afterRun();
             }
 

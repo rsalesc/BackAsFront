@@ -32,6 +32,7 @@ import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.movement.KnightStance;
 import rsalesc.mega.radar.PerfectLockRadar;
+import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.WinDance;
 import rsalesc.melee.gunning.MonkGun;
 import rsalesc.melee.gunning.MovieTracker;
@@ -52,19 +53,23 @@ public class Knight extends BackAsFrontRobot2 {
         MovieTracker tracker = new MovieTracker(90, 2);
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
+        StatTracker statTracker = new StatTracker();
 
-        KnightStance move = new KnightStance(waveManager);
+        KnightStance move = new KnightStance(waveManager, statTracker);
         MonkGun gun = new MonkGun();
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
         tracker.addListener(gun);
 
+        waveManager.addListener(statTracker);
         waveManager.addListener(move);
 
         add(tracker);
         add(bulletManager);
         add(waveManager);
+        add(statTracker);
+
         add(move);
         add(gun);
         add(new PerfectLockRadar());

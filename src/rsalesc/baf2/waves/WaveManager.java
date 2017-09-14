@@ -23,6 +23,7 @@
 
 package rsalesc.baf2.waves;
 
+import javafx.scene.chart.Axis;
 import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.BulletListener;
@@ -30,6 +31,7 @@ import rsalesc.baf2.core.listeners.HitListener;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.tracking.*;
@@ -91,19 +93,27 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
                 getMediator().getBattleField().getHeight()
         );
 
+        MyLog log = MyLog.getInstance();
+        MyRobot me = log.getLatest();
+
+        MyRobot pastMe = log.getKthLatest(2);
+
+        AxisRectangle hitbox = me.getHitBox();
+
         Iterator<EnemyWave> it = waves.iterator();
         while (it.hasNext()) {
             EnemyWave wave = it.next();
-
-            MyLog log = MyLog.getInstance();
-            MyRobot me = log.getLatest();
-
-            MyRobot pastMe = log.getKthLatest(2);
 
             if (wave.getCircle(time).isInside(me.getPoint()) && (pastMe == null ||
                     !wave.getCircle(time).isInside(pastMe.getPoint()))) {
 
                 onEnemyWaveBreak(wave, me);
+            }
+
+            if (wave.getCircle(time).isInside(hitbox) && (pastMe == null ||
+                    !wave.getCircle(time).isInside(pastMe.getHitBox()))) {
+
+                onEnemyWavePass(wave, me);
             }
 
             if (wave.getDistanceTraveled(time) > 2 * longestSide) {
@@ -158,6 +168,16 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
             if (object instanceof EnemyWaveListener) {
                 EnemyWaveListener listener = (EnemyWaveListener) object;
                 listener.onEnemyWaveHitBullet(wave, e);
+            }
+        }
+    }
+
+    @Override
+    public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
+        for (Object object : getListeners()) {
+            if (object instanceof EnemyWaveListener) {
+                EnemyWaveListener listener = (EnemyWaveListener) object;
+                listener.onEnemyWavePass(wave, me);
             }
         }
     }

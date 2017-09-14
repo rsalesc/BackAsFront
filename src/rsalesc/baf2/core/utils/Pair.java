@@ -21,27 +21,44 @@
  *    distribution.
  */
 
-package rsalesc.baf2.tracking;
+package rsalesc.baf2.core.utils;
+
+import java.util.Objects;
 
 /**
- * Created by Roberto Sales on 11/09/17.
+ * Created by Roberto Sales on 14/09/17.
  */
-public interface RobotLog {
-    RobotSnapshot exactlyAt(long time);
+public class Pair<A, B> {
+    public final A first;
+    public final B second;
 
-    RobotSnapshot atLeastAt(long time);
+    public Pair(A first, B second) {
+        this.first = first;
+        this.second = second;
+    }
 
-    RobotSnapshot atMostAt(long time);
+    @Override
+    public int hashCode() {
+        return Objects.hash(first, second);
+    }
 
-    RobotSnapshot getLatest();
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Pair))
+            return false;
 
-    RobotSnapshot getKthLatest(int k);
+        Pair pair = (Pair) obj;
 
-    RobotSnapshot getAtLeastKthLatest(int k);
+        return first.equals(pair.first) && second.equals(pair.second);
+    }
 
-    RobotSnapshot before(RobotSnapshot robot);
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Pair<A, B>(first, second);
+    }
 
-    RobotSnapshot after(RobotSnapshot robot);
-
-    int size();
+    @Override
+    public String toString() {
+        return "(" + first.toString() + ", " + second.toString() + ")";
+    }
 }

@@ -21,27 +21,22 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies;
-
-import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TargetingLog;
+package rsalesc.baf2.core.utils;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 14/09/17.
  */
-public class UnsegStrats extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 81, 1),
-                Math.max(f.lateralVelocity / 8., 1),
-                Math.max((f.accel + 1) / 2, 1),
-                1.0 / (1.0 + 2 * f.timeDecel)
-        };
+public class ComparablePair<A extends Comparable<A>, B extends Comparable<B>> extends Pair<A, B>
+            implements Comparable<ComparablePair<A, B>> {
+    public ComparablePair(A first, B second) {
+        super(first, second);
     }
 
     @Override
-    public double[] getWeights() {
-        return new double[]{1, 1, 1, 1};
+    public int compareTo(ComparablePair<A, B> o) {
+        int s1 = first.compareTo(o.first);
+        if(s1 == 0)
+            return second.compareTo(o.second);
+        return s1;
     }
 }

@@ -21,27 +21,27 @@
  *    distribution.
  */
 
-package rsalesc.baf2.tracking;
+package rsalesc.mega.movement.strategies.dc;
+
+import rsalesc.mega.utils.Strategy;
+import rsalesc.mega.utils.TargetingLog;
 
 /**
- * Created by Roberto Sales on 11/09/17.
+ * Created by Roberto Sales on 21/08/17.
  */
-public interface RobotLog {
-    RobotSnapshot exactlyAt(long time);
+public class UnsegStrats extends Strategy {
+    @Override
+    public double[] getQuery(TargetingLog f) {
+        return new double[]{
+                Math.max(f.bft() / 81, 1),
+                Math.max(f.lateralVelocity / 8., 1),
+                Math.max((f.accel + 1) / 2, 1),
+                1.0 / (1.0 + 2 * f.timeDecel)
+        };
+    }
 
-    RobotSnapshot atLeastAt(long time);
-
-    RobotSnapshot atMostAt(long time);
-
-    RobotSnapshot getLatest();
-
-    RobotSnapshot getKthLatest(int k);
-
-    RobotSnapshot getAtLeastKthLatest(int k);
-
-    RobotSnapshot before(RobotSnapshot robot);
-
-    RobotSnapshot after(RobotSnapshot robot);
-
-    int size();
+    @Override
+    public double[] getWeights() {
+        return new double[]{1, 1, 1, 1};
+    }
 }

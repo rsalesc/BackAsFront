@@ -21,27 +21,33 @@
  *    distribution.
  */
 
-package rsalesc.baf2.tracking;
+package rsalesc.mega.movement.strategies.dc;
+
+import rsalesc.baf2.core.utils.R;
+import rsalesc.mega.utils.Strategy;
+import rsalesc.mega.utils.TargetingLog;
 
 /**
- * Created by Roberto Sales on 11/09/17.
+ * Created by Roberto Sales on 21/08/17.
  */
-public interface RobotLog {
-    RobotSnapshot exactlyAt(long time);
+public class NormalStrategy extends Strategy {
+    @Override
+    public double[] getQuery(TargetingLog f) {
+        return new double[]{
+                Math.max(f.bft() / 80, 1),
+                Math.max(f.lateralVelocity / 8, 1),
+                Math.max((f.advancingVelocity + 8) / 16.0, 1),
+                (f.accel + 1) * 0.5,
+                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
+                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
+                1.0 / (1.0 + 2*f.timeDecel),
+                1.0 / (1.0 + 2*f.timeRevert),
+                Math.max(f.displaceLast10 / 80, 1)
+        };
+    }
 
-    RobotSnapshot atLeastAt(long time);
-
-    RobotSnapshot atMostAt(long time);
-
-    RobotSnapshot getLatest();
-
-    RobotSnapshot getKthLatest(int k);
-
-    RobotSnapshot getAtLeastKthLatest(int k);
-
-    RobotSnapshot before(RobotSnapshot robot);
-
-    RobotSnapshot after(RobotSnapshot robot);
-
-    int size();
+    @Override
+    public double[] getWeights() {
+        return new double[]{6, 5, 3, 2, 4, 1, 2, 2, 1.5};
+    }
 }

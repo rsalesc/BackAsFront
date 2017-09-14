@@ -25,6 +25,7 @@ package rsalesc.mega.movement;
 
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.structures.Knn;
@@ -33,9 +34,9 @@ import rsalesc.mega.utils.structures.Knn;
  * Created by Roberto Sales on 12/09/17.
  */
 public interface Surfer {
-    boolean hasData(EnemyLog enemyLog, Knn.ParametrizedCondition o);
+    boolean hasData(EnemyLog enemyLog, NamedStatData o);
 
     void log(EnemyLog enemyLog, TargetingLog log, BreakType type);
 
-    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, int cacheIndex, Knn.ParametrizedCondition o);
+    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, int cacheIndex, NamedStatData o);
 }

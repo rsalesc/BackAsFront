@@ -40,6 +40,7 @@ import rsalesc.mega.movement.distancing.SurfingDistancer;
 import rsalesc.mega.predictor.MovementPredictor;
 import rsalesc.mega.predictor.PredictedPoint;
 import rsalesc.mega.predictor.WallSmoothing;
+import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.structures.Knn;
@@ -54,12 +55,8 @@ public class TrueSurfing extends BaseSurfing {
     private EnemyWave nextWave;
     private EnemyWave secondWave;
 
-    public TrueSurfing(Surfer surfer, WaveManager manager) {
-        super(surfer, manager);
-    }
-
-    public Knn.ParametrizedCondition getViewCondition() {
-        return new Knn.HitLeastCondition(1, 0);
+    public TrueSurfing(Surfer surfer, WaveManager manager, StatTracker statTracker) {
+        super(surfer, manager, statTracker);
     }
 
     public EnemyLog getEnemyLog() {
@@ -163,7 +160,7 @@ public class TrueSurfing extends BaseSurfing {
             throw new IllegalStateException();
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
-        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, 0, getViewCondition()); // TODO: cache that
+        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, 0, getViewCondition(enemyLog.getName())); // TODO: cache that
 
         AxisRectangle field = getMediator().getBattleField();
         double distance = nextWave.getSource().distance(initialPoint);
@@ -218,6 +215,11 @@ public class TrueSurfing extends BaseSurfing {
         }
 
         return res;
+    }
+
+    @Override
+    public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
+
     }
 
     private class SurfingCandidate {

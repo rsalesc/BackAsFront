@@ -103,6 +103,14 @@ public class EnemyLog implements RobotLog {
     }
 
     @Override
+    public EnemyRobot exactlyAt(long time) {
+        EnemyRobot res = atLeastAt(time);
+        if(res == null || res.getTime() != time)
+            return null;
+        return res;
+    }
+
+    @Override
     public EnemyRobot atLeastAt(long time) {
         if (length == 0)
             return null;

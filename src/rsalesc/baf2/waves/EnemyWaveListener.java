@@ -29,6 +29,7 @@ import rsalesc.baf2.tracking.MyRobot;
 
 /**
  * Created by Roberto Sales on 12/09/17.
+ * TODO: precise intersection
  */
 public interface EnemyWaveListener {
     void onEnemyWaveFired(EnemyWave wave);
@@ -38,4 +39,6 @@ public interface EnemyWaveListener {
     void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e);
 
     void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e);
+
+    void onEnemyWavePass(EnemyWave wave, MyRobot me);
 }

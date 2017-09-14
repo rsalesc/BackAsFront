@@ -33,15 +33,10 @@ import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.movement.DynamicClusteringSurfer;
 import rsalesc.mega.movement.KnightSurfer;
 import rsalesc.mega.movement.Surfer;
 import rsalesc.mega.movement.TrueSurfing;
-import rsalesc.mega.movement.strategies.UnsegStrats;
-import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnSet;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.mega.utils.StatTracker;
 
 import java.awt.*;
 
@@ -52,7 +47,7 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     private MinimumRiskMovement driver;
     private TrueSurfing surfing;
 
-    public MonkFeet(WaveManager manager) {
+    public MonkFeet(WaveManager manager, StatTracker statTracker) {
         Surfer surfer = new KnightSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
@@ -61,7 +56,7 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
         };
 
         driver = new MinimumRiskMovement();
-        surfing = new TrueSurfing(surfer, manager);
+        surfing = new TrueSurfing(surfer, manager, statTracker);
     }
 
     private boolean isMelee() {
@@ -115,5 +110,11 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
         if (!isMelee())
             surfing.onEnemyWaveHitBullet(wave, e);
+    }
+
+    @Override
+    public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
+        if(!isMelee())
+            surfing.onEnemyWavePass(wave, me);
     }
 }

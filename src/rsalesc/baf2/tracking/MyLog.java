@@ -27,6 +27,7 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.GlobalStorage;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 
 /**
@@ -89,6 +90,15 @@ public class MyLog implements RobotLog {
     @Override
     public MyRobot after(RobotSnapshot robot) {
         return atLeastAt(robot.getTime() + 1);
+    }
+
+    @Override
+    public MyRobot exactlyAt(long time) {
+        MyRobot res = atLeastAt(time);
+        if(res == null || res.getTime() != time)
+            return null;
+
+        return res;
     }
 
     public MyRobot atLeastAt(long time) {

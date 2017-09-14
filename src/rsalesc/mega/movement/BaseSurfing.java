@@ -43,6 +43,9 @@ import rsalesc.baf2.waves.*;
 import rsalesc.mega.movement.distancing.FallbackSurfingDistancer;
 import rsalesc.mega.predictor.PredictedPoint;
 import rsalesc.mega.predictor.WallSmoothing;
+import rsalesc.mega.utils.NamedStatData;
+import rsalesc.mega.utils.StatData;
+import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GaussianKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
@@ -61,10 +64,12 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
     private final Surfer surfer;
     private final WaveManager manager;
+    private final StatTracker statTracker;
 
-    public BaseSurfing(Surfer surfer, WaveManager manager) {
+    public BaseSurfing(Surfer surfer, WaveManager manager, StatTracker statTracker) {
         this.surfer = surfer;
         this.manager = manager;
+        this.statTracker = statTracker;
     }
 
     public static GuessFactorStats getFallbackStats(double distance, double velocity) {
@@ -90,6 +95,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
     public WaveManager getManager() {
         return manager;
     }
+
+    public StatTracker getStatTracker() { return statTracker; }
 
     @Override
     public void onEnemyWaveFired(EnemyWave wave) {
@@ -213,6 +220,10 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         }
     }
 
+    public NamedStatData getViewCondition(String name) {
+        return new NamedStatData(getStatTracker().getCurrentStatData(), name);
+    }
+
     @Override
     public void onPaint(Graphics2D gr) {
         G g = new G(gr);
@@ -227,7 +238,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             EnemyLog enemyLog = EnemyTracker.getInstance().getLog(wave.getEnemy());
 
             // TODO: fix view condition
-            GuessFactorStats st = getSurfer().getStats(enemyLog, log, 0, new Knn.HitLeastCondition(0, 0));
+            GuessFactorStats st =
+                    getSurfer().getStats(enemyLog, log, 0, getViewCondition(enemyLog.getName()));
 
             Point zeroPoint = wave.getSource().project(log.getZeroGf(), wave.getDistanceTraveled(time));
 

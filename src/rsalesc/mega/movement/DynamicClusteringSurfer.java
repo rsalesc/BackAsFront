@@ -29,6 +29,7 @@ import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.stats.CubicKernelDensity;
@@ -40,6 +41,7 @@ import java.util.List;
 
 /**
  * Created by Roberto Sales on 12/09/17.
+ * TODO: use statdata
  */
 public abstract class DynamicClusteringSurfer extends StoreComponent implements Surfer {
     public abstract KnnSet<TimestampedGFRange> getNewKnnSet();
@@ -55,8 +57,8 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
     }
 
     @Override
-    public boolean hasData(EnemyLog enemyLog, Knn.ParametrizedCondition o) {
-        return getKnnSet(enemyLog.getName()).availableData() > 0;
+    public boolean hasData(EnemyLog enemyLog, NamedStatData o) {
+        return getKnnSet(enemyLog.getName()).availableData(o) > 0;
     }
 
     @Override
@@ -79,7 +81,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
 
     // TODO: cache that
     @Override
-    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, int cacheIndex, Knn.ParametrizedCondition o) {
+    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, int cacheIndex, NamedStatData o) {
         if (f == null)
             throw new IllegalStateException();
 
@@ -89,7 +91,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
             return BaseSurfing.getFallbackStats(f.distance, Rules.getBulletSpeed(f.velocity));
         }
 
-        List<Knn.Entry<TimestampedGFRange>> found = set.query(f);
+        List<Knn.Entry<TimestampedGFRange>> found = set.query(f, o);
 
         GuessFactorStats stats = new GuessFactorStats(new CubicKernelDensity()); // TODO: rethink
         double totalWeight = Knn.getTotalWeight(found);

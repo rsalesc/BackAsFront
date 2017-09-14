@@ -23,6 +23,7 @@
 
 package rsalesc.baf2.core.utils.geometry;
 
+import javafx.scene.chart.Axis;
 import rsalesc.baf2.core.utils.R;
 
 import java.util.ArrayList;
@@ -41,6 +42,15 @@ public class Circle {
 
     public boolean isInside(Point point) {
         return center.distance(point) < radius + R.EPSILON;
+    }
+
+    public boolean isInside(AxisRectangle rect) {
+        for(Point point : rect.getCorners()) {
+            if(!isInside(point))
+                return false;
+        }
+
+        return true;
     }
 
     public Point[] intersect(AxisRectangle rect) {

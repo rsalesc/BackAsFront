@@ -179,4 +179,8 @@ public class Wave {
     public void setData(String path, Object data) {
         this.data.put(path, data);
     }
+
+    public double getPower() {
+        return Physics.bulletPower(velocity);
+    }
 }
