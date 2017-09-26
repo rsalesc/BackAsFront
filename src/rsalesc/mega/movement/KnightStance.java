@@ -29,9 +29,11 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
+import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TimestampedGFRange;
@@ -42,7 +44,7 @@ import java.awt.*;
 /**
  * Created by Roberto Sales on 13/09/17.
  */
-public class KnightStance extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener {
+public class KnightStance extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener, EnemyWavePreciseListener {
     private TrueSurfing surfing;
 
     public KnightStance(WaveManager manager, StatTracker statTracker) {
@@ -94,5 +96,10 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
     @Override
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
         surfing.onEnemyWavePass(wave, me);
+    }
+
+    @Override
+    public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
+        surfing.onEnemyWavePreciselyIntersects(wave, me, intersection);
     }
 }

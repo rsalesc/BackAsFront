@@ -35,6 +35,10 @@ public class StorageNamespace {
         this.storage = storage;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public void put(String name, Object object) {
         storage.put(path + name, object);
     }
@@ -49,5 +53,16 @@ public class StorageNamespace {
 
     public boolean contains(String name) {
         return storage.contains(path + name);
+    }
+
+    public StorageNamespace concat(StorageNamespace rhs) {
+        return new StorageNamespace(path + rhs.path, storage);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || !(obj instanceof StorageNamespace))
+            return false;
+        return path.equals(((StorageNamespace) obj).getPath());
     }
 }

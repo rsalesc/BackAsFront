@@ -23,6 +23,8 @@
 
 package rsalesc.baf2.core;
 
+import robocode.Condition;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -32,7 +34,7 @@ import java.util.HashSet;
 public abstract class Component {
     private RobotMediator mediator;
     private boolean virtual = false;
-    private ArrayList<Object> listeners = new ArrayList<>();
+    private ArrayList<ConditionedListener> listeners = new ArrayList<>();
 
     public void init(RobotMediator mediator) {
         this.mediator = mediator;
@@ -64,8 +66,10 @@ public abstract class Component {
     protected ArrayList<Object> getListeners() {
         ArrayList<Object> res = new ArrayList<>();
 
-        res.addAll(listeners);
-//        res.addAll(mediator.getComponents());
+        for(ConditionedListener cl : listeners) {
+            if(cl.test())
+                res.add(cl.getListener());
+        }
 
         ArrayList<Object> filtered = new ArrayList<>();
 
@@ -81,6 +85,33 @@ public abstract class Component {
     }
 
     public void addListener(Object listener) {
-        listeners.add(listener);
+        listeners.add(new ConditionedListener(listener, new Condition() {
+            @Override
+            public boolean test() {
+                return true;
+            }
+        }));
+    }
+
+    public void addListener(Object listener, Condition condition) {
+        listeners.add(new ConditionedListener(listener, condition));
+    }
+
+    private static class ConditionedListener {
+        public final Object listener;
+        public final Condition condition;
+
+        private ConditionedListener(Object listener, Condition condition) {
+            this.listener = listener;
+            this.condition = condition;
+        }
+
+        public boolean test() {
+            return condition.test();
+        }
+
+        public Object getListener() {
+            return listener;
+        }
     }
 }

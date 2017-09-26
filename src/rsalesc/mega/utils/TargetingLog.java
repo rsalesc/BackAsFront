@@ -75,6 +75,8 @@ public class TargetingLog {
     public double displaceLast80;
     public double displaceLast160;
 
+    public double distanceToWall;
+
     public double lateralDisplaceLast10;
     public double lateralDisplaceLast20;
     public double lateralDisplaceLast40;
@@ -92,6 +94,7 @@ public class TargetingLog {
 
     // melee
     public double closestDistance;
+    public double distanceSum;
 
     // for miss
     public double hitAngle;
@@ -178,6 +181,8 @@ public class TargetingLog {
         f.negativeEscape = R.getWallEscape(f.field, robot.getPoint(),
                 Utils.normalAbsoluteAngle(f.bafHeading + R.PI));
 
+        f.distanceToWall = f.field.distanceToEdges(robot.getPoint());
+
         if (f.accel < 0)
             f.accelDirection = -f.direction;
         else
@@ -222,13 +227,22 @@ public class TargetingLog {
 
         f.displaceLast10 = log.atLeastAt(f.time - 10).getPoint()
                 .distance(robot.getPoint());
+        f.displaceLast20 = log.atLeastAt(f.time - 20).getPoint()
+                .distance(robot.getPoint());
+        f.displaceLast40 = log.atLeastAt(f.time - 40).getPoint()
+                .distance(robot.getPoint());
+
+        f.displaceLast80 = log.atLeastAt(f.time - 80).getPoint()
+                .distance(robot.getPoint());
 
         f.coveredLast20 = coveredLast20.maxAbsolute();
 
+        f.distanceSum = 0;
         f.closestDistance = 1e9;
         RobotSnapshot[] others = getOthersAlive(robot);
         for (RobotSnapshot other : others) {
             f.closestDistance = Math.min(f.closestDistance, other.getPoint().distance(robot.getPoint()));
+            f.distanceSum += other.getPoint().distance(robot.getPoint());
         }
     }
 
@@ -238,7 +252,7 @@ public class TargetingLog {
         ArrayList<RobotSnapshot> res = new ArrayList<>();
 
         for (int i = 0; i < others.length; i++) {
-            if (others[i].getName() == robot.getName()) {
+            if (others[i].getName().equals(robot.getName())) {
                 MyRobot me = MyLog.getInstance().atMostAt(robot.getTime());
                 if (me != null) res.add(me);
             } else {
@@ -278,6 +292,10 @@ public class TargetingLog {
     public double getUnconstrainedGf(double offset) {
         return R.zeroNan(this.escapeDirection * offset /
                 (this.escapeDirection * offset > 0 ? preciseMea.max : -preciseMea.min));
+    }
+
+    public double getAngle(double gf) {
+        return Utils.normalAbsoluteAngle(getZeroGf() + getOffset(gf));
     }
 
     public double getOffset(double gf) {

@@ -32,15 +32,15 @@ public class FastMath {
     private static final float Pi = (float) Math.PI;
     private static final float Pi_H = Pi / 2;
 
-    private static final float Atan2[] = new float[Size_Ar];
-    private static final float Atan2_PM[] = new float[Size_Ar];
-    private static final float Atan2_MP[] = new float[Size_Ar];
-    private static final float Atan2_MM[] = new float[Size_Ar];
+    private static final float[] Atan2 = new float[Size_Ar];
+    private static final float[] Atan2_PM = new float[Size_Ar];
+    private static final float[] Atan2_MP = new float[Size_Ar];
+    private static final float[] Atan2_MM = new float[Size_Ar];
 
-    private static final float Atan2_R[] = new float[Size_Ar];
-    private static final float Atan2_RPM[] = new float[Size_Ar];
-    private static final float Atan2_RMP[] = new float[Size_Ar];
-    private static final float Atan2_RMM[] = new float[Size_Ar];
+    private static final float[] Atan2_R = new float[Size_Ar];
+    private static final float[] Atan2_RPM = new float[Size_Ar];
+    private static final float[] Atan2_RMP = new float[Size_Ar];
+    private static final float[] Atan2_RMM = new float[Size_Ar];
     private static final int SIN_BITS, SIN_MASK, SIN_COUNT;
     private static final float radFull, radToIndex;
     private static final float degFull, degToIndex;

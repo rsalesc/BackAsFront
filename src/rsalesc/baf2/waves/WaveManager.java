@@ -31,6 +31,7 @@ import rsalesc.baf2.core.listeners.HitListener;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
@@ -45,7 +46,7 @@ import java.util.Iterator;
  * Created by Roberto Sales on 11/09/17.
  */
 public class WaveManager extends Component implements EnemyFireListener, PaintListener, EnemyWaveListener,
-        ScannedRobotListener, BulletListener, HitListener {
+        ScannedRobotListener, BulletListener, HitListener, EnemyWavePreciseListener {
     private boolean checked = false;
     private ArrayList<EnemyWave> waves = new ArrayList<>();
 
@@ -63,6 +64,16 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
         waves.add(wave);
 
         onEnemyWaveFired(wave);
+    }
+
+    public boolean hasPreciseListener() {
+        for (Object obj : getListeners()) {
+            if (obj instanceof EnemyWavePreciseListener) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -105,13 +116,13 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
             EnemyWave wave = it.next();
 
             if (wave.getCircle(time).isInside(me.getPoint()) && (pastMe == null ||
-                    !wave.getCircle(time).isInside(pastMe.getPoint()))) {
+                    !wave.getCircle(time - 1).isInside(pastMe.getPoint()))) {
 
                 onEnemyWaveBreak(wave, me);
             }
 
             if (wave.getCircle(time).isInside(hitbox) && (pastMe == null ||
-                    !wave.getCircle(time).isInside(pastMe.getHitBox()))) {
+                    !wave.getCircle(time - 1).isInside(pastMe.getHitBox()))) {
 
                 onEnemyWavePass(wave, me);
             }
@@ -180,6 +191,10 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
                 listener.onEnemyWavePass(wave, me);
             }
         }
+
+        if(hasPreciseListener()) {
+            onEnemyWavePreciselyIntersects(wave, me, Wave.preciseIntersection(wave, MyLog.getInstance(), getMediator().getTime()));
+        }
     }
 
     @Override
@@ -191,7 +206,7 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
     public void onHitByBullet(HitByBulletEvent e) {
         for (EnemyWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                wave.setHit(true);
+                wave.setHit(e.getBullet());
 
                 onEnemyWaveHitMe(wave, e);
                 break;
@@ -213,7 +228,7 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         for (EnemyWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                wave.setHit(true);
+                wave.setBulletHit(e.getHitBullet());
 
                 onEnemyWaveHitBullet(wave, e);
                 break;
@@ -286,5 +301,15 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
 
     public EnemyWave earliestWave(MyRobot me, EnemyRobot enemy) {
         return earliestWave(me, enemy, me.getTime());
+    }
+
+    @Override
+    public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
+        for (Object object : getListeners()) {
+            if (object instanceof EnemyWavePreciseListener) {
+                EnemyWavePreciseListener listener = (EnemyWavePreciseListener) object;
+                listener.onEnemyWavePreciselyIntersects(wave, me, intersection);
+            }
+        }
     }
 }

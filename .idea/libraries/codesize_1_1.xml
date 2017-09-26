@@ -12,6 +12,8 @@
       <root url="jar://$USER_HOME$/robocode/libs/robocode.ui-1.9.2.5.jar!/" />
       <root url="jar://$USER_HOME$/robocode/libs/robocode.ui.editor-1.9.2.5.jar!/" />
       <root url="jar://$USER_HOME$/robocode/libs/roborumble.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/xchart-3.5.0.zip!/" />
+      <root url="jar://$USER_HOME$/robocode/xchart-3.5.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

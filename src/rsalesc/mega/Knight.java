@@ -26,18 +26,19 @@ package rsalesc.mega;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
+import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
+import rsalesc.mega.gunning.*;
+import rsalesc.mega.gunning.guns.AutomaticGunArray;
+import rsalesc.mega.gunning.power.MirrorPowerSelector;
+import rsalesc.mega.gunning.power.PowerSelector;
+import rsalesc.mega.gunning.power.TCPowerSelector;
 import rsalesc.mega.movement.KnightStance;
 import rsalesc.mega.radar.PerfectLockRadar;
 import rsalesc.mega.utils.StatTracker;
-import rsalesc.mega.utils.WinDance;
-import rsalesc.melee.gunning.MonkGun;
-import rsalesc.melee.gunning.MovieTracker;
-import rsalesc.melee.movement.MonkFeet;
-import rsalesc.melee.radar.MultiModeRadar;
 
 import java.awt.*;
 
@@ -45,34 +46,73 @@ import java.awt.*;
  * Created by Roberto Sales on 11/09/17.
  */
 public class Knight extends BackAsFrontRobot2 {
+    private boolean MC = false;
+    private boolean TC = false;
+
+    public void checkChallenges() {
+        MC = MC || getName().endsWith("mc");
+    }
+
     @Override
     public void initialize() {
-        add(new Colorizer());
-        add(new WinDance());
+        checkChallenges();
 
-        MovieTracker tracker = new MovieTracker(90, 2);
+        add(new Colorizer());
+
+        Tracker tracker = new Tracker();
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
-        StatTracker statTracker = new StatTracker();
+        StatTracker statTracker = StatTracker.getInstance();
+        statTracker.log();
+
+        PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector();
 
         KnightStance move = new KnightStance(waveManager, statTracker);
-        MonkGun gun = new MonkGun();
+
+        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
+        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
+        AutomaticGunArray array = new AutomaticGunArray() {
+            @Override
+            public StorageNamespace getStorageNamespace() {
+                return getGlobalStorage().namespace("knight-gun-array");
+            }
+        };
+
+        array.setPowerSelector(selector);
+
+        array.addGun(randomGun);
+        array.addGun(adaptiveGun);
+        array.log();
+
+        if(selector instanceof MirrorPowerSelector)
+            tracker.addListener(selector);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
-        tracker.addListener(gun);
 
         waveManager.addListener(statTracker);
-        waveManager.addListener(move);
+        if(!TC) waveManager.addListener(move);
+
+        bulletManager.addListener(randomGun);
+        bulletManager.addListener(adaptiveGun);
+        bulletManager.addListener(array);
 
         add(tracker);
+
+        if(selector instanceof MirrorPowerSelector)
+            addListener((MirrorPowerSelector) selector);
+
         add(bulletManager);
         add(waveManager);
         add(statTracker);
+        if(!TC) add(move);
 
-        add(move);
-        add(gun);
-        add(new PerfectLockRadar());
+        if(!MC) {
+            add(array);
+            add(new PerfectLockRadar());
+        } else {
+            add(new RaikoGun());
+        }
     }
 
     class Colorizer extends Component implements RoundStartedListener {

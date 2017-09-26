@@ -42,15 +42,15 @@ public class R {
     public static boolean FAST_MATH = false;
 
     public static double sin(double radians) {
-        if (!FAST_MATH)
+//        if (!FAST_MATH)
             return Math.sin(radians);
-        return FastMath.sin((float) radians);
+//        return FastMath.sin((float) radians);
     }
 
     public static double cos(double radians) {
-        if (!FAST_MATH)
+//        if (!FAST_MATH)
             return Math.cos(radians);
-        return FastMath.cos((float) radians);
+//        return FastMath.cos((float) radians);
     }
 
     public static double asin(double x) {
@@ -66,9 +66,9 @@ public class R {
     }
 
     public static double atan2(double y, double x) {
-        if (!FAST_MATH)
+//        if (!FAST_MATH)
             return Math.atan2(y, x);
-        return FastMath.atan2((float) y, (float) x);
+//        return FastMath.atan2((float) y, (float) x);
     }
 
     public static double tan(double radians) {
@@ -92,7 +92,7 @@ public class R {
     }
 
     public static double gaussKernel(double x) {
-        return R.pow(1.65, -0.5 * x);
+        return R.pow(2, -0.5 * 1.44269504089 * x * x);
     }
 
     public static double cubicKernel(double x) {
@@ -154,7 +154,11 @@ public class R {
     }
 
     public static String formattedPercentage(double v) {
-        return PERCENTAGE_FORMATTER.format(v * 100).replace(",", ".") + " %";
+        return formattedDouble(v * 100) + " %";
+    }
+
+    public static String formattedDouble(double v) {
+        return PERCENTAGE_FORMATTER.format(v).replace(",", ".");
     }
 
     public static double zeroNan(double v) {

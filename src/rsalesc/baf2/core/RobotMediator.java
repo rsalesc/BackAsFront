@@ -48,12 +48,20 @@ public class RobotMediator {
         return BackAsFrontRobot2.getQuickestTurn(originalTurn);
     }
 
+    public boolean isDev() {
+        return robot.getName().endsWith("*");
+    }
+
     public ArrayList<Component> getComponents() {
         return robot.getComponents();
     }
 
     public void setColors(Color bodyColor, Color gunColor, Color radarColor) {
         robot.setColors(bodyColor, gunColor, radarColor);
+    }
+
+    public void setDebugProperty(String key, String value) {
+        robot.setDebugProperty(key, value);
     }
 
     public void setColors(Color bodyColor, Color gunColor, Color radarColor, Color bulletColor, Color scanArcColor) {

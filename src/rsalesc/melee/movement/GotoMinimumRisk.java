@@ -23,15 +23,14 @@
 
 package rsalesc.melee.movement;
 
+
+import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
-import rsalesc.baf2.core.listeners.PaintListener;
-import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.baf2.painting.G;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.MyLog;
@@ -41,27 +40,41 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by Roberto Sales on 12/09/17.
+ * Created by Roberto Sales on 25/09/17.
  */
-public class MinimumRiskMovement extends Component implements RoundStartedListener, PaintListener {
-    private static final int NUM_POINTS = 65;
+public class GotoMinimumRisk extends MinimumRisk implements RoundStartedListener {
+    private static final int NUM_POINTS = 120;
     private static final double STICK_LENGTH = 100;
-    private static final double DISTANCE_TO_WALL = 22;
+    private static final double DISTANCE_TO_WALL = 40;
     private static final double WALL_STICK = 240;
     private static EnemyTracker tracker = EnemyTracker.getInstance();
     private ArrayList<MoveCandidate> candidates;
-    private double lastMaxDistance;
+
+    private RiskEvaluation evaluation;
+    private Point lastDest;
 
     @Override
     public void onRoundStarted(int round) {
         candidates = new ArrayList<>();
     }
 
+    public double getClosestDistance() {
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        double best = Double.POSITIVE_INFINITY;
+        for(EnemyRobot enemy : enemies) {
+            best = Math.min(best, enemy.getDistance());
+        }
+
+        return best;
+    }
+
     @Override
     public void run() {
-        Point dest = bestDestination();
-        double angle = Physics.absoluteBearing(getMediator().getPoint(), dest);
-        double distance = dest.distance(getMediator().getPoint());
+        if(lastDest == null || getMediator().getPoint().distance(lastDest) < 2 || getClosestDistance() < 80)
+            lastDest = bestDestination();
+
+        double angle = Physics.absoluteBearing(getMediator().getPoint(), lastDest);
+        double distance = lastDest.distance(getMediator().getPoint());
         if (distance < 0.01)
             angle = getMediator().getHeadingRadians();
 
@@ -89,8 +102,6 @@ public class MinimumRiskMovement extends Component implements RoundStartedListen
             maxDistance = Math.min(maxDistance, enemy.getDistance());
         }
 
-        lastMaxDistance = maxDistance;
-
         double bestDanger = Double.POSITIVE_INFINITY;
         Point bestDest = myPoint;
         candidates = new ArrayList<>();
@@ -98,13 +109,9 @@ public class MinimumRiskMovement extends Component implements RoundStartedListen
         double ratio = R.DOUBLE_PI / NUM_POINTS;
         for (int i = 0; i < NUM_POINTS; i++) {
             double angle = ratio * i;
-            Point dest = myPoint.project(angle, maxDistance).clip(shrinkedField);
+            Point dest = myPoint.project(angle, Math.random() * maxDistance).clip(shrinkedField);
 
-//            double realAngle = Physics.absoluteBearing(myPoint, dest);
-//            dest = myPoint.project(WallSmoothing.naive(botField, WALL_STICK, myPoint, realAngle, direction), maxDistance)
-//                    .clip(shrinkedField);
-
-            double danger = evaluateDanger(dest, maxDistance, pairwiseClosestDistance);
+            double danger = getEvaluation().evaluateDanger(getMediator(), dest, maxDistance, pairwiseClosestDistance);
             candidates.add(new MoveCandidate(danger, dest));
 
             if (danger < bestDanger) {
@@ -130,50 +137,17 @@ public class MinimumRiskMovement extends Component implements RoundStartedListen
         return res;
     }
 
-    public double evaluateDanger(Point dest, double maxDistance, double[] closestDist) {
-        MyRobot me = MyLog.getInstance().getLatest();
-        MyRobot meTenAgo = MyLog.getInstance().atLeastAt(getMediator().getTime() - 10);
+    public RiskEvaluation getEvaluation() {
+        return evaluation;
+    }
 
-        EnemyRobot[] enemies = tracker.getLatest();
-        AxisRectangle field = getMediator().getBattleField();
-
-        double res = 0;
-
-        for (EnemyRobot enemy : enemies) {
-            res += Math.max(3 * maxDistance - dest.distance(enemy.getPoint()), 0);
-        }
-
-        res += (maxDistance - me.getDistanceToWall()) * 2;
-
-        res += Math.max(2.5 * maxDistance - field.getCenter().distance(dest), 0) * 4;
-        res += (maxDistance - me.getPoint().distance(dest)) * 2;
-
-        if (meTenAgo != null && meTenAgo.getTime() == getMediator().getTime() - 10) {
-            res += Math.max((maxDistance - meTenAgo.getPoint().distance(dest)) * 3, 0);
-        }
-
-        for (int i = 0; i < enemies.length; i++) {
-            res += Math.max((closestDist[i] + 10 - dest.distance(enemies[i].getPoint())) * 5, 0);
-        }
-
-        return res;
+    public void setEvaluation(RiskEvaluation evaluation) {
+        this.evaluation = evaluation;
     }
 
     @Override
     public void onPaint(Graphics2D gr) {
-        G g = new G(gr);
 
-        if (candidates != null) {
-            double maxDanger = 1e-9;
-
-            for (MoveCandidate candidate : candidates) {
-                maxDanger = Math.max(maxDanger, candidate.danger);
-            }
-
-//            for(MoveCandidate candidate : candidates) {
-//                g.fillCircle(candidate.destination, 2.5, G.getSafeColor(candidate.danger / maxDanger));
-//            }
-        }
     }
 
     private class MoveCandidate {

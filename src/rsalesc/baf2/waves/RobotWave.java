@@ -23,6 +23,7 @@
 
 package rsalesc.baf2.waves;
 
+import robocode.Bullet;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.Point;
 
@@ -30,17 +31,47 @@ import rsalesc.baf2.core.utils.geometry.Point;
  * Created by Roberto Sales on 23/07/17.
  */
 public class RobotWave extends Wave {
-    private boolean hit = false;
+    private Bullet hit;
+    private Bullet bulletHit;
+    private boolean missed = false;
 
     public RobotWave(Point source, BattleTime time, double velocity) {
         super(source, time, velocity);
     }
 
-    public void setHit(boolean flag) {
-        hit = flag;
+    public void setHit(Bullet bullet) {
+        hit = bullet;
     }
 
     public boolean hasHit() {
+        return hit != null;
+    }
+
+    public boolean hasMissed() {
+        return missed;
+    }
+
+    public void setMissed(boolean flag) {
+        missed = flag;
+    }
+
+    public Bullet getHit() {
         return hit;
+    }
+
+    public void setBulletHit(Bullet bullet) {
+        bulletHit = bullet;
+    }
+
+    public boolean hasBulletHit() {
+        return bulletHit != null;
+    }
+
+    public Bullet getBulletHit() {
+        return bulletHit;
+    }
+
+    public boolean hasAnyHit() {
+        return hasHit() || hasBulletHit();
     }
 }

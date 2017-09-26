@@ -44,12 +44,10 @@ import rsalesc.mega.movement.distancing.FallbackSurfingDistancer;
 import rsalesc.mega.predictor.PredictedPoint;
 import rsalesc.mega.predictor.WallSmoothing;
 import rsalesc.mega.utils.NamedStatData;
-import rsalesc.mega.utils.StatData;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GaussianKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
-import rsalesc.mega.utils.structures.Knn;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -58,9 +56,10 @@ import java.util.Collections;
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public abstract class BaseSurfing extends StoreComponent implements EnemyWaveListener, PaintListener {
+public abstract class BaseSurfing extends StoreComponent implements EnemyWaveListener, PaintListener, EnemyWavePreciseListener {
     protected static final String LOG_HINT = "surfing-log";
     protected static final int WALL_STICK = 160;
+    private int breaks = 0;
 
     private final Surfer surfer;
     private final WaveManager manager;
@@ -72,13 +71,30 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         this.statTracker = statTracker;
     }
 
+    public EnemyLog getEnemyLog() {
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        if (enemies.length == 0) {
+            enemies = EnemyTracker.getInstance().getLatestDeadOrAlive();
+            if(enemies.length == 0)
+                return null;
+        }
+
+        return EnemyTracker.getInstance().getLog(enemies[0]);
+    }
+
+    public EnemyRobot getEnemy() {
+        if (getEnemyLog() == null)
+            return null;
+        return getEnemyLog().getLatest();
+    }
+
     public static GuessFactorStats getFallbackStats(double distance, double velocity) {
         GuessFactorStats stats = new GuessFactorStats(new GaussianKernelDensity());
         double hitAngle = Physics.hitAngle(distance);
         double mea = Physics.maxEscapeAngle(velocity);
 
         stats.logGuessFactor(0, 1, hitAngle / mea);
-        stats.logGuessFactor(0.825, 1, hitAngle / mea);
+        stats.logGuessFactor(0.9, 0.6, hitAngle / mea);
 
         return stats;
     }
@@ -110,6 +126,26 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
     @Override
     public void onEnemyWaveBreak(EnemyWave wave, MyRobot me) {
+        breaks++;
+    }
+
+
+    @Override
+    public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
+        if(wave.hasBulletHit() || wave.hasHit())
+            return;
+
+        TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
+        if (f == null)
+            return;
+
+        f.hitAngle = Physics.absoluteBearing(wave.getSource(), me.getPoint());
+        f.hitDistance = me.getPoint().distance(wave.getSource());
+
+        double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
+        f.preciseIntersection = intersection == null ? new AngularRange(f.hitAngle, -hitAngle, +hitAngle) : intersection;
+
+        surfer.log(EnemyTracker.getInstance().getLog(wave.getEnemy().getName()), f, BreakType.BULLET_BREAK);
     }
 
     @Override
@@ -119,26 +155,30 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         if (f == null)
             return;
 
+        breaks++;
+
         f.hitAngle = angle;
         f.hitDistance = MyLog.getInstance().getLatest().getPoint().distance(wave.getSource());
 
-        double hitAngle = Physics.hitAngle(f.hitDistance);
+        double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
 
-        surfer.log(EnemyTracker.getInstance().getLog(e.getName()), f, BreakType.BULLET_HIT);
+        surfer.log(EnemyTracker.getInstance().getLog(wave.getEnemy().getName()), f, BreakType.BULLET_HIT);
     }
 
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
-        double angle = e.getBullet().getHeadingRadians();
+        double angle = e.getHitBullet().getHeadingRadians();
         TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
         if (f == null)
             return;
 
+        breaks++;
+
         f.hitAngle = angle;
         f.hitDistance = MyLog.getInstance().getLatest().getPoint().distance(wave.getSource());
 
-        double hitAngle = Physics.hitAngle(f.hitDistance);
+        double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
 
         surfer.log(EnemyTracker.getInstance().getLog(e.getBullet().getName()), f, BreakType.BULLET_HIT);
@@ -152,7 +192,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         if (intersection == null) {
             double distance = wave.getSource().distance(pass);
             double passBearing = Physics.absoluteBearing(wave.getSource(), pass);
-            double width = Physics.hitAngle(distance);
+            double width = Physics.hitAngle(distance) / 2;
             intersection = new AngularRange(passBearing, -width, width);
         }
 
@@ -184,6 +224,25 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 //        value /= jBucket - iBucket + 1;
 
         return value;
+    }
+
+    protected double getPreciseDanger(Wave wave, EnemyLog enemyLog, AngularRange intersection, PredictedPoint pass) {
+        TargetingLog log = (TargetingLog) wave.getData(LOG_HINT);
+        if (log == null)
+            throw new IllegalStateException();
+
+        if (intersection == null) {
+            double distance = wave.getSource().distance(pass);
+            double passBearing = Physics.absoluteBearing(wave.getSource(), pass);
+            double width = Physics.hitAngle(distance) / 2;
+            intersection = new AngularRange(passBearing, -width, width);
+        }
+
+        return getSurfer().getDanger(enemyLog, log, getCacheIndex(wave), getViewCondition(enemyLog.getName()), intersection);
+    }
+
+    protected long getCacheIndex(Wave wave) {
+        return wave.getTime() * (long) 1e9 + breaks;
     }
 
     protected void fallback(Controller controller, EnemyRobot enemy) {
@@ -235,11 +294,18 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             if (log == null)
                 continue;
 
+            double dt = wave.getDistanceTraveled(time);
+
+            if(log.preciseIntersection != null) {
+                g.drawRadial(wave.getSource(), log.preciseIntersection.getStartingAngle(), dt, dt + 8);
+                g.drawRadial(wave.getSource(), log.preciseIntersection.getEndingAngle(), dt, dt+8);
+            }
+
             EnemyLog enemyLog = EnemyTracker.getInstance().getLog(wave.getEnemy());
 
-            // TODO: fix view condition
+            NamedStatData o = getViewCondition(enemyLog.getName());
             GuessFactorStats st =
-                    getSurfer().getStats(enemyLog, log, 0, getViewCondition(enemyLog.getName()));
+                    getSurfer().getStats(enemyLog, log, getCacheIndex(wave), o);
 
             Point zeroPoint = wave.getSource().project(log.getZeroGf(), wave.getDistanceTraveled(time));
 
@@ -272,12 +338,11 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             int cnt = 0;
             for (DangerPoint dangerPoint : dangerPoints) {
                 Color dangerColor = dangerPoint.getDanger() > -0.01
-//                        ? G.getDiscreteSafeColor(1.0 * ++cnt / dangerPoints.size())
                         ? G.getSafeColor(dangerPoint.getDanger() / maxDanger)
                         : Color.DARK_GRAY;
 
                 Point base = wave.getSource().project(wave.getAngle(dangerPoint), wave.getDistanceTraveled(time) - 10);
-                g.fillCircle(base, 2.5, dangerColor);
+                g.fillCircle(base, 2, dangerColor);
             }
         }
     }

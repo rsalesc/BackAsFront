@@ -31,7 +31,6 @@ import java.util.Map;
 
 /**
  * Created by Roberto Sales on 29/08/17.
- * TODO: test heat tracker, seems to have a flaw looking visually. gonna tackle it
  */
 public class HeatTracker {
     private static final HeatTracker SINGLETON = new HeatTracker();

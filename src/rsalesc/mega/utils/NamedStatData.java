@@ -46,6 +46,14 @@ public class NamedStatData {
         return data.getEnemyHitPercentage(name);
     }
 
+    public double getHitPercentage() {
+        return data.getHitPercentage(name);
+    }
+
+    public double getWeightedHitPercentage() {
+        return data.getWeightedHitPercentage(name);
+    }
+
     public int getRound() {
         return data.getRound();
     }

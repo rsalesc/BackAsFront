@@ -27,14 +27,15 @@ import rsalesc.baf2.core.utils.BattleTime;
 import robocode.StatusEvent;
 import rsalesc.baf2.core.utils.Pair;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Created by Roberto Sales on 13/09/17.
  */
-public class StatData {
+public class StatData implements Serializable {
+    private final static long serialVersionUID = 901201892819210L;
+
     private BattleTime time;
 
     private double totalDamageReceived = 0;
@@ -55,14 +56,14 @@ public class StatData {
     private HashMap<String, Integer> shotsFired = new HashMap<>();
     private HashMap<String, Integer> shotsFelt = new HashMap<>();
 
-    private HashMap<rsalesc.baf2.core.utils.Pair<String, Integer>, TreeSet<Integer>> meetings = new HashMap<rsalesc.baf2.core.utils.Pair<String, Integer>, TreeSet<Integer>>();
+    private HashMap<Pair<String, Integer>, TreeSet<Integer>> meetings = new HashMap<>();
 
     public void onStatus(StatusEvent e) {
         time = new BattleTime(e.getTime(), e.getStatus().getRoundNum());
     }
 
     public void logMeeting(String name, int others) {
-        rsalesc.baf2.core.utils.Pair<String, Integer> pair = new rsalesc.baf2.core.utils.Pair<>(name, others);
+        Pair<String, Integer> pair = new rsalesc.baf2.core.utils.Pair<>(name, others);
         if(!meetings.containsKey(pair))
             meetings.put(pair, new TreeSet<Integer>());
         meetings.get(pair).add(time.getRound());
@@ -167,11 +168,19 @@ public class StatData {
     }
 
     public double getEnemyWeightedHitPercentage(String name) {
-        return getDamageReceived(name) / getDamageFelt(name);
+        return getDamageReceived(name) / (getDamageFelt(name) + 1e-12);
     }
 
     public double getEnemyHitPercentage(String name) {
-        return (double) getShotsReceived(name) / getShotsFelt(name);
+        return (double) getShotsReceived(name) / (getShotsFelt(name) + 1e-12);
+    }
+
+    public double getWeightedHitPercentage(String name) {
+        return getDamageInflicted(name) / (getDamageFired(name) + 1e-12);
+    }
+
+    public double getHitPercentage(String name) {
+        return (double) getShotsInflicted(name) / (getShotsFired(name) + 1e-12);
     }
 
     public int getMeetings(String name, int L, int R) {
@@ -190,5 +199,18 @@ public class StatData {
 
     public int getMeetings(String name) {
         return getMeetings(name, 1);
+    }
+
+    public List<String> getEnemies() {
+        TreeSet<String> met = new TreeSet<>();
+
+        for(Map.Entry<Pair<String, Integer>, TreeSet<Integer>> entry : meetings.entrySet()) {
+            met.add(entry.getKey().first);
+        }
+
+        ArrayList<String> res = new ArrayList<>();
+        res.addAll(met);
+
+        return res;
     }
 }

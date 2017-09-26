@@ -21,33 +21,17 @@
  *    distribution.
  */
 
-package rsalesc.melee.gunning;
+package rsalesc.mega.gunning.guns;
 
-import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.mega.utils.Timestamped;
+import rsalesc.baf2.tracking.EnemyLog;
+import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.TargetingLog;
 
 /**
- * Created by Roberto Sales on 12/09/17.
+ * Created by Roberto Sales on 15/09/17.
  */
-class EnemyMovie extends Timestamped {
-    private final EnemyRobot[] sequence;
-
-    EnemyMovie(EnemyRobot[] sequence) {
-        super(sequence[0].getBattleTime());
-        this.sequence = sequence;
-    }
-
-    public EnemyRobot get(int i) {
-        if (i >= size())
-            throw new ArrayIndexOutOfBoundsException();
-        return sequence[i];
-    }
-
-    public EnemyRobot getLeadActor() {
-        return get(0);
-    }
-
-    public int size() {
-        return sequence.length;
-    }
+public interface GFTargeting {
+    boolean hasData(EnemyLog enemyLog);
+    GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f);
+    void log(EnemyLog enemyLog, TargetingLog f, BreakType type);
 }

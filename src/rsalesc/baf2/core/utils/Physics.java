@@ -101,7 +101,7 @@ public abstract class Physics {
 
     public static double getNewVelocity(double velocity, double maxVelocity, double distance) {
         if (distance < 0) {
-            // If the distance is negative, then change it to be positive
+            // If the distanceToEdges is negative, then change it to be positive
             // and change the sign of the input velocity and the result
             return -getNewVelocity(-velocity, maxVelocity, -distance);
         }

@@ -66,7 +66,7 @@ public class MyRobot implements RobotSnapshot {
         setOthers(robot.getOthers());
 
         AxisRectangle field = robot.getBattleField();
-        distanceToWall = field.distance(getPosition());
+        distanceToWall = field.distanceToEdges(getPosition());
     }
 
     public double getHeading() {

@@ -23,12 +23,15 @@
 
 package rsalesc.baf2.core.utils;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by Roberto Sales on 14/09/17.
  */
-public class Pair<A, B> {
+public class Pair<A, B> implements Serializable {
+    private final static long serialVersionUID = 12093182931L;
+
     public final A first;
     public final B second;
 

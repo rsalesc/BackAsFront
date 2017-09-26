@@ -333,6 +333,19 @@ public abstract class Knn<T extends Timestamped> {
         }
     }
 
+    public static class Tautology extends ParametrizedCondition {
+
+        @Override
+        public boolean test(Object o) {
+            return true;
+        }
+
+        @Override
+        public void mutate(ConditionMutation mutation) {
+
+        }
+    }
+
     public static abstract class DistanceWeighter<T extends Timestamped> {
         public abstract List<Entry<T>> getWeightedEntries(List<Entry<T>> entries);
     }

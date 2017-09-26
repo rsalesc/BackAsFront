@@ -26,12 +26,15 @@ package rsalesc.melee.movement;
 import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
 import rsalesc.baf2.core.Component;
+import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
+import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.movement.KnightSurfer;
 import rsalesc.mega.movement.Surfer;
@@ -43,8 +46,8 @@ import java.awt.*;
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public class MonkFeet extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener {
-    private MinimumRiskMovement driver;
+public class MonkFeet extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener, EnemyWavePreciseListener {
+    private MinimumRisk driver;
     private TrueSurfing surfing;
 
     public MonkFeet(WaveManager manager, StatTracker statTracker) {
@@ -55,8 +58,16 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
             }
         };
 
-        driver = new MinimumRiskMovement();
+        driver = new Monk1stGenMR();
         surfing = new TrueSurfing(surfer, manager, statTracker);
+    }
+
+    @Override
+    public void init(RobotMediator mediator) {
+        super.init(mediator);
+
+        driver.init(getMediator());
+        surfing.init(getMediator());
     }
 
     private boolean isMelee() {
@@ -73,9 +84,6 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
 
     @Override
     public void onRoundStarted(int round) {
-        driver.init(getMediator());
-        surfing.init(getMediator());
-
         driver.onRoundStarted(round);
     }
 
@@ -116,5 +124,11 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
         if(!isMelee())
             surfing.onEnemyWavePass(wave, me);
+    }
+
+    @Override
+    public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
+        if(!isMelee())
+            surfing.onEnemyWavePreciselyIntersects(wave, me, intersection);
     }
 }

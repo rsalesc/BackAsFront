@@ -40,11 +40,20 @@ public class TimestampedGFRange extends Timestamped {
         mean = (min + max) / 2;
     }
 
+    public TimestampedGFRange(BattleTime battleTime, double low, double high, double mean) {
+        super(battleTime);
+        min = low;
+        max = high;
+        this.mean = mean;
+    }
+
     public double getCenter() {
         return (min + max) / 2;
     }
 
     public double getRadius() {
-        return Math.min(Math.abs(max - mean), Math.abs(mean - min));
+        return Math.min(Math.abs(max - getCenter()), Math.abs(getCenter() - min));
     }
+    public double getDeviation() { return Math.min(Math.abs(max - mean), Math.abs(mean - min));}
+    public double getLongestDeviation() { return Math.max(Math.abs(max - mean), Math.abs(mean - min));}
 }

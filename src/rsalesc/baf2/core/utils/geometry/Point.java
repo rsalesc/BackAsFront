@@ -164,7 +164,7 @@ public class Point {
      * @return angle in robocode notation
      */
     public double absoluteBearing() {
-        return R.atan2(x, y);
+        return Utils.normalAbsoluteAngle(R.atan2(x, y));
     }
 
     public Point project(double angle, double length) {

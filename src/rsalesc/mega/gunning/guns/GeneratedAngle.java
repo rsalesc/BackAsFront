@@ -21,11 +21,26 @@
  *    distribution.
  */
 
-package rsalesc.melee.gunning;
+package rsalesc.mega.gunning.guns;
+
+import rsalesc.mega.utils.TargetingLog;
 
 /**
- * Created by Roberto Sales on 12/09/17.
+ * Created by Roberto Sales on 19/09/17.
  */
-public interface MovieListener {
-    void onNewMovie(EnemyMovie movie);
+public class GeneratedAngle implements Comparable<GeneratedAngle> {
+    public double weight;
+    public final double angle;
+    public final double distance;
+
+    public GeneratedAngle(double weight, double angle, double distance) {
+        this.weight = weight;
+        this.angle = angle;
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(GeneratedAngle o) {
+        return (int) Math.signum(weight - o.weight);
+    }
 }

@@ -51,7 +51,7 @@ import java.util.Queue;
  * that points which are in the original ball but are
  * further than alpha*radius unities will be skipped.
  * Though, this ensures that the algorithm will not
- * miss neighbors closer than alpha*[distance to the
+ * miss neighbors closer than alpha*[distanceToEdges to the
  * k-th furthest node]
  * <p>
  * It plays well with Play-It Forward strategies :)
@@ -112,8 +112,8 @@ abstract public class KdTree<T> {
         this.dim = parent.dim;
         this.bucketSize = parent.bucketSize;
 
-        this.points = new double[Math.max(this.bucketSize, parent.length)][];
-        this.data = new Object[Math.max(this.bucketSize, parent.length)];
+        this.points = new double[Math.max(this.bucketSize, parent.data.length / 2)][];
+        this.data = new Object[Math.max(this.bucketSize, parent.data.length / 2)];
         this.length = 0;
         this.maxLength = parent.maxLength;
 
@@ -159,6 +159,9 @@ abstract public class KdTree<T> {
                     current.cutPosition = -Double.MAX_VALUE;
                 else if (Double.isNaN(current.cutPosition))
                     current.cutPosition = 0;
+                else
+                    current.cutPosition = R.constrain(current.min[current.hyperplane], current.cutPosition,
+                                                        current.max[current.hyperplane]);
 
                 if (R.isNear(current.max[current.hyperplane], current.min[current.hyperplane])) {
                     current.stretch();
@@ -175,15 +178,22 @@ abstract public class KdTree<T> {
                 for (int i = 0; i < current.length; i++) {
                     max = Math.max(max, current.points[i][current.hyperplane]);
                     KdTree<T> addOn = current.points[i][current.hyperplane] <= current.cutPosition ? left : right;
+                    if(addOn.isHeavy())
+                        addOn.stretch();
                     addOn.extendNode(current.points[i], current.data[i]);
                 }
 
-                if (left.size() == bucketSize) {
+                if (left.isHeavy()) {
+                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
+                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
                     throw new IllegalStateException("left child is heavy");
                 }
 
-                if (right.size() == bucketSize)
+                if (right.isHeavy()) {
+                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
+                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
                     throw new IllegalStateException("right child is heavy");
+                }
 
                 current.left = left;
                 current.right = right;
@@ -336,7 +346,7 @@ abstract public class KdTree<T> {
             }
 
             if (other.length > 0 && (found.size() < K || distance < found.top().key)) {
-                queue.push(distance, other); // distance actually
+                queue.push(distance, other); // distanceToEdges actually
             }
 
             if (next.length == 0)
@@ -440,12 +450,12 @@ abstract public class KdTree<T> {
         }
 
         /**
-         * Should return the distance between two points in some
-         * Minkowski distance (L1, L2, ... Loo)
+         * Should return the distanceToEdges between two points in some
+         * Minkowski distanceToEdges (L1, L2, ... Loo)
          *
          * @param a the first point
          * @param b the second point
-         * @return minkowski distance Lx between those points for some x >= 1
+         * @return minkowski distanceToEdges Lx between those points for some x >= 1
          */
         @Override
         public double minkowskiDistance(double[] a, double[] b) {

@@ -23,12 +23,12 @@
 
 package rsalesc.mega.movement;
 
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
-import rsalesc.mega.utils.structures.Knn;
 
 /**
  * Created by Roberto Sales on 12/09/17.
@@ -38,5 +38,6 @@ public interface Surfer {
 
     void log(EnemyLog enemyLog, TargetingLog log, BreakType type);
 
-    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, int cacheIndex, NamedStatData o);
+    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o);
+    double getDanger(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o, AngularRange intersection);
 }

@@ -31,11 +31,14 @@ import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.RobotSnapshot;
+import rsalesc.mega.tracking.EnemyMovie;
+import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
@@ -50,7 +53,7 @@ import java.util.List;
 
 /**
  * Created by Roberto Sales on 11/09/17.
- * TODO: use inverse distance to weight?
+ * TODO: use inverse distanceToEdges to weight?
  * TODO: use enemy energy
  * TODO: use virtual gunning (DC-PIF + PM with interpolation) [future]
  */
@@ -109,7 +112,6 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
 
                 ok = ok && ptr < movie.size();
                 if (!ok) {
-//                    System.out.println(ptr + " " + movie.size());
                     continue;
                 }
 
@@ -149,10 +151,18 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
             }
         }
 
+        int remaining = getMediator().getTicksToCool();
+
+        double delta = Math.max(R.PI, Rules.GUN_TURN_RATE_RADIANS * Math.max(remaining * 1.1, 1));
+        AngularRange range = new AngularRange(getMediator().getGunHeadingRadians(), -delta, +delta);
+
         double bestDensity = Double.NEGATIVE_INFINITY;
         CandidateAngle bestAngle = null;
 
         for (CandidateAngle shootAngle : angles) {
+            if(!range.isAngleNearlyContained(shootAngle.angle))
+                continue;
+
             double density = 0;
             for (CandidateAngle candidate : angles) {
                 double distance = candidate.point.distance(nextPosition);
@@ -294,7 +304,7 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
 
         KnnSet<EnemyMovie> knn = new KnnSet<>();
 
-        knn.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
+        knn.setDistanceWeighter(new Knn.GaussDistanceWeighter<EnemyMovie>(1.0));
         knn.add(new KnnTree<EnemyMovie>()
                 .setMode(KnnTree.Mode.MANHATTAN)
                 .setRatio(0.5)

@@ -35,13 +35,12 @@ public class UnsegStrats extends Strategy {
         return new double[]{
                 Math.max(f.bft() / 81, 1),
                 Math.max(f.lateralVelocity / 8., 1),
-                Math.max((f.accel + 1) / 2, 1),
-                1.0 / (1.0 + 2 * f.timeDecel)
+                Math.max((f.accel + 1) / 2, 1)
         };
     }
 
     @Override
     public double[] getWeights() {
-        return new double[]{1, 1, 1, 1};
+        return new double[]{1, 1, 1};
     }
 }

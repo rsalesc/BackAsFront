@@ -23,22 +23,52 @@
 
 package rsalesc.mega.utils;
 
+import org.omg.CORBA.ObjectHelper;
 import robocode.*;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.listeners.BulletListener;
 import rsalesc.baf2.core.listeners.HitListener;
+import rsalesc.baf2.core.listeners.RoundEndedListener;
 import rsalesc.baf2.core.listeners.StatusListener;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
+import rsalesc.runner.SerializeHelper;
 
 /**
  * Created by Roberto Sales on 13/09/17.
  */
 public class StatTracker extends StoreComponent implements StatusListener, BulletListener,
-        EnemyWaveListener {
+        EnemyWaveListener, RoundEndedListener {
     private static final int MEETING_THRESHOLD = 35;
+    private static final StatTracker SINGLETON = new StatTracker();
+
+    private boolean log = false;
+
+    public void log() {
+        this.log = true;
+    }
+
+    private StatTracker() {
+
+    }
+
+    public static StatTracker getInstance() {
+        return SINGLETON;
+    }
+
+    @Override
+    public void afterRun() {
+//        if (getMediator().isDev()) {
+//            if (getMediator().getOthers() <= 1) {
+//                getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
+//            } else {
+//                getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
+//            }
+//        }
+    }
 
     @Override
     public StorageNamespace getStorageNamespace() {
@@ -131,6 +161,7 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
+//        System.out.println("received " + Rules.getBulletDamage(wave.getPower()));
         getCurrentStatData().logShotReceived(e.getBullet().getName(), Rules.getBulletDamage(e.getBullet().getPower()));
     }
 
@@ -141,6 +172,20 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
-        getCurrentStatData().logShotDodged(wave.getEnemy().getName(), Rules.getBulletDamage(wave.getPower()));
+        if(!wave.hasAnyHit()) {
+//            System.out.println("passed " + Rules.getBulletDamage(wave.getPower()));
+            getCurrentStatData().logShotDodged(wave.getEnemy().getName(), Rules.getBulletDamage(wave.getPower()));
+        }
+    }
+
+    @Override
+    public void onRoundEnded(RoundEndedEvent e) {
+        if(log) {
+            StatData data = getDuelStatData();
+            for(String name : data.getEnemies()) {
+                System.out.println(name + ": "
+                    + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit");
+            }
+        }
     }
 }

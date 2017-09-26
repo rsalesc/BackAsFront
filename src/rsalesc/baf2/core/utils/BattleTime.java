@@ -23,10 +23,16 @@
 
 package rsalesc.baf2.core.utils;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Created by Roberto Sales on 21/08/17.
  */
-public class BattleTime implements Comparable<BattleTime> {
+public class BattleTime implements Comparable<BattleTime>, Serializable {
+    private final static long serialVersionUID = 1812810L;
+
     private final Integer round;
     private Long time;
 
@@ -48,5 +54,30 @@ public class BattleTime implements Comparable<BattleTime> {
         if ((long) round == o.round)
             return time.compareTo(o.time);
         return round.compareTo(o.round);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+        if(!(obj instanceof BattleTime))
+            return false;
+
+        BattleTime o = (BattleTime) obj;
+        return compareTo(o) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(round, time);
+    }
+
+    public BattleTime prev() {
+        return new BattleTime(time - 1, round);
+    }
+
+    public boolean isAfter(BattleTime o) {
+        return o.round.equals(round) && o.time + 1 == time;
     }
 }

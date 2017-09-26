@@ -99,7 +99,7 @@ public class AxisRectangle {
         return this.shrinkX(amountX).shrinkY(amountY);
     }
 
-    public double distance(Point point) {
+    public double distanceToEdges(Point point) {
         double x = point.getX();
         double y = point.getY();
         return R.sqrt(

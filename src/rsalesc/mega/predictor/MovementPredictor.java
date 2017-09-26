@@ -39,8 +39,6 @@ import java.util.List;
 /**
  * This class has methods to support precise movement prediction.
  * Note that all methods assume that you are using a BackAsFrontRobot-like robot.
- * TODO: sharp turning not working
- * TODO: maybe use a special sized wall stick for precise MEA
  */
 public abstract class MovementPredictor {
     public static List<PredictedPoint> lastEscape = null;
@@ -193,9 +191,25 @@ public abstract class MovementPredictor {
         return Utils.normalAbsoluteAngle(heading + R.constrain(-turnRate, turn, +turnRate));
     }
 
+    /*
+    *    DISCLAIMER: The next three functions were COPIED from the Robocode engine itself,
+    *    since it's pretty much impossible to deduce what is going under the hood as the Robocode
+    *    physics differ from real world physics because time in Robocode is discrete.
+    *
+    *    Instead of doing random guesses and trying to get a (hopefully) correct formula by interpolating
+    *    these guesses, I decided to copy it from the Robocode source itself, which is open,
+    *    since I see no valuable merit in the effort of trying to randomly guess things about
+    *    the game which are already open in the engine itself.
+    *
+    *    Hope this is not seen as an issue. Moreover, it's the only
+    *    copied piece of code in this whole project.
+    *
+    *    Roberto.
+     */
+
     public static double getNewVelocity(double velocity, double maxVelocity, double distance) {
         if (distance < 0) {
-            // If the distance is negative, then change it to be positive
+            // If the distanceToEdges is negative, then change it to be positive
             // and change the sign of the input velocity and the result
             return -getNewVelocity(-velocity, maxVelocity, -distance);
         }

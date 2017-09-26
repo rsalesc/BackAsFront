@@ -23,14 +23,18 @@
 
 package rsalesc.baf2.core.utils;
 
+import java.io.Serializable;
+
 /**
  * Created by Roberto Sales on 14/09/17.
  */
 public class ComparablePair<A extends Comparable<A>, B extends Comparable<B>> extends Pair<A, B>
-            implements Comparable<ComparablePair<A, B>> {
+            implements Comparable<ComparablePair<A, B>>, Serializable {
     public ComparablePair(A first, B second) {
         super(first, second);
     }
+
+    private final static long serialVersionUID = 901212129210L;
 
     @Override
     public int compareTo(ComparablePair<A, B> o) {

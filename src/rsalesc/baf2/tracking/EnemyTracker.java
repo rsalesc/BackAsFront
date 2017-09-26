@@ -28,6 +28,8 @@ import rsalesc.baf2.core.GlobalStorage;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +56,16 @@ public class EnemyTracker {
 
     public int size() {
         return seenEnemies.size();
+    }
+
+    public int sizeSeen() {
+        int res = 0;
+        for (Map.Entry<String, EnemyLog> entry : seenEnemies.entrySet()) {
+            if (entry.getValue().getLatest() != null)
+                res++;
+        }
+
+        return res;
     }
 
     public int sizeAlive() {
@@ -115,7 +127,23 @@ public class EnemyTracker {
             }
         }
 
+        Arrays.sort(res, new LatestSeenComparator());
+
         return res;
+    }
+
+    public EnemyRobot[] getLatestDeadOrAlive() {
+        EnemyRobot[] res = new EnemyRobot[sizeSeen()];
+        int cnt = 0;
+        for (Map.Entry<String, EnemyLog> entry : seenEnemies.entrySet()) {
+            if(entry.getValue().getLatest() != null)
+                res[cnt++] = entry.getValue().getLatest();
+        }
+
+        Arrays.sort(res, new LatestSeenComparator());
+
+        return res;
+
     }
 
     public void kill(String name) {
@@ -127,6 +155,14 @@ public class EnemyTracker {
         for (EnemyRobot enemy : getLatest()) {
             getLog(enemy).clear();
             getLog(enemy).kill();
+        }
+    }
+
+    private static class LatestSeenComparator implements Comparator<EnemyRobot> {
+
+        @Override
+        public int compare(EnemyRobot o1, EnemyRobot o2) {
+            return -o1.getBattleTime().compareTo(o2.getBattleTime());
         }
     }
 }

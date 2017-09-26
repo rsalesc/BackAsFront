@@ -59,20 +59,6 @@ public class TrueSurfing extends BaseSurfing {
         super(surfer, manager, statTracker);
     }
 
-    public EnemyLog getEnemyLog() {
-        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
-        if (enemies.length == 0)
-            return null;
-
-        return EnemyTracker.getInstance().getLog(enemies[0]);
-    }
-
-    public EnemyRobot getEnemy() {
-        if (getEnemyLog() == null)
-            return null;
-        return getEnemyLog().getLatest();
-    }
-
     public void run() {
         final MyRobot me = MyLog.getInstance().getLatest();
         final EnemyRobot enemy = getEnemy();
@@ -83,7 +69,7 @@ public class TrueSurfing extends BaseSurfing {
         EnemyWaveCondition hasLogCondition = new EnemyWaveCondition() {
             @Override
             public boolean test(EnemyWave wave) {
-                return wave.getData(LOG_HINT) != null;
+                return wave.getData(LOG_HINT) != null && !wave.hasAnyHit();
             }
         };
 
@@ -160,7 +146,7 @@ public class TrueSurfing extends BaseSurfing {
             throw new IllegalStateException();
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
-        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, 0, getViewCondition(enemyLog.getName())); // TODO: cache that
+        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
 
         AxisRectangle field = getMediator().getBattleField();
         double distance = nextWave.getSource().distance(initialPoint);
@@ -189,6 +175,9 @@ public class TrueSurfing extends BaseSurfing {
         AngularRange stopIntersection =
                 Wave.preciseIntersection(nextWave, stopPoints);
 
+//        double clockwiseDanger = getPreciseDanger(nextWave, enemyLog, clockwiseIntersection, clockwisePass);
+//        double counterDanger = getPreciseDanger(nextWave, enemyLog, counterIntersection, counterPass);
+//        double stopDanger = getPreciseDanger(nextWave, enemyLog, stopIntersection, stopPass);
         double clockwiseDanger = getPreciseDanger(nextWave, stats, clockwiseIntersection, clockwisePass);
         double counterDanger = getPreciseDanger(nextWave, stats, counterIntersection, counterPass);
         double stopDanger = getPreciseDanger(nextWave, stats, stopIntersection, stopPass);
@@ -204,14 +193,14 @@ public class TrueSurfing extends BaseSurfing {
                 / nextWave.getVelocity(), 1);
 
         for (int i = 0; i < 3; i++) {
-            if (distanceToSource < 100) {
-                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].passPoint.velocity)) / 4, 1);
-            }
+//            if (distanceToSource < 100) {
+//                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].passPoint.velocity)) / 4, 1);
+//            }
 
             res[i].danger *= Physics.bulletPower(nextWave.getVelocity());
             res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
             res[i].danger *=
-                    Math.pow(2.45, (distanceToSource - 18) / res[i].passPoint.distance(nextWave.getSource()) - 1);
+                    Math.pow(2.45, distanceToSource / res[i].passPoint.distance(nextWave.getSource()) - 1);
         }
 
         return res;

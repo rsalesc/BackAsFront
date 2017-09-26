@@ -27,10 +27,11 @@ import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.*;
-import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.baf2.tracking.MyRobot;
+import rsalesc.baf2.tracking.*;
 import rsalesc.mega.predictor.PredictedPoint;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -38,6 +39,8 @@ import java.util.TreeMap;
  * Created by Roberto Sales on 22/07/17.
  */
 public class Wave {
+    private static final int PASS_THRESHOLD = 24;
+
     private Point source;
     private BattleTime battleTime;
     private double velocity;
@@ -50,8 +53,24 @@ public class Wave {
         setVelocity(velocity);
     }
 
+    public static AngularRange preciseIntersection(Wave wave, RobotLog log, long passTime) {
+        int i = 1;
+        for(; log.getKthLatest(i) != null && log.getKthLatest(i).getTime() > passTime; i++);
+        if(log.getKthLatest(i) == null || log.getKthLatest(i).getTime() != passTime)
+            return null;
+
+        ArrayList<PredictedPoint> points = new ArrayList<>();
+        for(; log.getKthLatest(i) != null && log.getKthLatest(i).getTime() >= passTime - PASS_THRESHOLD; i++) {
+            points.add(PredictedPoint.from(log.getKthLatest(i)));
+        }
+
+        Collections.reverse(points);
+
+        return preciseIntersection(wave, points);
+    }
+
     public static AngularRange preciseIntersection(Wave wave, List<PredictedPoint> predicted) {
-        double refAngle = R.getLast(predicted).getHeading();
+        double refAngle = Physics.absoluteBearing(wave.getSource(), R.getLast(predicted));
 
         int ptr = predicted.size() - 1;
         while (ptr > 0 && wave.hasTouchedRobot(predicted.get(ptr), predicted.get(ptr).getTime()))

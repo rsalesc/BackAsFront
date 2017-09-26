@@ -21,7 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.gunning;
+package rsalesc.mega.tracking;
 
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;

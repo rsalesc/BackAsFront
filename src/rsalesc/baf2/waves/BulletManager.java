@@ -23,13 +23,13 @@
 
 package rsalesc.baf2.waves;
 
-import robocode.BulletHitBulletEvent;
-import robocode.BulletHitEvent;
-import robocode.BulletMissedEvent;
-import robocode.ScannedRobotEvent;
+import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.*;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
+import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
@@ -37,13 +37,17 @@ import rsalesc.baf2.tracking.EnemyTracker;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
-public class BulletManager extends Component implements FireListener, PaintListener, ScannedRobotListener, BulletListener {
+public class BulletManager extends Component implements FireListener, PaintListener, ScannedRobotListener,
+        BulletListener, TickListener {
     ArrayList<BulletWave> waves = new ArrayList<>();
+    ArrayList<TickWave> tickWaves = new ArrayList<>();
     private boolean checked = false;
+    private double lastPower = 0;
 
     @Override
     public void onFire(FireEvent e) {
@@ -57,6 +61,22 @@ public class BulletManager extends Component implements FireListener, PaintListe
                 listener.onBulletWaveFired(wave);
             }
         }
+
+        lastPower = e.getPower();
+
+        tickWaves.removeIf(new Predicate<TickWave>() {
+            @Override
+            public boolean test(TickWave tickWave) {
+                return tickWave.getTime() == e.getTime();
+            }
+        });
+
+    }
+
+    public ArrayList<BulletWave> getWaves() {
+        ArrayList<BulletWave> res = new ArrayList<>();
+        res.addAll(waves);
+        return res;
     }
 
     @Override
@@ -77,6 +97,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
 
         for (BulletWave wave : waves) {
             g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
+            g.drawRadial(wave.getSource(), wave.getAngle(), 0, wave.getDistanceTraveled(time), Color.DARK_GRAY);
         }
     }
 
@@ -84,6 +105,16 @@ public class BulletManager extends Component implements FireListener, PaintListe
     public void onScannedRobot(ScannedRobotEvent e) {
         if (!checked)
             check();
+    }
+
+    public boolean hasPreciseListener() {
+        for (Object obj : getListeners()) {
+            if (obj instanceof BulletWavePreciseListener) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void check() {
@@ -94,23 +125,65 @@ public class BulletManager extends Component implements FireListener, PaintListe
                 getMediator().getBattleField().getHeight()
         );
 
-        Iterator<BulletWave> it = waves.iterator();
+        ArrayList<RobotWave> allWaves = new ArrayList<>();
+        allWaves.addAll(waves);
+        allWaves.addAll(tickWaves);
+
+        Iterator<RobotWave> it = allWaves.iterator();
         while (it.hasNext()) {
-            BulletWave wave = it.next();
+            RobotWave wave = it.next();
 
             EnemyTracker tracker = EnemyTracker.getInstance();
             EnemyRobot[] enemies = tracker.getLatest();
 
             for (EnemyRobot enemy : enemies) {
+                AxisRectangle hitbox = enemy.getHitBox();
                 EnemyRobot pastEnemy = tracker.getLog(enemy).getKthLatest(2);
 
                 if (wave.getCircle(time).isInside(enemy.getPoint()) && (pastEnemy == null ||
-                        !wave.getCircle(time).isInside(pastEnemy.getPoint()))) {
+                        !wave.getCircle(time - 1).isInside(pastEnemy.getPoint()))) {
 
-                    for (Object obj : getListeners()) {
-                        if (obj instanceof BulletWaveListener) {
-                            BulletWaveListener listener = (BulletWaveListener) obj;
-                            listener.onBulletWaveBreak(wave, enemy);
+                    if(wave instanceof BulletWave) {
+                        for (Object obj : getListeners()) {
+                            if (obj instanceof BulletWaveListener) {
+                                BulletWaveListener listener = (BulletWaveListener) obj;
+                                listener.onBulletWaveBreak((BulletWave) wave, enemy);
+                            }
+                        }
+                    } else if(wave instanceof TickWave) {
+                        for (Object obj : getListeners()) {
+                            if (obj instanceof TickBulletListener) {
+                                TickBulletListener listener = (TickBulletListener) obj;
+                                listener.onTickWaveBreak((TickWave) wave, enemy);
+                            }
+                        }
+                    }
+                }
+
+                if (wave.getCircle(time).isInside(hitbox) && (pastEnemy == null ||
+                        !wave.getCircle(time - 1).isInside(pastEnemy.getHitBox()))) {
+
+                    if(wave instanceof BulletWave) {
+                        for (Object obj : getListeners()) {
+                            if (obj instanceof BulletWaveListener) {
+                                BulletWaveListener listener = (BulletWaveListener) obj;
+                                listener.onBulletWavePass((BulletWave) wave, enemy);
+                            }
+                        }
+                    }
+
+                    if(hasPreciseListener()) {
+                        AngularRange intersection =
+                                Wave.preciseIntersection(wave, EnemyTracker.getInstance().getLog(enemy), getMediator().getTime());
+                        for (Object obj : getListeners()) {
+                            if (obj instanceof BulletWavePreciseListener) {
+                                BulletWavePreciseListener listener = (BulletWavePreciseListener) obj;
+                                if(wave instanceof BulletWave) {
+                                    listener.onBulletWavePreciselyIntersects((BulletWave) wave, enemy, intersection);
+                                } else if(wave instanceof TickWave) {
+                                    listener.onTickWavePreciselyIntersects((TickWave) wave, enemy, intersection);
+                                }
+                            }
                         }
                     }
                 }
@@ -126,7 +199,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         for (BulletWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                wave.setHit(true);
+                wave.setBulletHit(e.getBullet());
 
                 for (Object obj : getListeners()) {
                     if (obj instanceof BulletWaveListener) {
@@ -144,7 +217,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
     public void onBulletHit(BulletHitEvent e) {
         for (BulletWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                wave.setHit(true);
+                wave.setHit(e.getBullet());
 
                 for (Object obj : getListeners()) {
                     if (obj instanceof BulletWaveListener) {
@@ -164,9 +237,23 @@ public class BulletManager extends Component implements FireListener, PaintListe
         while (it.hasNext()) {
             BulletWave wave = it.next();
 
-            if (!wave.hasHit() && wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                it.remove();
+            if (!wave.hasAnyHit() && wave.wasFiredBy(e.getBullet(), e.getTime())) {
+                wave.setMissed(true);
                 break;
+            }
+        }
+    }
+
+    @Override
+    public void onTick(long time) {
+        if(lastPower > 0) {
+            TickWave wave = new TickWave(getMediator().getPoint(), getMediator().getBattleTime(), Rules.getBulletSpeed(lastPower));
+            tickWaves.add(wave);
+            for (Object obj : getListeners()) {
+                if (obj instanceof TickBulletListener) {
+                    TickBulletListener listener = (TickBulletListener) obj;
+                    listener.onTickWaveFired(wave);
+                }
             }
         }
     }
