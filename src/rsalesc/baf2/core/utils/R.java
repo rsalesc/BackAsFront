@@ -42,15 +42,15 @@ public class R {
     public static boolean FAST_MATH = false;
 
     public static double sin(double radians) {
-//        if (!FAST_MATH)
+        if (!FAST_MATH)
             return Math.sin(radians);
-//        return FastMath.sin((float) radians);
+        return FastMath.sin((float) radians);
     }
 
     public static double cos(double radians) {
-//        if (!FAST_MATH)
+        if (!FAST_MATH)
             return Math.cos(radians);
-//        return FastMath.cos((float) radians);
+        return FastMath.cos((float) radians);
     }
 
     public static double asin(double x) {
@@ -66,9 +66,9 @@ public class R {
     }
 
     public static double atan2(double y, double x) {
-//        if (!FAST_MATH)
+        if (!FAST_MATH)
             return Math.atan2(y, x);
-//        return FastMath.atan2((float) y, (float) x);
+        return FastMath.atan2((float) y, (float) x);
     }
 
     public static double tan(double radians) {
@@ -125,6 +125,14 @@ public class R {
 
     public static boolean nearOrBetween(double min, double x, double max) {
         return min - EPSILON < x && x < max + EPSILON;
+    }
+
+    public static double marginOfError(double p, int samples) {
+        return R.sqrt(p*(1-p)/samples);
+    }
+
+    public static boolean nearOrBetween(double min, double x, double max, double error) {
+        return min - error < x && x < max + error;
     }
 
     public static boolean isNear(double a, double b) {

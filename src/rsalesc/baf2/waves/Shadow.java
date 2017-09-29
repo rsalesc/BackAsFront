@@ -21,33 +21,31 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
+package rsalesc.baf2.waves;
 
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TargetingLog;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 28/09/17.
  */
-public class NormalStrategy extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 80, 1),
-                Math.max(f.lateralVelocity / 8, 1),
-                Math.max((f.advancingVelocity + 8) / 16.0, 1),
-                (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-                Math.max(f.displaceLast10 / 80, 1)
-        };
+public class Shadow {
+    private final AngularRange intersection;
+    private final BulletWave wave;
+
+    public Shadow(AngularRange intersection, BulletWave wave) {
+        this.intersection = intersection;
+        this.wave = wave;
     }
 
-    @Override
-    public double[] getWeights() {
-        return new double[]{6, 5, 3, 2, 4, 1, 2, 2, 2};
+    public AngularRange getIntersection() {
+        return intersection;
+    }
+
+    public BulletWave getBulletWave() {
+        return wave;
+    }
+
+    public boolean isInside(double angle) {
+        return intersection.isAngleNearlyContained(angle, 1e-12);
     }
 }

@@ -41,12 +41,6 @@ public class Tracker extends Component implements TickListener, ScannedRobotList
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         EnemyRobot enemy = EnemyTracker.getInstance().push(e, getMediator());
-//        for(Object obj : getListeners()) {
-//            if(obj instanceof EnemyTrackedListener) {
-//                EnemyTrackedListener listener = (EnemyTrackedListener) obj;
-//                listener.onEnemyTracked(enemy);
-//            }
-//        }
 
         EnemyFireEvent fireEvent = HeatTracker.getInstance().push(enemy);
         if (fireEvent != null)

@@ -23,9 +23,12 @@
 
 package rsalesc.baf2.waves;
 
+import javafx.scene.effect.Shadow;
 import robocode.Bullet;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.Point;
+
+import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 23/07/17.
@@ -33,6 +36,7 @@ import rsalesc.baf2.core.utils.geometry.Point;
 public class RobotWave extends Wave {
     private Bullet hit;
     private Bullet bulletHit;
+    private long hitTime = Long.MAX_VALUE;
     private boolean missed = false;
 
     public RobotWave(Point source, BattleTime time, double velocity) {
@@ -41,6 +45,14 @@ public class RobotWave extends Wave {
 
     public void setHit(Bullet bullet) {
         hit = bullet;
+    }
+
+    public long getHitTime() {
+        return hitTime;
+    }
+
+    public void setHitTime(long time) {
+        hitTime = time;
     }
 
     public boolean hasHit() {

@@ -23,6 +23,7 @@
 
 package rsalesc.mega.utils;
 
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.mega.utils.structures.Knn;
 
@@ -52,6 +53,14 @@ public class NamedStatData {
 
     public double getWeightedHitPercentage() {
         return data.getWeightedHitPercentage(name);
+    }
+
+    public int getEnemyShotsFired() {
+        return data.getShotsFelt(name);
+    }
+
+    public int getShotsFired() {
+        return data.getShotsFired(name);
     }
 
     public int getRound() {
@@ -85,7 +94,10 @@ public class NamedStatData {
                 throw new IllegalStateException();
 
             NamedStatData data = (NamedStatData) o;
-            return range.isNearlyContained(data.getEnemyWeightedHitPercentage())
+            double p = data.getEnemyHitPercentage();
+            int samples = data.getEnemyShotsFired();
+
+            return range.isNearlyContained(p, -R.marginOfError(p, samples))
                     && data.getMeetings() >= meetings;
         }
 

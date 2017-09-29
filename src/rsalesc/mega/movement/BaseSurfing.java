@@ -184,7 +184,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         surfer.log(EnemyTracker.getInstance().getLog(e.getBullet().getName()), f, BreakType.BULLET_HIT);
     }
 
-    protected double getPreciseDanger(Wave wave, GuessFactorStats stats, AngularRange intersection, PredictedPoint pass) {
+    protected double getPreciseDanger(EnemyWave wave, GuessFactorStats stats, AngularRange intersection, PredictedPoint pass) {
         TargetingLog log = (TargetingLog) wave.getData(LOG_HINT);
         if (log == null)
             throw new IllegalStateException();
@@ -217,11 +217,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             value *= Math.abs(log.getOffset(gfRange.max) - log.getOffset(gfRange.min)) + 1e-10;
         }
 
-//        double shadowFactor = 1.0 - shadowing.getIntersectionFactor(wave, intersection);
-//        value *= shadowFactor;
-
-        // test not averaging the values
-//        value /= jBucket - iBucket + 1;
+        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
+        value *= shadowFactor;
 
         return value;
     }

@@ -30,6 +30,7 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.AntiAdaptiveGun;
@@ -65,6 +66,8 @@ public class Monk extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
+        R.FAST_MATH = true;
+
         add(new Colorizer());
 
         MovieTracker tracker = new MovieTracker(105, 8);
@@ -74,29 +77,14 @@ public class Monk extends BackAsFrontRobot2 {
 
         MonkFeet move = new MonkFeet(waveManager, statTracker);
 
-        PifGun pifGun = new PifGun(null);
-//        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
-//
-//        AutomaticGunArray duelArray = new GunArray();
-//        duelArray.addGun(pifGun);
-//        duelArray.addGun(adaptiveGun);
-//        duelArray.log();
-
-        SegmentedSwarmGun swarm = new SegmentedSwarmGun();
-        swarm.setPowerSelector(new MonkPowerSelector());
-
-        swarm.addGun(pifGun, 0);
-//        swarm.addGun(duelArray, 0);
-
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
-        tracker.addListener(pifGun);
+
+        MonkGun monkGun = new MonkGun();
+        tracker.addListener(monkGun);
 
         waveManager.addListener(statTracker);
         if(!TC) waveManager.addListener(move);
-
-//        bulletManager.addListener(adaptiveGun, duelArray.getScoringCondition());
-//        bulletManager.addListener(duelArray, duelArray.getScoringCondition());
 
         add(tracker);
         add(bulletManager);
@@ -106,7 +94,8 @@ public class Monk extends BackAsFrontRobot2 {
         if(!TC) add(move);
 
 //        addListener(duelArray);
-        add(swarm);
+//        add(swarm);
+        add(monkGun);
         add(new MultiModeRadar());
     }
 

@@ -43,7 +43,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
 
     @Override
     public String getGunName() {
-        return "Play-It Forward PifGun";
+        return "Play-It Forward Gun";
     }
 
     public PlayItForwardGun(Player player) {
@@ -67,7 +67,9 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
             for(GeneratedAngle angle : angles) {
                 double diff = Utils.normalRelativeAngle(angle.angle - shootAngle.angle);
                 double bandwidth = Physics.hitAngle(angle.distance) * 0.9;
-                density += angle.weight * R.cubicKernel(diff / bandwidth);
+                double x = diff / bandwidth;
+                if(Math.abs(x) < 1)
+                    density += angle.weight * R.cubicKernel(x);
             }
 
             if(density > bestDensity) {

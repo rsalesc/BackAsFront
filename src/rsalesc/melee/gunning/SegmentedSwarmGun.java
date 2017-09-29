@@ -67,11 +67,6 @@ public class SegmentedSwarmGun extends SwarmGun implements TickListener {
     }
 
     @Override
-    public StorageNamespace getStorageNamespace() {
-        return super.getStorageNamespace().namespace("segmented");
-    }
-
-    @Override
     public String getGunName() {
         return "Segmented Swarm Gun";
     }

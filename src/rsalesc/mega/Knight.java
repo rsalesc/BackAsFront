@@ -30,6 +30,7 @@ import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
+import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.*;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
@@ -62,6 +63,8 @@ public class Knight extends BackAsFrontRobot2 {
         Tracker tracker = new Tracker();
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
+        ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
+
         StatTracker statTracker = StatTracker.getInstance();
         statTracker.log();
 
@@ -104,6 +107,8 @@ public class Knight extends BackAsFrontRobot2 {
 
         add(bulletManager);
         add(waveManager);
+        add(shadowManager);
+
         add(statTracker);
         if(!TC) add(move);
 

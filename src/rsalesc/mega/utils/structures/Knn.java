@@ -74,6 +74,10 @@ public abstract class Knn<T extends Timestamped> {
         return this;
     }
 
+    public int getK() {
+        return defaultK;
+    }
+
     public Knn<T> setRatio(double ratio) {
         this.defaultRatio = ratio;
         return this;
@@ -174,8 +178,16 @@ public abstract class Knn<T extends Timestamped> {
     }
 
     public List<Entry<T>> query(double[] point) {
+        return query(point, defaultK);
+    }
+
+    public int getQueryableData() {
+        return Math.max(1, (int) Math.ceil(size() * defaultRatio));
+    }
+
+    public List<Entry<T>> query(double[] point, int K) {
         List<Entry<T>> res =
-                query(point, Math.min(defaultK, Math.max(1, (int) Math.ceil(size() * defaultRatio))), 1.0);
+                query(point, Math.min(K, getQueryableData()), 1.0);
 
         if (weighter != null)
             res = weighter.getWeightedEntries(res);
@@ -185,6 +197,10 @@ public abstract class Knn<T extends Timestamped> {
 
     public List<Entry<T>> query(TargetingLog f) {
         return query(getStrategy().getQuery(f));
+    }
+
+    public List<Entry<T>> query(TargetingLog f, int K) {
+        return query(getStrategy().getQuery(f), K);
     }
 
     protected Entry<T> makeEntry(double distance, T payload) {
@@ -411,7 +427,7 @@ public abstract class Knn<T extends Timestamped> {
         }
 
         public List<Entry<T>> getWeightedEntries(List<Entry<T>> entries) {
-            Collections.sort(entries, new Comparator<Entry<T>>() {
+            entries.sort(new Comparator<Entry<T>>() {
                 @Override
                 public int compare(Entry<T> o1, Entry<T> o2) {
                     return -o1.payload.compareTo(o2.payload);

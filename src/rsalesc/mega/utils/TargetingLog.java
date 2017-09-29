@@ -131,7 +131,7 @@ public class TargetingLog {
         f.source = source;
         f.bulletPower = power;
         f.field = mediator.getBattleField();
-        f.others = mediator.getOthers();
+        f.others = me.getOthers();
         f.gunHeat = 0;
         computeLog(f, MyLog.getInstance(), me);
         f.escapeDirection = f.direction;
@@ -308,7 +308,7 @@ public class TargetingLog {
     }
 
     public double virtuality() {
-        return aiming ? 0.1 : heat();
+        return aiming ? 0 : heat();
     }
 
     public double getZeroGf() {

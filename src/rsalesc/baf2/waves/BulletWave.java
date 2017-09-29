@@ -49,8 +49,12 @@ public class BulletWave extends RobotWave {
         return angle;
     }
 
+    public Point project(long time) {
+        return project(getAngle(), time);
+    }
+
     public boolean wasFiredBy(Bullet bullet, long time) {
         return R.isNear(angle, bullet.getHeadingRadians()) && R.isNear(getVelocity(), bullet.getVelocity())
-                && R.isNear(new Point(bullet.getX(), bullet.getY()).distance(getSource()), getDistanceTraveled(time), 40);
+                && R.isNear(new Point(bullet.getX(), bullet.getY()).distance(getSource()), getDistanceTraveled(time), 64);
     }
 }

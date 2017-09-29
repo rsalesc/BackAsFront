@@ -161,7 +161,6 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
-//        System.out.println("received " + Rules.getBulletDamage(wave.getPower()));
         getCurrentStatData().logShotReceived(e.getBullet().getName(), Rules.getBulletDamage(e.getBullet().getPower()));
     }
 
@@ -173,7 +172,6 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
     @Override
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
         if(!wave.hasAnyHit()) {
-//            System.out.println("passed " + Rules.getBulletDamage(wave.getPower()));
             getCurrentStatData().logShotDodged(wave.getEnemy().getName(), Rules.getBulletDamage(wave.getPower()));
         }
     }
@@ -184,7 +182,8 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
             StatData data = getDuelStatData();
             for(String name : data.getEnemies()) {
                 System.out.println(name + ": "
-                    + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit");
+                    + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit movement, "
+                    + R.formattedPercentage(data.getWeightedHitPercentage(name)) + " whit gun");
             }
         }
     }

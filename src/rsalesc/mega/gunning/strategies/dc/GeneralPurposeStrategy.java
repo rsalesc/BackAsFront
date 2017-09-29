@@ -42,17 +42,14 @@ public class GeneralPurposeStrategy extends Strategy {
                 R.constrain(0, (f.accel + 1) / 2, 1),
                 R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
                 R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
-//                Math.min(f.positiveEscape / 400., 1),
-//                Math.min(f.negativeEscape / 400., 1),
-//                1.0 / (1.0 + 2. * f.timeRevert),
                 1.0 / (1.0 + 2. * f.timeDecel),
-                //f.aiming ? 0 : f.heat()
+                f.virtuality()
         };
     }
 
     @Override
     public double[] getWeights() {
 //        return new double[]{5, 0.5, 3.5, 3, 2, 4, 4, 2, 1.75, 1};
-        return new double[]{5, 4, 4, 7, 1, 3, 4, 2, 4, /*3*/};
+        return new double[]{5, 4, 4, 7, 1, 3, 4, 2, 4, 3};
     }
 }

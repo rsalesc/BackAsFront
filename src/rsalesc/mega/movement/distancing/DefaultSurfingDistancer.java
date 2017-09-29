@@ -34,7 +34,7 @@ public class DefaultSurfingDistancer extends SurfingDistancer {
     public double getPerpendiculator(double distance) {
         return R.HALF_PI +
                 R.constrain(-1.5,
-                        (distance - DESIRED_DISTANCE) / DESIRED_DISTANCE * 0.8,
+                        (distance - DESIRED_DISTANCE) / DESIRED_DISTANCE * 0.6,
                         +1.5);
     }
 

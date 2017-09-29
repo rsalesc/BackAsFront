@@ -66,13 +66,13 @@ public abstract class DynamicClusteringGFTargeting extends StoreComponent implem
     @Override
     public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f) {
         List<Knn.Entry<TimestampedGFRange>> found = getKnnSet(enemyLog.getName()).query(f);
-
         GuessFactorStats stats = new GuessFactorStats(new UncutGaussianKernelDensity());
 
-        double bandwidth = Physics.hitAngle(f.distance) / 2;
+        double bandwidth = Physics.hitAngle(f.distance) / 2 /
+                Math.max(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
 
         for(Knn.Entry<TimestampedGFRange> entry : found) {
-            stats.logGuessFactor(entry.payload.mean, entry.weight, entry.payload.mean);
+            stats.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
         }
 
         double bestGf = 0;

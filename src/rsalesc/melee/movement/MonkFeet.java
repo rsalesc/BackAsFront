@@ -66,8 +66,8 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     public void init(RobotMediator mediator) {
         super.init(mediator);
 
-        driver.init(getMediator());
-        surfing.init(getMediator());
+        driver.init(mediator);
+        surfing.init(mediator);
     }
 
     private boolean isMelee() {

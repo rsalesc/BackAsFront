@@ -44,8 +44,8 @@ import java.util.function.Predicate;
  */
 public class BulletManager extends Component implements FireListener, PaintListener, ScannedRobotListener,
         BulletListener, TickListener {
-    ArrayList<BulletWave> waves = new ArrayList<>();
-    ArrayList<TickWave> tickWaves = new ArrayList<>();
+    private ArrayList<BulletWave> waves = new ArrayList<>();
+    private ArrayList<TickWave> tickWaves = new ArrayList<>();
     private boolean checked = false;
     private double lastPower = 0;
 
@@ -70,7 +70,6 @@ public class BulletManager extends Component implements FireListener, PaintListe
                 return tickWave.getTime() == e.getTime();
             }
         });
-
     }
 
     public ArrayList<BulletWave> getWaves() {
@@ -190,6 +189,10 @@ public class BulletManager extends Component implements FireListener, PaintListe
             }
 
             if (wave.getDistanceTraveled(time) > 2 * longestSide) {
+                if(wave instanceof TickWave)
+                    tickWaves.remove(wave);
+                else if(wave instanceof BulletWave)
+                    waves.remove(wave);
                 it.remove();
             }
         }
@@ -199,7 +202,8 @@ public class BulletManager extends Component implements FireListener, PaintListe
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         for (BulletWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
-                wave.setBulletHit(e.getBullet());
+                wave.setBulletHit(e.getHitBullet());
+                wave.setHitTime(getMediator().getTime());
 
                 for (Object obj : getListeners()) {
                     if (obj instanceof BulletWaveListener) {
@@ -208,9 +212,11 @@ public class BulletManager extends Component implements FireListener, PaintListe
                     }
                 }
 
-                break;
+                return;
             }
         }
+
+        System.out.println("Didnt found wave for bullet hit bullet!");
     }
 
     @Override
@@ -218,6 +224,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
         for (BulletWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
                 wave.setHit(e.getBullet());
+                wave.setHitTime(getMediator().getTime());
 
                 for (Object obj : getListeners()) {
                     if (obj instanceof BulletWaveListener) {
@@ -226,9 +233,11 @@ public class BulletManager extends Component implements FireListener, PaintListe
                     }
                 }
 
-                break;
+                return;
             }
         }
+
+        System.out.println("Didnt found wave for bullet hit enemy!");
     }
 
     @Override
@@ -239,9 +248,11 @@ public class BulletManager extends Component implements FireListener, PaintListe
 
             if (!wave.hasAnyHit() && wave.wasFiredBy(e.getBullet(), e.getTime())) {
                 wave.setMissed(true);
-                break;
+                return;
             }
         }
+
+        System.out.println("Didnt found wave for missed bullet!");
     }
 
     @Override

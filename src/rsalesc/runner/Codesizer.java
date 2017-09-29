@@ -21,33 +21,33 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
+package rsalesc.runner;
 
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TargetingLog;
+import codesize.Codesize;
+
+import java.io.File;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 27/09/17.
  */
-public class NormalStrategy extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 80, 1),
-                Math.max(f.lateralVelocity / 8, 1),
-                Math.max((f.advancingVelocity + 8) / 16.0, 1),
-                (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-                Math.max(f.displaceLast10 / 80, 1)
-        };
+public class Codesizer {
+    public static void main(String[] args) {
+        int res;
+        if(args[0].endsWith(".jar"))
+            res = processPackage(args[0]);
+        else
+            res = processClass(args[0]);
+
+        System.out.println("Codesize: " + res);
     }
 
-    @Override
-    public double[] getWeights() {
-        return new double[]{6, 5, 3, 2, 4, 1, 2, 2, 2};
+    public static int processPackage(String path) {
+        Codesize.Item item = Codesize.processZipFile(new File(path));
+        return item.getCodeSize();
+    }
+
+    public static int processClass(String path) {
+        Codesize.Item item = Codesize.processClassFile(new File("src/" + path.replace(".", "/") + ".java"));
+        return item.getCodeSize();
     }
 }

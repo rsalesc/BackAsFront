@@ -58,6 +58,7 @@ import java.util.List;
  * TODO: use virtual gunning (DC-PIF + PM with interpolation) [future]
  */
 public class MonkGun extends StoreComponent implements MovieListener, PaintListener {
+    private static final int MAX_K = 100;
     private double decidedPower = 0;
     private ArrayList<CandidateAngle> lastAngles;
 
@@ -66,8 +67,21 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
         return getGlobalStorage().namespace("monk-gun");
     }
 
+    public int getCommonK() {
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        int res = MAX_K / (enemies.length == 0 ? 10 : enemies.length);
+
+        for(EnemyRobot enemy : enemies) {
+            res = Math.min(res, getKnnSet(enemy).queryableData());
+        }
+
+        return Math.max(res, 1);
+    }
+
     @Override
     public void run() {
+        int K = getCommonK();
+
         double power = selectPower();
         double bulletSpeed = Rules.getBulletSpeed(power);
         long time = getMediator().getTime();
@@ -85,7 +99,7 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
 
             TargetingLog f = TargetingLog.getLog(enemy, getMediator(), power);
 
-            List<Knn.Entry<EnemyMovie>> entries = knn.query(f);
+            List<Knn.Entry<EnemyMovie>> entries = knn.query(f, K);
 
             for (Knn.Entry<EnemyMovie> entry : entries) {
                 boolean ok = true;

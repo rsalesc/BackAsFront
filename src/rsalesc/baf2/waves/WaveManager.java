@@ -207,6 +207,7 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
         for (EnemyWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
                 wave.setHit(e.getBullet());
+                wave.setHitTime(getMediator().getTime());
 
                 onEnemyWaveHitMe(wave, e);
                 break;
@@ -229,6 +230,7 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
         for (EnemyWave wave : waves) {
             if (wave.wasFiredBy(e.getBullet(), e.getTime())) {
                 wave.setBulletHit(e.getHitBullet());
+                wave.setHitTime(getMediator().getTime());
 
                 onEnemyWaveHitBullet(wave, e);
                 break;

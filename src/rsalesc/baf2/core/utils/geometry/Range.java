@@ -52,6 +52,10 @@ public class Range {
         return R.nearOrBetween(min, x, max);
     }
 
+    public boolean isNearlyContained(double x, double error) {
+        return R.nearOrBetween(min, x, max, error);
+    }
+
     public void push(double x) {
         min = Math.min(x, min);
         max = Math.max(x, max);

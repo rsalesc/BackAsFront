@@ -43,7 +43,7 @@ import java.util.ArrayList;
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public class TrueMinimumRisk extends MinimumRisk implements RoundStartedListener, PaintListener {
+public class TrueMinimumRisk extends MinimumRisk {
     private static final int NUM_POINTS = 65;
     private static final double STICK_LENGTH = 100;
     private static final double DISTANCE_TO_WALL = 22;

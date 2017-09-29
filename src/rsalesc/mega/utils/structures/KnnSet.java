@@ -100,6 +100,23 @@ public class KnnSet<T extends Timestamped> {
         return res;
     }
 
+    public List<Knn.Entry<T>> query(TargetingLog f, int K) {
+        List<Knn.Entry<T>> res = new ArrayList<>();
+        for (Knn<T> knn : knns) {
+            if(K == 0)
+                break;
+
+            List<Knn.Entry<T>> acc = knn.query(f, Math.min(K, knn.getK()));
+            res.addAll(acc);
+            K -= acc.size();
+        }
+
+        if (weighter != null)
+            res = weighter.getWeightedEntries(res);
+
+        return res;
+    }
+
     public Knn.DistanceWeighter<T> getWeighter() {
         return weighter;
     }
@@ -121,6 +138,25 @@ public class KnnSet<T extends Timestamped> {
         for (Knn<T> knn : knns)
             if (knn.isEnabled(o))
                 res += knn.size();
+        return res;
+    }
+
+    public int queryableData() {
+        int res = 0;
+        for(Knn<T> knn : knns) {
+            res += knn.getQueryableData();
+        }
+
+        return res;
+    }
+
+    public int queryableData(Object o) {
+        int res = 0;
+        for(Knn<T> knn : knns) {
+            if(knn.isEnabled(o))
+                res += knn.getQueryableData();
+        }
+
         return res;
     }
 }

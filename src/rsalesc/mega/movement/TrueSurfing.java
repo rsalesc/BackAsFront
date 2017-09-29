@@ -26,10 +26,13 @@ package rsalesc.mega.movement;
 import robocode.Rules;
 import robocode.util.Utils;
 import rsalesc.baf2.core.controllers.Controller;
+import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
+import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.painting.G;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveCondition;
@@ -45,23 +48,40 @@ import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.structures.Knn;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public class TrueSurfing extends BaseSurfing {
+public class TrueSurfing extends BaseSurfing implements PaintListener {
     SurfingDistancer distancer = new DefaultSurfingDistancer();
     private EnemyWave nextWave;
     private EnemyWave secondWave;
+
+    private ArrayList<Point> breakOptions = new ArrayList<>();
 
     public TrueSurfing(Surfer surfer, WaveManager manager, StatTracker statTracker) {
         super(surfer, manager, statTracker);
     }
 
+    @Override
+    public void onPaint(Graphics2D gr) {
+        super.onPaint(gr);
+
+        G g = new G(gr);
+
+        for(Point point : breakOptions) {
+            g.drawPoint(point, 36, Color.LIGHT_GRAY);
+        }
+    }
+
     public void run() {
         final MyRobot me = MyLog.getInstance().getLatest();
         final EnemyRobot enemy = getEnemy();
+
+        breakOptions.clear();
 
         if (enemy == null)
             return;
@@ -106,6 +126,10 @@ public class TrueSurfing extends BaseSurfing {
                 if (i == 0) clockwiseDanger = currentDanger;
                 else if (i == 1) stopDanger = currentDanger;
                 else counterDanger = currentDanger;
+            }
+
+            for(int i = 0; i < firstCandidates.length; i++) {
+                breakOptions.add(firstCandidates[i].passPoint);
             }
 
             double distance = nextWave.getSource().distance(me.getPoint());

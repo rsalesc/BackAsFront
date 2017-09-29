@@ -65,6 +65,10 @@ public class AngularRange extends Range {
         return isNearlyContained(getOffset(angle));
     }
 
+    public boolean isAngleNearlyContained(double angle, double error) {
+        return isNearlyContained(getOffset(angle), error);
+    }
+
     public AngularRange translate(double newReference) {
         double delta = newReference - reference;
         return new AngularRange(newReference, min - delta, max - delta);

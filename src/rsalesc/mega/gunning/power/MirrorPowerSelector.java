@@ -139,7 +139,7 @@ public class MirrorPowerSelector extends StoreComponent implements PowerSelector
         if (distance > 500) {
             expectedPower -= (distance - 500) / 300;
         }
-
+//
         if (distance < 300) {
             expectedPower += (300 - distance) / 200;
         }
