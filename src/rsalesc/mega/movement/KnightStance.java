@@ -36,8 +36,6 @@ import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.utils.StatTracker;
-import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.KnnSet;
 
 import java.awt.*;
 
@@ -48,7 +46,7 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
     private TrueSurfing surfing;
 
     public KnightStance(WaveManager manager, StatTracker statTracker) {
-        Surfer surfer = new KnightSurfer() {
+        Surfer surfer = new KnightDCSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
                 return getGlobalStorage().namespace("knight-stance-surfer");

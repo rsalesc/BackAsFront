@@ -90,7 +90,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
             enemyLog = EnemyTracker.getInstance().getLog(enemies[0]);
         }
 
-        TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power);
+        TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
 
         return getPlayer().getFiringAngles(enemyLog, f);
     }
@@ -98,7 +98,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
     @Override
     public void onNewMovie(EnemyMovie movie) {
         double power = getPowerSelector().selectPower(getMediator(), StatTracker.getInstance().getCurrentStatData());
-        TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), power);
+        TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), power, false);
         getPlayer().log(f, movie);
     }
 }

@@ -35,20 +35,17 @@ import rsalesc.mega.gunning.guns.AutomaticGunArray;
 import rsalesc.mega.gunning.guns.DynamicClusteringPlayer;
 import rsalesc.mega.gunning.guns.HeadOnGun;
 import rsalesc.mega.gunning.guns.PlayItForwardGun;
-import rsalesc.mega.gunning.power.MirrorPowerSelector;
 import rsalesc.mega.gunning.power.MirrorSwarmSelector;
 import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.power.SimplePowerSelector;
 import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.mega.tracking.MovieTracker;
 import rsalesc.melee.gunning.SegmentedSwarmGun;
-import rsalesc.melee.gunning.SwarmGun;
 import rsalesc.melee.movement.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
 
@@ -130,8 +127,8 @@ public class Roborito extends BackAsFrontRobot2 {
         public PifGun(PowerSelector selector) {
             super(new DynamicClusteringPlayer() {
                 @Override
-                public KnnSet<EnemyMovie> getNewKnnSet() {
-                    return new KnnSet<EnemyMovie>()
+                public KnnView<EnemyMovie> getNewKnnSet() {
+                    return new KnnView<EnemyMovie>()
                             .setDistanceWeighter(new Knn.GaussDistanceWeighter<EnemyMovie>(1.0))
                             .add(new KnnTree<EnemyMovie>()
                                 .setMode(KnnTree.Mode.MANHATTAN)

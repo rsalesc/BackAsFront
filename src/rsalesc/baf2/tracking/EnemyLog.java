@@ -53,7 +53,7 @@ public class EnemyLog implements RobotLog {
     private int removed;
     private boolean alive = false;
 
-    EnemyLog(String name) {
+    public EnemyLog(String name) {
         this.name = name;
         log = new EnemyRobot[LOG_SIZE];
         removed = 0;

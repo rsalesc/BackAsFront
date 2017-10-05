@@ -38,14 +38,18 @@ import rsalesc.baf2.waves.Wave;
 import rsalesc.mega.predictor.MovementPredictor;
 import rsalesc.mega.predictor.PredictedPoint;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 30/07/17.
  */
-public class TargetingLog {
+public class TargetingLog implements Serializable {
+    private static final long serialVersionUID = 4242424242L;
+
     public static final int BACK_IN_TIME = 80;
     private static final int MEA_STICK = 105;
+
     public Point source;
     public AxisRectangle field;
     public double absBearing;
@@ -73,15 +77,8 @@ public class TargetingLog {
     public double displaceLast20;
     public double displaceLast40;
     public double displaceLast80;
-    public double displaceLast160;
 
     public double distanceToWall;
-
-    public double lateralDisplaceLast10;
-    public double lateralDisplaceLast20;
-    public double lateralDisplaceLast40;
-    public double lateralDisplaceLast80;
-    public double lateralDisplaceLast160;
 
     public long revertLast20;
     public double coveredLast20;
@@ -99,7 +96,6 @@ public class TargetingLog {
     // for miss
     public double hitAngle;
     public double hitDistance;
-    public Point hitPosition;
 
     public int hits;
 
@@ -112,13 +108,14 @@ public class TargetingLog {
 
     /****** COMPUTING ***/
 
-    public static TargetingLog getLog(EnemyRobot enemy, RobotMediator mediator, double power) {
+    public static TargetingLog getLog(EnemyRobot enemy, RobotMediator mediator, double power, boolean aiming) {
         TargetingLog f = new TargetingLog();
         f.source = mediator.getNextPosition();
         f.bulletPower = power;
         f.field = mediator.getBattleField();
         f.others = mediator.getOthers();
         f.gunHeat = mediator.getGunHeat();
+        f.aiming = aiming;
 
         computeLog(f, EnemyTracker.getInstance().getLog(enemy), enemy);
         f.escapeDirection = f.direction;

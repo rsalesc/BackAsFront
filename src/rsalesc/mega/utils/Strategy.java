@@ -23,12 +23,16 @@
 
 package rsalesc.mega.utils;
 
+import rsalesc.baf2.core.utils.R;
+
 import java.util.Arrays;
 
 /**
  * Created by Roberto Sales on 13/08/17.
  */
 public abstract class Strategy {
+    private double[] forcedParams;
+
     public static double[] unitaryWeight(int size) {
         double[] res = new double[size];
         Arrays.fill(res, 1);
@@ -38,4 +42,46 @@ public abstract class Strategy {
     public abstract double[] getQuery(TargetingLog f);
 
     public abstract double[] getWeights();
+
+    public void forceParams(double[] params) {
+        forcedParams = params;
+    }
+
+    public double[] getParams() {
+        return new double[0];
+    }
+
+    public double[] getForcedParams() {
+        if(forcedParams != null)
+            return forcedParams;
+        return getParams();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("new double[]{");
+        double[] weights = getWeights();
+
+        for(int i = 0; i < weights.length; i++) {
+            if(i > 0)
+                builder.append(", ");
+            builder.append(R.formattedDouble(weights[i]));
+        }
+
+        builder.append("};\n");
+
+        builder.append("new double[]{");
+        double[] params = getForcedParams();
+
+        for(int i = 0; i < params.length; i++) {
+            if(i > 0)
+                builder.append(", ");
+            builder.append(R.formattedDouble(params[i]));
+        }
+
+        builder.append("};\n");
+
+        return builder.toString();
+    }
 }

@@ -29,5 +29,5 @@ import rsalesc.mega.utils.Timestamped;
  * Created by Roberto Sales on 19/09/17.
  */
 public interface KnnProvider<T extends Timestamped> {
-    KnnSet<T> getNewKnnSet();
+    KnnView<T> getNewKnnSet();
 }

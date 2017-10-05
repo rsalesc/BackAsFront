@@ -42,7 +42,7 @@ import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 
 import java.awt.*;
@@ -92,12 +92,12 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
         for (EnemyRobot enemy : EnemyTracker.getInstance().getLatest()) {
             long extraTime = time - enemy.getTime();
 
-            KnnSet<EnemyMovie> knn = getKnnSet(enemy);
+            KnnView<EnemyMovie> knn = getKnnSet(enemy);
             if (knn.availableData() == 0) {
                 continue;
             }
 
-            TargetingLog f = TargetingLog.getLog(enemy, getMediator(), power);
+            TargetingLog f = TargetingLog.getLog(enemy, getMediator(), power, true);
 
             List<Knn.Entry<EnemyMovie>> entries = knn.query(f, K);
 
@@ -311,12 +311,12 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
 //        return 1.95;
     }
 
-    public KnnSet<EnemyMovie> getKnnSet(RobotSnapshot robot) {
+    public KnnView<EnemyMovie> getKnnSet(RobotSnapshot robot) {
         StorageNamespace ns = getStorageNamespace().namespace(robot.getName());
         if (ns.contains("knn"))
-            return (KnnSet) ns.get("knn");
+            return (KnnView) ns.get("knn");
 
-        KnnSet<EnemyMovie> knn = new KnnSet<>();
+        KnnView<EnemyMovie> knn = new KnnView<>();
 
         knn.setDistanceWeighter(new Knn.GaussDistanceWeighter<EnemyMovie>(1.0));
         knn.add(new KnnTree<EnemyMovie>()
@@ -332,7 +332,7 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
 
     @Override
     public void onNewMovie(EnemyMovie movie) {
-        TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), selectPower());
+        TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), selectPower(), false);
         getKnnSet(movie.getLeadActor()).add(f, movie);
     }
 

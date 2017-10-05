@@ -28,16 +28,14 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +44,14 @@ import java.util.List;
  * Created by Roberto Sales on 19/09/17.
  */
 public abstract class DynamicClusteringPlayer extends StoreComponent implements Player, KnnProvider<EnemyMovie> {
-    public abstract KnnSet<EnemyMovie> getNewKnnSet();
+    public abstract KnnView<EnemyMovie> getNewKnnSet();
 
-    public KnnSet<EnemyMovie> getKnnSet(String name) {
+    public KnnView<EnemyMovie> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace("knn");
         if(!ns.contains(name))
             ns.put(name, getNewKnnSet());
 
-        return (KnnSet) ns.get(name);
+        return (KnnView) ns.get(name);
     }
 
     public void log(TargetingLog f, EnemyMovie movie) {
@@ -79,7 +77,7 @@ public abstract class DynamicClusteringPlayer extends StoreComponent implements 
 
         long extraTime = time - enemy.getTime();
 
-        KnnSet<EnemyMovie> knn = getKnnSet(enemyLog.getName());
+        KnnView<EnemyMovie> knn = getKnnSet(enemyLog.getName());
 
         if(knn.availableData() == 0)
             return new GeneratedAngle[0];

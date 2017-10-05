@@ -43,7 +43,7 @@ import java.awt.*;
  */
 public abstract class GuessFactorGun extends AutomaticGun
         implements BulletWaveListener, BulletWavePreciseListener, PaintListener, TickBulletListener {
-    private static final String LOG_HINT = "loghint";
+    public static final String LOG_HINT = "loghint";
 
     private final GFTargeting targeting;
     private TargetingLog lastTargetingLog;
@@ -75,7 +75,7 @@ public abstract class GuessFactorGun extends AutomaticGun
         if(!enemyLog.isAlive())
             return new GeneratedAngle[0];
 
-        lastTargetingLog = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power);
+        lastTargetingLog = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
 
         return targeting.getFiringAngles(enemyLog, lastTargetingLog);
     }
@@ -83,7 +83,7 @@ public abstract class GuessFactorGun extends AutomaticGun
     public void checkBulletIntersection(RobotWave wave, EnemyRobot enemy, AngularRange intersection) {
         TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
 
-        if(f == null || wave.hasBulletHit())
+        if(f == null)
             return;
 
         f.hitAngle = Physics.absoluteBearing(wave.getSource(), enemy.getPoint());
@@ -95,7 +95,8 @@ public abstract class GuessFactorGun extends AutomaticGun
             f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
         }
 
-        BreakType type = wave instanceof TickWave ? BreakType.VIRTUAL_BREAK : (wave.hasHit() ? BreakType.BULLET_HIT : BreakType.BULLET_BREAK);
+        BreakType type = wave instanceof TickWave ? BreakType.VIRTUAL_BREAK :
+                (wave.hasHit() && !wave.hasBulletHit() ? BreakType.BULLET_HIT : BreakType.BULLET_BREAK);
 
         targeting.log(EnemyTracker.getInstance().getLog(enemy), f, type);
     }
@@ -117,7 +118,7 @@ public abstract class GuessFactorGun extends AutomaticGun
         if(enemies.length == 0)
             return;
 
-        TargetingLog f = TargetingLog.getLog(enemies[0], getMediator(), wave.getPower());
+        TargetingLog f = TargetingLog.getLog(enemies[0], getMediator(), wave.getPower(), false);
         wave.setData(LOG_HINT, f);
     }
 

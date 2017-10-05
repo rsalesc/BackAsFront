@@ -32,11 +32,16 @@ import java.util.Arrays;
  * Created by Roberto Sales on 12/09/17.
  */
 public class GuessFactorStats extends Stats {
-    private static final int BUCKET_COUNT = 101;
-    private static final int BUCKET_MID = (BUCKET_COUNT - 1) / 2;
+    public static final int BUCKET_COUNT = 101;
+    public static final int BUCKET_MID = (BUCKET_COUNT - 1) / 2;
 
     public GuessFactorStats(KernelDensity kernel) {
         super(BUCKET_COUNT, kernel);
+    }
+
+    public GuessFactorStats(BinKernelDensity binKernel) {
+        super(BUCKET_COUNT, binKernel.getKernelDensity());
+        setBinKernel(binKernel);
     }
 
     public GuessFactorStats(double[] buffer, KernelDensity kernel) {

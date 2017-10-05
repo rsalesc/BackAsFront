@@ -29,10 +29,9 @@ import rsalesc.mega.gunning.guns.DynamicClusteringGFTargeting;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.gunning.strategies.dc.AntiSurferStrategy;
-import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 
 /**
@@ -42,55 +41,41 @@ public class AntiAdaptiveGun extends GuessFactorGun {
     public AntiAdaptiveGun(BulletManager manager, PowerSelector selector) {
         super(new DynamicClusteringGFTargeting() {
             @Override
-            public KnnSet<TimestampedGFRange> getNewKnnSet() {
-                return new KnnSet<TimestampedGFRange>()
-                        .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(0.9))
-                        .add(new KnnTree<TimestampedGFRange>()
-                                .setLimit(7500)
-                                .setMode(KnnTree.Mode.MANHATTAN)
-                                .setK(4)
-                                .setRatio(0.15)
-                                .setStrategy(new AntiSurferStrategy())
-                                .logsBreak())
+            public KnnView<TimestampedGFRange> getNewKnnSet() {
+                return new KnnView<TimestampedGFRange>()
+                        .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                         .add(new KnnTree<TimestampedGFRange>()
                                 .setLimit(2000)
                                 .setMode(KnnTree.Mode.MANHATTAN)
-                                .setK(4)
+                                .setK(3)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .logsBreak())
-                        .add(new KnnTree<TimestampedGFRange>()
-                                .setLimit(350)
-                                .setMode(KnnTree.Mode.MANHATTAN)
-                                .setK(4)
-                                .setRatio(0.15)
-                                .setStrategy(new AntiSurferStrategy())
-                                .logsBreak())
+                                .logsBreak()
+                                .logsHit())
                         .add(new KnnTree<TimestampedGFRange>()
                                 .setLimit(125)
-                                .setMode(KnnTree.Mode.MANHATTAN)
-                                .setK(4)
-                                .setRatio(0.15)
-                                .setStrategy(new AntiSurferStrategy())
-                                .logsBreak())
-                        .add(new KnnTree<TimestampedGFRange>()
-                                .setLimit(32)
                                 .setMode(KnnTree.Mode.MANHATTAN)
                                 .setK(2)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .logsBreak())
-
-                        // hit negative
-                        .add(new KnnTree<TimestampedGFRange>()
-                                .setMode(KnnTree.Mode.MANHATTAN)
-                                .setLimit(4)
-                                .setK(1)
-                                .setRatio(1)
-                                .setScanWeight(-0.5) // -1 was pretty good actually
-                                .setStrategy(new AntiSurferStrategy())
+                                .logsBreak()
                                 .logsHit())
-
+                        .add(new KnnTree<TimestampedGFRange>()
+                                .setLimit(32)
+                                .setMode(KnnTree.Mode.MANHATTAN)
+                                .setK(1)
+                                .setRatio(0.35)
+                                .setStrategy(new AntiSurferStrategy())
+                                .logsBreak()
+                                .logsHit())
+                        .add(new KnnTree<TimestampedGFRange>()
+                                .setLimit(8)
+                                .setMode(KnnTree.Mode.MANHATTAN)
+                                .setK(1)
+                                .setRatio(0.5)
+                                .setStrategy(new AntiSurferStrategy())
+                                .logsBreak()
+                                .logsHit())
                         ;
             }
 

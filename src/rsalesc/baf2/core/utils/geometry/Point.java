@@ -27,11 +27,14 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.utils.R;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 /**
  * Created by Roberto Sales on 22/07/17.
  */
-public class Point {
+public class Point implements Serializable {
+    private static final long serialVersionUID = 424242231214242L;
+
     public double x;
     public double y;
 

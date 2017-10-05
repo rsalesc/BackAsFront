@@ -25,10 +25,14 @@ package rsalesc.baf2.core.utils.geometry;
 
 import rsalesc.baf2.core.utils.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Roberto Sales on 25/07/17.
  */
-public class Range {
+public class Range implements Serializable {
+    private static final long serialVersionUID = 42424242411111112L;
+
     public double min, max;
 
     public Range(double min, double max) {

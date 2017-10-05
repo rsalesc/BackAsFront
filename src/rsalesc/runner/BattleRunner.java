@@ -49,183 +49,159 @@ import java.util.*;
 public class BattleRunner {
 
     public static void main(String[] args) {
-        runDuel();
+        runDuel(new RobocodeEngineProvider());
     }
 
-    public static void runMelee() {
-        runBattle(35, new String[]{
-                "rsalesc.melee.Monk*",
-                "rz.HawkOnFire",
-                "positive.Portia",
-                "tzu.TheArtOfWar",
-                "dsekercioglu.TomahawkM 1.1",
-                "kawigi.micro.Shiz"
-        }, true);
-    }
+//    public static void runMelee() {
+//        runBattle(35, new String[]{
+//                "rsalesc.melee.Monk*",
+//                "rz.HawkOnFire",
+//                "positive.Portia",
+//                "tzu.TheArtOfWar",
+//                "dsekercioglu.TomahawkM 1.1",
+//                "kawigi.micro.Shiz"
+//        }, true);
+//    }
 
-    public static void runDuel() {
-        runBattle(35, new String[]{
-                "rsalesc.mega.Knight*",
-                "wiki.mc2k7.Splinter MC2K7"
-        }, false);
-    }
+    public static void runDuel(RobocodeEngineProvider provider) {
+//        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 4,
+//                "mue.Ascendant 1.2.27",
+//                "pez.rumble.CassiusClay 2rho.02no",
+//                "aaa.ScalarBot 0.012l29",
+//                "jam.RaikoMX 0.32",
+//                "florent.test.Toad 0.14t",
+//                "jk.mega.DrussGT 3.1.4");
 
-    public static void runBattle(int rounds, String[] robots, boolean melee) {
-        // Disable log messages from Robocode
-        RobocodeEngine.setLogMessagesEnabled(false);
-
-        // Create the RobocodeEngine
-        //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-        RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/rsalesc/robocode")); // Run from C:/Robocode
-
-        // Add our own battle listener to the RobocodeEngine
-        engine.addBattleListener(new MonkObserver(robots[0]));
-
-        // Show the Robocode battle view
-        engine.setVisible(false);
-
-        // Setup the battle specification
-
-        BattlefieldSpecification battlefield = melee ? new BattlefieldSpecification(1000, 1000) // 800x600
-            : new BattlefieldSpecification(800, 600);
-
-        List<String> robotNames = Arrays.asList(robots);
-        RobotSpecification[] selectedRobots = engine.getLocalRepository(String.join(",", robotNames));
-
-        BattleSpecification battleSpec = new BattleSpecification(rounds, battlefield, selectedRobots);
-
-        // Run our specified battle and let it run till it is over
-        engine.runBattle(battleSpec, true); // waits till the battle finishes
-
-        // Cleanup our RobocodeEngine
-        engine.close();
-
-        // Make sure that the Java VM is shut down properly
-//        System.exit(0);
+        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 4,
+                "jam.micro.RaikoMicro 1.44"
+//                "cjm.Charo 1.1",
+//                "apv.LauLectrik 1.2"
+        );
+        runner.run();
     }
 }
 
-class MonkObserver extends BattleAdaptor {
-    private String name = "rsalesc.melee.Monk";
-    private ArrayList<StatData> meleeData = new ArrayList<>();
-    private ArrayList<StatData> duelData = new ArrayList<>();
-
-    public MonkObserver() {}
-
-    public MonkObserver(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void onRoundEnded(RoundEndedEvent event) {
-        System.out.println("=== Round " + event.getRound() + " ended with " + event.getTurns() + " turns");
-
-        if(duelData.size() > 0 && R.getLast(duelData) != null) {
-            System.out.println("- Duel Data");
-            StatData data = R.getLast(duelData);
-
-            for(String name : data.getEnemies()) {
-                System.out.println(name + ":\t\t\t\t\t"
-                        + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit");
-            }
-        }
-
-        if(meleeData.size() > 0 && R.getLast(meleeData) != null) {
-            System.out.println("- Melee Data");
-            StatData data = R.getLast(meleeData);
-
-            for(String name : data.getEnemies()) {
-                System.out.println(name + ":\t\t\t\t\t"
-                        + R.formattedDouble(data.getDamageReceived(name)) + " dmg received, "
-                        + R.formattedDouble(data.getDamageInflicted(name)) + " dmg inflicted");
-            }
-
-            System.out.println("Total damage received: " + R.formattedDouble(data.getTotalDamageReceived()) + " dmg");
-            System.out.println("Total damage inflicted: " + R.formattedDouble(data.getTotalDamageInflicted()) + " dmg");
-        }
-
-        System.out.println();
-    }
-
-    @Override
-    public void onBattleCompleted(BattleCompletedEvent event) {
-//        showChart(meleeData);
-//        showChart(duelData);
-
-        System.out.println();
-        BattleResults[] results = event.getSortedResults();
-
-        double sum = 0;
-        for(BattleResults result : results) {
-            sum += result.getScore();
-        }
-
-        for(BattleResults result : results) {
-            double aps = (double) result.getScore() / (sum + 1e-12);
-            System.out.println(result.getTeamLeaderName() + "\t\t\t\t\t\t"
-                    + result.getScore() + " (" + R.formattedPercentage(aps) + ")");
-        }
-    }
-
-    void showChart(ArrayList<StatData> data) {
-
-        XYChart chart = new XYChart(500, 400);
-
-        HashSet<String> enemies = new HashSet<>();
-        for(StatData cur : data) {
-            enemies.addAll(cur.getEnemies());
-        }
-
-        HashMap<String, double[]> x = new HashMap<>();
-        HashMap<String, double[]> y = new HashMap<>();
-        for(String name : enemies) {
-            double[] xs = new double[data.size()];
-            for(int i = 0; i < xs.length; i++) xs[i] = i;
-            x.put(name, xs);
-            y.put(name, new double[data.size()]);
-        }
-
-        for(int i = 0; i < data.size(); i++) {
-            for(String name : enemies) {
-                y.get(name)[i] = data.get(i).getEnemyWeightedHitPercentage(name);
-            }
-        }
-
-        for(String name : enemies) {
-            XYSeries series = chart.addSeries(name, x.get(name), y.get(name));
-            series.setMarker(SeriesMarkers.NONE);
-        }
-
-        new SwingWrapper<>(chart).displayChart();
-    }
-
-    @Override
-    public void onTurnEnded(TurnEndedEvent event) {
-        ITurnSnapshot snapshot = event.getTurnSnapshot();
-
-        IRobotSnapshot[] rs = snapshot.getRobots();
-
-        for(IRobotSnapshot r : rs) {
-            if(r.getState() == RobotState.DEAD)
-                continue;
-
-            if(r.getName().startsWith(name)) {
-                IDebugProperty[] properties = r.getDebugProperties();
-
-                for(IDebugProperty property : properties) {
-                    if(property.getKey().equals("melee-statdata")) {
-                        Optional data = SerializeHelper.convertFrom(property.getValue());
-                        if(data.isPresent()) {
-                            meleeData.add((StatData) data.get());
-                        }
-                    } else if(property.getKey().equals("duel-statdata")) {
-                        Optional data = SerializeHelper.convertFrom(property.getValue());
-                        if(data.isPresent()) {
-                            duelData.add((StatData) data.get());
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//class MonkObserver extends BattleAdaptor {
+//    private String name = "rsalesc.melee.Monk";
+//    private ArrayList<StatData> meleeData = new ArrayList<>();
+//    private ArrayList<StatData> duelData = new ArrayList<>();
+//
+//    public MonkObserver() {}
+//
+//    public MonkObserver(String name) {
+//        this.name = name;
+//    }
+//
+//    @Override
+//    public void onRoundEnded(RoundEndedEvent event) {
+//        System.out.println("=== Round " + event.getRound() + " ended with " + event.getTurns() + " turns");
+//
+//        if(duelData.size() > 0 && R.getLast(duelData) != null) {
+//            System.out.println("- Duel Data");
+//            StatData data = R.getLast(duelData);
+//
+//            for(String name : data.getEnemies()) {
+//                System.out.println(name + ":\t\t\t\t\t"
+//                        + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit");
+//            }
+//        }
+//
+//        if(meleeData.size() > 0 && R.getLast(meleeData) != null) {
+//            System.out.println("- Melee Data");
+//            StatData data = R.getLast(meleeData);
+//
+//            for(String name : data.getEnemies()) {
+//                System.out.println(name + ":\t\t\t\t\t"
+//                        + R.formattedDouble(data.getDamageReceived(name)) + " dmg received, "
+//                        + R.formattedDouble(data.getDamageInflicted(name)) + " dmg inflicted");
+//            }
+//
+//            System.out.println("Total damage received: " + R.formattedDouble(data.getTotalDamageReceived()) + " dmg");
+//            System.out.println("Total damage inflicted: " + R.formattedDouble(data.getTotalDamageInflicted()) + " dmg");
+//        }
+//
+//        System.out.println();
+//    }
+//
+//    @Override
+//    public void onBattleCompleted(BattleCompletedEvent event) {
+////        showChart(meleeData);
+////        showChart(duelData);
+//
+//        System.out.println();
+//        BattleResults[] results = event.getSortedResults();
+//
+//        double sum = 0;
+//        for(BattleResults result : results) {
+//            sum += result.getScore();
+//        }
+//
+//        for(BattleResults result : results) {
+//            double aps = (double) result.getScore() / (sum + 1e-12);
+//            System.out.println(result.getTeamLeaderName() + "\t\t\t\t\t\t"
+//                    + result.getScore() + " (" + R.formattedPercentage(aps) + ")");
+//        }
+//    }
+//
+//    void showChart(ArrayList<StatData> data) {
+//
+//        XYChart chart = new XYChart(500, 400);
+//
+//        HashSet<String> enemies = new HashSet<>();
+//        for(StatData cur : data) {
+//            enemies.addAll(cur.getEnemies());
+//        }
+//
+//        HashMap<String, double[]> x = new HashMap<>();
+//        HashMap<String, double[]> y = new HashMap<>();
+//        for(String name : enemies) {
+//            double[] xs = new double[data.size()];
+//            for(int i = 0; i < xs.length; i++) xs[i] = i;
+//            x.put(name, xs);
+//            y.put(name, new double[data.size()]);
+//        }
+//
+//        for(int i = 0; i < data.size(); i++) {
+//            for(String name : enemies) {
+//                y.get(name)[i] = data.get(i).getEnemyWeightedHitPercentage(name);
+//            }
+//        }
+//
+//        for(String name : enemies) {
+//            XYSeries series = chart.addSeries(name, x.get(name), y.get(name));
+//            series.setMarker(SeriesMarkers.NONE);
+//        }
+//
+//        new SwingWrapper<>(chart).displayChart();
+//    }
+//
+//    @Override
+//    public void onTurnEnded(TurnEndedEvent event) {
+//        ITurnSnapshot snapshot = event.getTurnSnapshot();
+//
+//        IRobotSnapshot[] rs = snapshot.getRobots();
+//
+//        for(IRobotSnapshot r : rs) {
+//            if(r.getState() == RobotState.DEAD)
+//                continue;
+//
+//            if(r.getName().startsWith(name)) {
+//                IDebugProperty[] properties = r.getDebugProperties();
+//
+//                for(IDebugProperty property : properties) {
+//                    if(property.getKey().equals("melee-statdata")) {
+//                        Optional data = SerializeHelper.convertFrom(property.getValue());
+//                        if(data.isPresent()) {
+//                            meleeData.add((StatData) data.get());
+//                        }
+//                    } else if(property.getKey().equals("duel-statdata")) {
+//                        Optional data = SerializeHelper.convertFrom(property.getValue());
+//                        if(data.isPresent()) {
+//                            duelData.add((StatData) data.get());
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

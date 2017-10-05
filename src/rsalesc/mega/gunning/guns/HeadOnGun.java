@@ -56,7 +56,7 @@ public class HeadOnGun extends AutomaticGun {
         if(!enemyLog.isAlive())
             return new GeneratedAngle[0];
 
-        TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power);
+        TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
 
         return new GeneratedAngle[]{new GeneratedAngle(1.0, f.absBearing, f.distance)};
     }

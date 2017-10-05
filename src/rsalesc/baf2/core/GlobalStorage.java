@@ -24,6 +24,7 @@
 package rsalesc.baf2.core;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Roberto Sales on 11/09/17.
@@ -31,10 +32,14 @@ import java.util.HashMap;
 public class GlobalStorage {
     private static final GlobalStorage SINGLETON = new GlobalStorage();
 
-    HashMap<String, Object> hash;
+    ConcurrentHashMap<String, Object> hash;
 
     private GlobalStorage() {
-        hash = new HashMap<>();
+        hash = new ConcurrentHashMap<>();
+    }
+
+    public void clear() {
+        hash.clear();
     }
 
     public static GlobalStorage getInstance() {

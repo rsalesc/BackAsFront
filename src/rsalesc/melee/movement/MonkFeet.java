@@ -36,7 +36,7 @@ import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.movement.KnightSurfer;
+import rsalesc.mega.movement.KnightDCSurfer;
 import rsalesc.mega.movement.Surfer;
 import rsalesc.mega.movement.TrueSurfing;
 import rsalesc.mega.utils.StatTracker;
@@ -51,7 +51,7 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     private TrueSurfing surfing;
 
     public MonkFeet(WaveManager manager, StatTracker statTracker) {
-        Surfer surfer = new KnightSurfer() {
+        Surfer surfer = new KnightDCSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
                 return getGlobalStorage().namespace("knn-monk-feet");

@@ -34,15 +34,15 @@ import java.util.List;
 /**
  * Created by Roberto Sales on 13/08/17.
  */
-public class KnnSet<T extends Timestamped> {
+public class KnnView<T extends Timestamped> {
     private List<Knn<T>> knns;
     private Knn.DistanceWeighter<T> weighter;
 
-    public KnnSet() {
+    public KnnView() {
         knns = new ArrayList<>();
     }
 
-    public KnnSet<T> setDistanceWeighter(Knn.DistanceWeighter<T> weighter) {
+    public KnnView<T> setDistanceWeighter(Knn.DistanceWeighter<T> weighter) {
         this.weighter = weighter;
         return this;
     }
@@ -52,7 +52,7 @@ public class KnnSet<T extends Timestamped> {
             knn.mutate(mutation);
     }
 
-    public KnnSet<T> add(Knn<T> knn) {
+    public KnnView<T> add(Knn<T> knn) {
         if (!knn.isBuilt())
             knn.build();
         knns.add(knn);

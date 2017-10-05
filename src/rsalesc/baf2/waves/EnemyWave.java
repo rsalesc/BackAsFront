@@ -133,9 +133,13 @@ public class EnemyWave extends RobotWave {
     }
 
     public static Shadow getShadow(EnemyWave wave, BulletWave bullet) {
+        R.pushFastMath(false);
+
         LineSegment intersection = getShadowSegment(wave, bullet);
-        if(intersection == null)
+        if(intersection == null) {
+            R.popFastMath();
             return null;
+        }
 
         Point middle = intersection.middle();
 
@@ -145,25 +149,33 @@ public class EnemyWave extends RobotWave {
         range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
         range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
 
+        R.popFastMath();
+
         return new Shadow(range, bullet);
     }
 
     public static LineSegment getShadowSegment(EnemyWave wave, BulletWave bullet) {
+        R.pushFastMath(false);
+
         long time = Math.max(bullet.getTime(), wave.getTime());
         long maxTime = Integer.MAX_VALUE;
         if(bullet.hasAnyHit())
             maxTime = Math.min(maxTime, bullet.getHitTime());
 
-        if(wave.getSource().distance(bullet.project(time)) < wave.getDistanceTraveled(time) - R.EPSILON)
+        if(wave.getSource().distance(bullet.project(time)) < wave.getDistanceTraveled(time) - R.EPSILON) {
+            R.popFastMath();
             return null;
+        }
 
         int iterations = 0;
         while(wave.getSource().distance(bullet.project(time)) > wave.getDistanceTraveled(time) && iterations++ < 120 && time <= maxTime) {
             time++;
         }
 
-        if(iterations > 120 || time > maxTime)
+        if(iterations > 120 || time > maxTime) {
+            R.popFastMath();
             return null;
+        }
 
         LineSegment segment = new LineSegment(bullet.project(time - 1), bullet.project(time));
 
@@ -180,6 +192,7 @@ public class EnemyWave extends RobotWave {
         else
             pA = segment.rayLikeIntersect(wave.getCircle(time));
 
+        R.popFastMath();
         return new LineSegment(pA, pB);
     }
 }

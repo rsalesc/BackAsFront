@@ -28,6 +28,9 @@ import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,6 +43,19 @@ public class R {
     public static final double EPSILON = 1e-9;
     private static final DecimalFormat PERCENTAGE_FORMATTER = new DecimalFormat("#.##");
     public static boolean FAST_MATH = false;
+    public static final LinkedList<Boolean> fm = new LinkedList<>();
+
+    public static void pushFastMath(boolean state) {
+        fm.push(FAST_MATH);
+        FAST_MATH = state;
+    }
+
+    public static void popFastMath() {
+        if(!fm.isEmpty())
+            FAST_MATH = fm.pollLast();
+        else
+            FAST_MATH = false;
+    }
 
     public static double sin(double radians) {
         if (!FAST_MATH)
@@ -193,5 +209,52 @@ public class R {
 
     public static double basicSurferRounding(double x) {
         return Math.max(Math.min(x, 0.15), Math.floor(x / 0.05) * 0.05 - (x < 0.05 ? 0.05 : 0));
+    }
+
+    public static <T> T[] concat(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
+        }
+        T[] result = Arrays.copyOf(first, totalLength);
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
+        }
+        return result;
+    }
+
+    public static <T> ArrayList<ArrayList<T>> subsequences(List<T> list) {
+        ArrayList<T> base = new ArrayList<>();
+        ArrayList<ArrayList<T>> res = new ArrayList<>();
+        base.addAll(list);
+
+        int n = base.size();
+
+        for(long i = 1; i < (1L << n); i++) {
+            ArrayList<T> cur = new ArrayList<>();
+            for(int j = 0; j < n; j++) {
+                if(((i>>j)&1) > 0) {
+                    cur.add(base.get(j));
+                }
+            }
+
+            res.add(cur);
+        }
+
+        return res;
+    }
+
+    public static double sqr(double x) {
+        return x * x;
+    }
+
+    public static long combinatorialSqrt(long x) {
+        long res = 1;
+        while(res * (res - 1) / 2 <= x)
+            res++;
+
+        return res - 1;
     }
 }

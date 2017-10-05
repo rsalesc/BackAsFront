@@ -36,9 +36,8 @@ public class AntiSurferStrategy extends Strategy {
         return new double[]{
                 Math.min(Math.abs(f.lateralVelocity) / 8, 1),
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
-                Math.min(f.distance / 800, 1),
+                Math.min(f.bft() / 80, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.displaceLast10 / 80, 1),
                 R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
                 R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
                 1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
@@ -48,6 +47,6 @@ public class AntiSurferStrategy extends Strategy {
 
     @Override
     public double[] getWeights() {
-        return new double[]{4, 1, 1.95, 10, 2, 4, 2, 2, 2};
+        return new double[]{4, 1, 1.95, 8, 4, 1.5, 1, 2};
     }
 }

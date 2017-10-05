@@ -27,6 +27,7 @@ package rsalesc.baf2.waves;
  * Created by Roberto Sales on 20/08/17.
  */
 public enum BreakType {
+    FIRED,
     BULLET_HIT,
     BULLET_BREAK,
     VIRTUAL_BREAK

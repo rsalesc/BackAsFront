@@ -33,6 +33,7 @@ import java.util.Arrays;
 public class Stats {
     protected final double[] buffer;
     protected KernelDensity kernel;
+    protected BinKernelDensity binKernel;
 
     public Stats(int size) {
         buffer = new double[size];
@@ -57,6 +58,16 @@ public class Stats {
         this.kernel = kernel;
     }
 
+    public void setBinKernel(KernelDensity kernel, double bandwidth) {
+        this.kernel = kernel;
+        this.binKernel = new BinKernelDensity(kernel, bandwidth);
+    }
+
+    public void setBinKernel(BinKernelDensity binKernel) {
+        this.kernel = binKernel.getKernelDensity();
+        this.binKernel = binKernel;
+    }
+
     public double[] getBuffer() {
         return buffer;
     }
@@ -70,7 +81,20 @@ public class Stats {
     }
 
     public void add(int i, double x) {
-        buffer[i] += x;
+        if(binKernel == null)
+            buffer[i] += x;
+        else {
+            double density;
+            int j = i - 1;
+            while (j > 0 && (density = binKernel.getBinDensity(i - j)) > 0) {
+                buffer[j--] += density * x;
+            }
+
+            j = i;
+            while (j < buffer.length && (density = binKernel.getBinDensity(i - j)) > 0) {
+                buffer[j++] += density * x;
+            }
+        }
     }
 
     public void add(int i, double x, int bandwidth) {

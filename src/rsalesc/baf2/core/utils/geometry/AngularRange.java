@@ -25,10 +25,14 @@ package rsalesc.baf2.core.utils.geometry;
 
 import robocode.util.Utils;
 
+import java.io.Serializable;
+
 /**
  * Created by Roberto Sales on 16/08/17.
  */
-public class AngularRange extends Range {
+public class AngularRange extends Range implements Serializable {
+    private static final long serialVersionUID = 424242421231L;
+
     private double reference;
 
     public AngularRange(double reference, double min, double max) {

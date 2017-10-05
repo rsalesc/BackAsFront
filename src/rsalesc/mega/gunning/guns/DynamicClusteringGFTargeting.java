@@ -25,17 +25,21 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.utils.ComparablePair;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.stats.BinKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,14 +50,14 @@ import java.util.List;
  * TC2: had hit-angle bandwidth and gauss distance weighter, besides ratio 0.33
  */
 public abstract class DynamicClusteringGFTargeting extends StoreComponent implements GFTargeting, KnnProvider<TimestampedGFRange> {
-    public abstract KnnSet<TimestampedGFRange> getNewKnnSet();
+    public abstract KnnView<TimestampedGFRange> getNewKnnSet();
 
-    public KnnSet<TimestampedGFRange> getKnnSet(String name) {
+    public KnnView<TimestampedGFRange> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
         if (ns.contains("knn"))
-            return (KnnSet) ns.get("knn");
+            return (KnnView) ns.get("knn");
 
-        KnnSet<TimestampedGFRange> knn = getNewKnnSet();
+        KnnView<TimestampedGFRange> knn = getNewKnnSet();
         ns.put("knn", knn);
         return knn;
     }
@@ -66,27 +70,32 @@ public abstract class DynamicClusteringGFTargeting extends StoreComponent implem
     @Override
     public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f) {
         List<Knn.Entry<TimestampedGFRange>> found = getKnnSet(enemyLog.getName()).query(f);
-        GuessFactorStats stats = new GuessFactorStats(new UncutGaussianKernelDensity());
 
-        double bandwidth = Physics.hitAngle(f.distance) / 2 /
-                Math.max(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
+//        double bandwidth = Physics.hitAngle(f.distance) / 2 /
+//                Math.max(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
+//
+//        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
+//
+//        GuessFactorStats stats = new GuessFactorStats(new BinKernelDensity(new UncutGaussianKernelDensity(), binBandwidth));
+//
+//        for(Knn.Entry<TimestampedGFRange> entry : found) {
+//            stats.logGuessFactor(entry.payload.mean, entry.weight);
+//        }
 
-        for(Knn.Entry<TimestampedGFRange> entry : found) {
-            stats.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
-        }
+//        double bestGf = 0;
+//        double bestDensity = 0;
+//
+//        for(Knn.Entry<TimestampedGFRange> entry : found) {
+//            double gf = entry.payload.mean;
+//            double density = stats.getValue(gf);
+//
+//            if(density > bestDensity) {
+//                bestDensity = density;
+//                bestGf = gf;
+//            }
+//        }
 
-        double bestGf = 0;
-        double bestDensity = 0;
-
-        for(Knn.Entry<TimestampedGFRange> entry : found) {
-            double gf = entry.payload.mean;
-            double density = stats.getValue(gf);
-
-            if(density > bestDensity) {
-                bestDensity = density;
-                bestGf = gf;
-            }
-        }
+        double bestGf = maxOverlap(found);
 
         return new GeneratedAngle[]{new GeneratedAngle(1.0, f.getAngle(bestGf), f.distance)};
     }
@@ -103,5 +112,68 @@ public abstract class DynamicClusteringGFTargeting extends StoreComponent implem
         }
 
         getKnnSet(enemyLog.getName()).add(f, new TimestampedGFRange(f.battleTime, gfLow, gfHigh, gfMean), type);
+    }
+
+    public static double maxOverlap(List<Knn.Entry<TimestampedGFRange>> list) {
+        List<SweepEvent> eventList = new ArrayList<>();
+        for(Knn.Entry<TimestampedGFRange> entry : list) {
+            eventList.add(new SweepEvent(SweepEvent.EventType.START, entry.weight, entry.payload.min));
+            eventList.add(new SweepEvent(SweepEvent.EventType.END, entry.weight, entry.payload.max));
+            eventList.add(new SweepEvent(SweepEvent.EventType.QUERY, entry.weight, entry.payload.mean));
+        }
+
+        SweepEvent[] events = eventList.toArray(new SweepEvent[0]);
+        Arrays.sort(events);
+
+        double bestGf = 0;
+        double bestAcc = 0;
+        double acc = 0;
+        for(SweepEvent event : events) {
+            if(event.type == SweepEvent.EventType.START)
+                acc += event.weight;
+            else if(event.type == SweepEvent.EventType.END)
+                acc -= event.weight;
+            else {
+                if(acc > bestAcc) {
+                    bestAcc = acc;
+                    bestGf = event.axis;
+                }
+            }
+        }
+
+        return bestGf;
+    }
+
+    private static class SweepEvent implements Comparable<SweepEvent> {
+        public final EventType type;
+        public final double weight;
+        public final double axis;
+
+        private SweepEvent(EventType type, double weight, double axis) {
+            this.type = type;
+            this.weight = weight;
+            this.axis = axis;
+        }
+
+        @Override
+        public int compareTo(SweepEvent o) {
+            if(axis == o.axis)
+                return type.index - o.type.index;
+            return (int) Math.signum(axis - o.axis);
+        }
+
+        private enum EventType {
+            END(0),
+            QUERY(1),
+            START(2);
+
+            private final int index;
+
+            EventType(int index) {
+                this.index = index;
+            }
+        }
+
+
     }
 }

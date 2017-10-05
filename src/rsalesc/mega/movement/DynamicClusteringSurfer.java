@@ -38,7 +38,7 @@ import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnSet;
+import rsalesc.mega.utils.structures.KnnView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,14 +50,14 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
     private HashMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new HashMap<>();
     private HashMap<Long, GuessFactorStats> statsCache = new HashMap<>();
 
-    public abstract KnnSet<TimestampedGFRange> getNewKnnSet();
+    public abstract KnnView<TimestampedGFRange> getNewKnnSet();
 
-    public KnnSet<TimestampedGFRange> getKnnSet(String name) {
+    public KnnView<TimestampedGFRange> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
         if (ns.contains("knn"))
-            return (KnnSet) ns.get("knn");
+            return (KnnView) ns.get("knn");
 
-        KnnSet<TimestampedGFRange> knn = getNewKnnSet();
+        KnnView<TimestampedGFRange> knn = getNewKnnSet();
         ns.put("knn", knn);
         return knn;
     }
@@ -67,8 +67,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         return getKnnSet(enemyLog.getName()).availableData(o) > 0;
     }
 
-    @Override
-    public void log(EnemyLog enemyLog, TargetingLog log, BreakType type) {
+    public static TimestampedGFRange getGfRange(TargetingLog log) {
         AngularRange intersection = log.preciseIntersection;
 
         if (intersection == null)
@@ -83,7 +82,12 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
             gfHigh = tmp;
         }
 
-        getKnnSet(enemyLog.getName()).add(log, new TimestampedGFRange(log.battleTime, gfLow, gfHigh, gfMean), type);
+        return new TimestampedGFRange(log.battleTime, gfLow, gfHigh, gfMean);
+    }
+
+    @Override
+    public void log(EnemyLog enemyLog, TargetingLog log, BreakType type) {
+        getKnnSet(enemyLog.getName()).add(log, getGfRange(log), type);
     }
 
     private List<Knn.Entry<TimestampedGFRange>> getMatches(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
@@ -103,7 +107,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         if(statsCache.containsKey(cacheIndex))
             return statsCache.get(cacheIndex);
 
-        KnnSet<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
+        KnnView<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
 
         if (set.availableData(o) == 0) {
             return BaseSurfing.getFallbackStats(f.distance, Rules.getBulletSpeed(f.velocity));
@@ -135,7 +139,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         if (f == null)
             throw new IllegalStateException();
 
-        KnnSet<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
+        KnnView<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
 
         double gf = f.getGfFromAngle(intersection.getAngle(intersection.getCenter()));
         double bandwidth = intersection.getRadius() / Math.max(f.preciseMea.maxAbsolute(),

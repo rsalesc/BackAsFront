@@ -62,7 +62,7 @@ import java.util.Queue;
  *            stored along with the points
  */
 abstract public class KdTree<T> {
-    private static int BUCKET_SIZE = 28;
+    private static int BUCKET_SIZE = 50;
 
     // initial data
     protected int dim;
@@ -159,9 +159,9 @@ abstract public class KdTree<T> {
                     current.cutPosition = -Double.MAX_VALUE;
                 else if (Double.isNaN(current.cutPosition))
                     current.cutPosition = 0;
-                else
-                    current.cutPosition = R.constrain(current.min[current.hyperplane], current.cutPosition,
-                                                        current.max[current.hyperplane]);
+//                else
+//                    current.cutPosition = R.constrain(current.min[current.hyperplane], current.cutPosition,
+//                                                        current.max[current.hyperplane]);
 
                 if (R.isNear(current.max[current.hyperplane], current.min[current.hyperplane])) {
                     current.stretch();
@@ -183,17 +183,17 @@ abstract public class KdTree<T> {
                     addOn.extendNode(current.points[i], current.data[i]);
                 }
 
-                if (left.isHeavy()) {
-                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
-                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
-                    throw new IllegalStateException("left child is heavy");
-                }
-
-                if (right.isHeavy()) {
-                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
-                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
-                    throw new IllegalStateException("right child is heavy");
-                }
+//                if (left.isHeavy()) {
+//                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
+//                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
+//                    throw new IllegalStateException("left child is heavy");
+//                }
+//
+//                if (right.isHeavy()) {
+//                    System.out.println(current.min[current.hyperplane] + " " + current.max[current.hyperplane]
+//                            + " " + current.cutPosition + " " + bucketSize + " " + current.length + " " + maxLength);
+//                    throw new IllegalStateException("right child is heavy");
+//                }
 
                 current.left = left;
                 current.right = right;
@@ -260,8 +260,8 @@ abstract public class KdTree<T> {
     }
 
     private void recomputeClippingWindow() {
-        if (!isLeaf())
-            throw new IllegalArgumentException("only leaf can have clipping window recomputed");
+//        if (!isLeaf())
+//            throw new IllegalArgumentException("only leaf can have clipping window recomputed");
 
         min = null;
         max = null;
@@ -387,7 +387,7 @@ abstract public class KdTree<T> {
         }
 
         for (int i = 0; i < current.length; i++) {
-            // Note that the array address are being compared, not the arrays itself
+            // Note that the array addresses are being compared, not the arrays themselves
             if (point == current.points[i]) {
                 System.arraycopy(current.points, i + 1, current.points, i, current.length - (i + 1));
                 System.arraycopy(current.data, i + 1, current.data, i, current.length - (i + 1));

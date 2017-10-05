@@ -61,13 +61,8 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void afterRun() {
-//        if (getMediator().isDev()) {
-//            if (getMediator().getOthers() <= 1) {
-//                getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
-//            } else {
-//                getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
-//            }
-//        }
+        getMediator().setDebugProperty("duel-statdata", null);
+        getMediator().setDebugProperty("melee-statdata", null);
     }
 
     @Override
@@ -178,6 +173,9 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
+        getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
+        getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
+
         if(log) {
             StatData data = getDuelStatData();
             for(String name : data.getEnemies()) {

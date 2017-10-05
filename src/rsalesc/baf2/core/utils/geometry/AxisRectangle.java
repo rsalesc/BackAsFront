@@ -25,10 +25,13 @@ package rsalesc.baf2.core.utils.geometry;
 
 import rsalesc.baf2.core.utils.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Roberto Sales on 23/07/17.
  */
-public class AxisRectangle {
+public class AxisRectangle implements Serializable {
+    private static final long serialVersionUID = 4142424242L;
     public double minx;
     public double maxx;
     public double miny;
