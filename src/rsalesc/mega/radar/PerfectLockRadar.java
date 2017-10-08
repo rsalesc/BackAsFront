@@ -39,12 +39,13 @@ import java.util.Comparator;
  */
 public class PerfectLockRadar extends Component implements ScannedRobotListener {
     private boolean lostScan = true;
+    private int direction = 1;
 
     @Override
     public void run() {
         Controller controller = getMediator().getRadarControllerOrDummy();
         if (lostScan) {
-            controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
+            controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY * -direction);
         } else {
             EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
             if (enemies.length > 0) {
@@ -76,5 +77,6 @@ public class PerfectLockRadar extends Component implements ScannedRobotListener 
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         lostScan = false;
+        direction *= -1;
     }
 }

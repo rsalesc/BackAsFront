@@ -72,10 +72,10 @@ public class BattleRunner {
 //                "florent.test.Toad 0.14t",
 //                "jk.mega.DrussGT 3.1.4");
 
-        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 4,
-                "jam.micro.RaikoMicro 1.44"
-//                "cjm.Charo 1.1",
-//                "apv.LauLectrik 1.2"
+        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 3,
+                "jam.micro.RaikoMicro 1.44",
+                "cjm.Charo 1.1",
+                "apv.LauLectrik 1.2"
         );
         runner.run();
     }

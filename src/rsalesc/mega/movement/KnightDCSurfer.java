@@ -28,6 +28,7 @@ import rsalesc.mega.movement.strategies.dc.FlatteningStrategy;
 import rsalesc.mega.movement.strategies.dc.NormalStrategy;
 import rsalesc.mega.movement.strategies.dc.UnsegStrats;
 import rsalesc.mega.utils.NamedStatData;
+import rsalesc.mega.utils.Timestamped;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
@@ -37,6 +38,8 @@ import rsalesc.mega.utils.structures.KnnTree;
  * Created by Roberto Sales on 13/09/17.
  */
 public abstract class KnightDCSurfer extends DynamicClusteringSurfer {
+    private static Knn.ParametrizedCondition CONTRADICTION = (new NamedStatData.HitCondition(new Range(1, 1), 0));
+
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =
             new NamedStatData.HitCondition(new Range(0.035, Double.POSITIVE_INFINITY), 0);
 
@@ -46,15 +49,85 @@ public abstract class KnightDCSurfer extends DynamicClusteringSurfer {
     private static Knn.ParametrizedCondition FLATTENING_CONDITION =
             new Knn.AndCondition().add(ADAPTIVE_CONDITION)
                     .add(new Knn.OrCondition()
-                            .add(new NamedStatData.HitCondition(new Range(0.08, 1), 1))
-//                                    .add(new NamedStatData.HitCondition(new Range(0.13, 1), 2))
-//                                    .add(new NamedStatData.HitCondition(new Range(0.11, 1), 3))
-//                                    .add(new NamedStatData.HitCondition(new Range(0.095, 1), 5))
-//                                    .add(new NamedStatData.HitCondition(new Range(0.085, 1), 7))
+                        .add(new NamedStatData.HitCondition(new Range(0.065, 1), 1))
                     );
 
     public KnnView<TimestampedGFRange> getNewKnnSet() {
-        return getMonotonicKnnSet();
+        return getSimpleKnnSet();
+    }
+
+    public KnnView<TimestampedGFRange> getSimpleKnnSet() {
+        KnnView<TimestampedGFRange> set = new KnnView<TimestampedGFRange>();
+
+        set.setDistanceWeighter(new Knn.GaussDistanceWeighter<TimestampedGFRange>(1.0));
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setK(24)
+                .setRatio(0.35)
+                .setScanWeight(0.1)
+                .setStrategy(new UnsegStrats())
+                .logsHit())
+        ;
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setK(64)
+                .setRatio(0.2)
+                .setScanWeight(1.75)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
+        ;
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setK(32)
+                .setRatio(0.35)
+                .setScanWeight(1)
+                .setStrategy(new FlatteningStrategy())
+                .setDistanceWeighter(new Knn.DecayWeighter<>(1.5))
+                .setCondition(FLATTENING_CONDITION)
+                .logsHit()
+                .logsBreak());
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(1000)
+                .setK(8)
+                .setRatio(0.35)
+                .setScanWeight(1)
+                .setStrategy(new FlatteningStrategy())
+                .setDistanceWeighter(new Knn.DecayWeighter<>(1.5))
+                .setCondition(FLATTENING_CONDITION)
+                .logsHit()
+                .logsBreak());
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(48)
+                .setK(4)
+                .setRatio(0.35)
+                .setScanWeight(1)
+                .setStrategy(new FlatteningStrategy())
+                .setDistanceWeighter(new Knn.DecayWeighter<>(1.3))
+                .setCondition(FLATTENING_CONDITION)
+                .logsHit()
+                .logsBreak());
+
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(8)
+                .setK(1)
+                .setRatio(0.35)
+                .setScanWeight(1)
+                .setStrategy(new FlatteningStrategy())
+                .setDistanceWeighter(new Knn.DecayWeighter<>(1.3))
+                .setCondition(FLATTENING_CONDITION)
+                .logsHit()
+                .logsBreak());
+
+        return set;
     }
 
     public KnnView<TimestampedGFRange> getMonotonicKnnSet() {
@@ -68,81 +141,81 @@ public abstract class KnightDCSurfer extends DynamicClusteringSurfer {
                 .setStrategy(new NormalStrategy())
                 .setDistanceWeighter(new Knn.GaussDistanceWeighter<TimestampedGFRange>(1.0))
                 .logsHit())
-
+        ;
 
             /*
             * ADAPTIVE MONOTONIC TREES
              */
-                .add(new KnnTree<TimestampedGFRange>()
-                        .setMode(KnnTree.Mode.MANHATTAN)
-                        .setLimit(1)
-                        .setK(1)
-                        .setScanWeight(100)
-                        .setCondition(ADAPTIVE_CONDITION)
-                        .setStrategy(new NormalStrategy())
-                        .logsHit())
-                .add(new KnnTree<TimestampedGFRange>()
-                        .setMode(KnnTree.Mode.MANHATTAN)
-                        .setLimit(8)
-                        .setK(2)
-                        .setRatio(0.25)
-                        .setScanWeight(100)
-                        .setCondition(ADAPTIVE_CONDITION)
-                        .setStrategy(new NormalStrategy())
-                        .logsHit())
-                .add(new KnnTree<TimestampedGFRange>()
-                        .setMode(KnnTree.Mode.MANHATTAN)
-                        .setLimit(32)
-                        .setK(2)
-                        .setRatio(0.25)
-                        .setScanWeight(100)
-                        .setCondition(ADAPTIVE_CONDITION)
-                        .setStrategy(new NormalStrategy())
-                        .logsHit())
-                .add(new KnnTree<TimestampedGFRange>()
-                        .setMode(KnnTree.Mode.MANHATTAN)
-                        .setLimit(100)
-                        .setK(3)
-                        .setRatio(0.25)
-                        .setScanWeight(100)
-                        .setCondition(ADAPTIVE_CONDITION)
-                        .setStrategy(new NormalStrategy())
-                        .logsHit())
-                .add(new KnnTree<TimestampedGFRange>()
-                        .setMode(KnnTree.Mode.MANHATTAN)
-                        .setLimit(1000)
-                        .setK(3)
-                        .setRatio(0.25)
-                        .setScanWeight(100)
-                        .setCondition(ADAPTIVE_CONDITION)
-                        .setStrategy(new NormalStrategy())
-                        .logsHit())
+        set.add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(1)
+                .setK(1)
+                .setScanWeight(100)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
+        .add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(8)
+                .setK(2)
+                .setRatio(0.25)
+                .setScanWeight(100)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
+        .add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(32)
+                .setK(2)
+                .setRatio(0.25)
+                .setScanWeight(100)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
+        .add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(100)
+                .setK(3)
+                .setRatio(0.25)
+                .setScanWeight(100)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
+        .add(new KnnTree<TimestampedGFRange>()
+                .setMode(KnnTree.Mode.MANHATTAN)
+                .setLimit(1000)
+                .setK(3)
+                .setRatio(0.25)
+                .setScanWeight(100)
+                .setCondition(ADAPTIVE_CONDITION)
+                .setStrategy(new NormalStrategy())
+                .logsHit())
         ;
 
         set.add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)
-                .setLimit(12)
-                .setK(2)
+                .setLimit(8)
+                .setK(1)
                 .setRatio(0.15)
-                .setScanWeight(40)
+                .setScanWeight(150)
                 .setCondition(FLATTENING_CONDITION)
                 .setStrategy(new FlatteningStrategy())
                 .logsBreak())
         .add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)
-                .setLimit(32)
-                .setK(3)
+                .setLimit(24)
+                .setK(2)
                 .setRatio(0.15)
-                .setScanWeight(40)
+                .setScanWeight(150)
                 .setCondition(FLATTENING_CONDITION)
                 .setStrategy(new FlatteningStrategy())
                 .logsBreak())
         .add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)
                 .setLimit(250)
-                .setK(6)
+                .setK(3)
                 .setRatio(0.15)
-                .setScanWeight(40)
+                .setScanWeight(150)
                 .setCondition(FLATTENING_CONDITION)
                 .setStrategy(new FlatteningStrategy())
                 .setDistanceWeighter(new Knn.GaussDistanceWeighter<TimestampedGFRange>(1.0))
@@ -150,9 +223,9 @@ public abstract class KnightDCSurfer extends DynamicClusteringSurfer {
         .add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)
                 .setLimit(1000)
-                .setK(8)
+                .setK(3)
                 .setRatio(0.15)
-                .setScanWeight(40)
+                .setScanWeight(150)
                 .setCondition(FLATTENING_CONDITION)
                 .setStrategy(new FlatteningStrategy())
                 .setDistanceWeighter(new Knn.GaussDistanceWeighter<TimestampedGFRange>(1.0))

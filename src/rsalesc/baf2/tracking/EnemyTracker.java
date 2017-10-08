@@ -27,6 +27,7 @@ import robocode.ScannedRobotEvent;
 import rsalesc.baf2.core.GlobalStorage;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,7 +41,7 @@ public class EnemyTracker {
     private HashMap<String, EnemyLog> seenEnemies;
 
     private EnemyTracker() {
-        seenEnemies = new HashMap<>();
+        seenEnemies = new PredictedHashMap<>(15);
     }
 
     public static EnemyTracker getInstance() {

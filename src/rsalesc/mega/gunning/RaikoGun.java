@@ -187,9 +187,9 @@ public class RaikoGun extends Component implements RoundStartedListener, Scanned
 
         controller.release();
 
-        controller = getMediator().getRadarControllerOrDummy();
-        controller.setTurnRadarRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getRadarHeadingRadians()) * 2);
-        controller.release();
+//        controller = getMediator().getRadarControllerOrDummy();
+//        controller.setTurnRadarRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getRadarHeadingRadians()) * 2);
+//        controller.release();
     }
 //    public void onHitByBullet(HitByBulletEvent e) {
 //		/*
@@ -212,9 +212,9 @@ public class RaikoGun extends Component implements RoundStartedListener, Scanned
 
     @Override
     public void onRoundStarted(int round) {
-        Controller controller = getMediator().getRadarControllerOrDummy();
-        controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
-        controller.release();
+//        Controller controller = getMediator().getRadarControllerOrDummy();
+//        controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
+//        controller.release();
     }
 
     @Override

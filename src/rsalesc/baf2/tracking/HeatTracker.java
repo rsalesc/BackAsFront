@@ -25,6 +25,7 @@ package rsalesc.baf2.tracking;
 
 import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class HeatTracker {
     private HashMap<String, HeatLog> logs;
 
     private HeatTracker() {
-        logs = new HashMap<>();
+        logs = new PredictedHashMap<>(15);
     }
 
     public static HeatTracker getInstance() {

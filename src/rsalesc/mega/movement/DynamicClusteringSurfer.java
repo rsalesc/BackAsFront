@@ -27,6 +27,7 @@ import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
@@ -47,8 +48,8 @@ import java.util.List;
  * Created by Roberto Sales on 12/09/17.
  */
 public abstract class DynamicClusteringSurfer extends StoreComponent implements Surfer, KnnProvider<TimestampedGFRange> {
-    private HashMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new HashMap<>();
-    private HashMap<Long, GuessFactorStats> statsCache = new HashMap<>();
+    private HashMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new PredictedHashMap<>(3000);
+    private HashMap<Long, GuessFactorStats> statsCache = new PredictedHashMap<>(3000);
 
     public abstract KnnView<TimestampedGFRange> getNewKnnSet();
 
@@ -125,7 +126,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         for (Knn.Entry<TimestampedGFRange> entry : found) {
             double gf = entry.payload.mean;
 
-            stats.logGuessFactor(gf, entry.weight / totalWeight, entry.payload.getLongestDeviation());
+            stats.logGuessFactor(gf, entry.weight / totalWeight, bandwidth);
         }
 
         statsCache.put(cacheIndex, stats);

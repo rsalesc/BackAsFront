@@ -53,27 +53,26 @@ public abstract class KnightVCSSurfer extends SegmentedDataSurfer {
 
     private static Knn.ParametrizedCondition FLATTENING_CONDITION =
             new Knn.AndCondition().add(ADAPTIVE_CONDITION)
-                .add(new Knn.OrCondition().add(new NamedStatData.HitCondition(new Range(0.075, Double.POSITIVE_INFINITY), 1)))
+                .add(new Knn.OrCondition().add(new NamedStatData.HitCondition(new Range(0.07, Double.POSITIVE_INFINITY), 1)))
             ;
 
     @Override
     public SegmentationView<TimestampedGFRange> getNewSegmentationView() {
         GFSegmentationView view = new GFSegmentationView();
 
-        view.add(
-            new GFSegmentationSet()
-            .setScanWeight(0.5)
-            .setStrategy(new SlicingSimpleStrategy())
-            .logsHit()
-        );
+//        view.add(
+//            new GFSegmentationSet()
+//            .setScanWeight(0.5)
+//            .setStrategy(new SlicingSimpleStrategy())
+//            .logsHit()
+//        );
 
         view.add(
                 new GFSegmentationSet()
-                .setScanWeight(0.3)
+                .setScanWeight(0.5)
                 .setStrategy(new SlicingAdaptiveStrategy())
                 .setCondition(ADAPTIVE_CONDITION)
                 .logsHit()
-                .logsBreak()
         );
 
 //        view.add(

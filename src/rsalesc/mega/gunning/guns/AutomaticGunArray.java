@@ -33,6 +33,7 @@ import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundEndedListener;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
@@ -56,6 +57,10 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
             return (int) Math.signum(o2.score - o1.score);
         }
     };
+
+    public ArrayList<AutomaticGun> getGuns() {
+        return guns;
+    }
 
     public void setComparator(Comparator<GunScorePair> comp) {
         comparator = comp;
@@ -283,7 +288,7 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
     }
 
     private static class ScoreKeeper {
-        HashMap<String, Double> score = new HashMap<>();
+        HashMap<String, Double> score = new PredictedHashMap<>(15);
 
         public double get(String name) {
             return score.getOrDefault(name, 0.0);

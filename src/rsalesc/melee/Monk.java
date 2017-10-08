@@ -32,6 +32,8 @@ import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.guns.*;
+import rsalesc.mega.gunning.power.MeleePowerSelector;
+import rsalesc.mega.gunning.power.MonkPowerSelector;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.StatTracker;
@@ -40,8 +42,10 @@ import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.melee.gunning.AutomaticMeleeGunArray;
 import rsalesc.melee.gunning.MonkGun;
 import rsalesc.mega.tracking.MovieTracker;
+import rsalesc.melee.gunning.SwarmGun;
 import rsalesc.melee.movement.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
 
@@ -55,7 +59,7 @@ public class Monk extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.FAST_MATH = true;
+        R.pushFastMath(true);
 
         add(new Colorizer());
 
@@ -69,8 +73,15 @@ public class Monk extends BackAsFrontRobot2 {
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
 
-        MonkGun monkGun = new MonkGun();
-        tracker.addListener(monkGun);
+        PlayItForwardGun pifGun = new PifGun(null);
+
+        MeleeGunArray meleeArray = new MeleeGunArray();
+        meleeArray.addGun(pifGun);
+
+        SwarmGun swarm = new SwarmGun(meleeArray, 100);
+        swarm.setPowerSelector(new MonkPowerSelector());
+
+        tracker.addListener(pifGun);
 
         waveManager.addListener(statTracker);
         if(!TC) waveManager.addListener(move);
@@ -80,11 +91,12 @@ public class Monk extends BackAsFrontRobot2 {
         add(waveManager);
         add(statTracker);
 
+        bulletManager.addListener(meleeArray);
+
         if(!TC) add(move);
 
-//        addListener(duelArray);
-//        add(swarm);
-        add(monkGun);
+        addListener(meleeArray);
+        add(swarm);
         add(new MultiModeRadar());
     }
 
@@ -103,6 +115,14 @@ public class Monk extends BackAsFrontRobot2 {
         @Override
         public StorageNamespace getStorageNamespace() {
             return getGlobalStorage().namespace("roborito-array");
+        }
+    }
+
+    private static class MeleeGunArray extends AutomaticMeleeGunArray {
+
+        @Override
+        public StorageNamespace getStorageNamespace() {
+            return getGlobalStorage().namespace("monk-array");
         }
     }
 

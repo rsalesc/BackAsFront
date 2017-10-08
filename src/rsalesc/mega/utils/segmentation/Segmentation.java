@@ -23,6 +23,8 @@
 
 package rsalesc.mega.utils.segmentation;
 
+import rsalesc.mega.utils.Ensurer;
+
 /**
  * Created by Roberto Sales on 27/07/17.
  */
@@ -64,11 +66,25 @@ public class Segmentation<T> {
         return stats.get(segs);
     }
 
+    public T getFromSegments(int[] segs, Ensurer ensurer) {
+        if(segs.length != depth)
+            throw new IllegalArgumentException();
+
+        return stats.getOrEnsure(segs, ensurer);
+    }
+
     public T get(double[] values) {
         if(values.length != depth)
             throw new IllegalArgumentException();
 
         return getFromSegments(valuesToSegments(values));
+    }
+
+    public T getOrEnsure(double[] values, Ensurer ensurer) {
+        if(values.length != depth)
+            throw new IllegalArgumentException();
+
+        return getFromSegments(valuesToSegments(values), ensurer);
     }
 
     private int[] valuesToSegments(double[] values) {

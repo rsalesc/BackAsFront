@@ -25,6 +25,7 @@ package rsalesc.mega.gunning.guns;
 
 import robocode.Rules;
 import robocode.util.Utils;
+import rsalesc.baf2.core.listeners.TickListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.EnemyLog;
@@ -34,12 +35,14 @@ import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
+import rsalesc.melee.gunning.MeleeGun;
 
 /**
  * Created by Roberto Sales on 19/09/17.
  */
-public abstract class PlayItForwardGun extends AutomaticGun implements MovieListener {
+public abstract class PlayItForwardGun extends AutomaticGun implements MovieListener, MeleeGun {
     private Player player;
+    private Integer K;
 
     @Override
     public String getGunName() {
@@ -52,6 +55,16 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
 
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public int availableData(EnemyLog enemyLog) {
+        return getPlayer().availableData(enemyLog);
+    }
+
+    @Override
+    public int queryableData(EnemyLog enemyLog) {
+        return getPlayer().queryableData(enemyLog);
     }
 
     @Override
@@ -92,7 +105,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
 
         TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
 
-        return getPlayer().getFiringAngles(enemyLog, f);
+        return getPlayer().getFiringAngles(enemyLog, f, K);
     }
 
     @Override
@@ -100,5 +113,9 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
         double power = getPowerSelector().selectPower(getMediator(), StatTracker.getInstance().getCurrentStatData());
         TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), power, false);
         getPlayer().log(f, movie);
+    }
+
+    public void setK(Integer k) {
+        K = k;
     }
 }

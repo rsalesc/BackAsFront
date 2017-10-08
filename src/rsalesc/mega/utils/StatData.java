@@ -26,6 +26,7 @@ package rsalesc.mega.utils;
 import rsalesc.baf2.core.utils.BattleTime;
 import robocode.StatusEvent;
 import rsalesc.baf2.core.utils.Pair;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 
 import java.io.Serializable;
 import java.util.*;
@@ -46,17 +47,17 @@ public class StatData implements Serializable {
     private int totalShotsInflicted = 0;
     private int totalShotsFired = 0;
 
-    private HashMap<String, Double> damageReceived = new HashMap<>();
-    private HashMap<String, Double> damageInflicted = new HashMap<>();
-    private HashMap<String, Double> damageFired = new HashMap<>();
-    private HashMap<String, Double> damageFelt = new HashMap<>();
+    private HashMap<String, Double> damageReceived = new PredictedHashMap<>(15);
+    private HashMap<String, Double> damageInflicted = new PredictedHashMap<>(15);
+    private HashMap<String, Double> damageFired = new PredictedHashMap<>(15);
+    private HashMap<String, Double> damageFelt = new PredictedHashMap<>(15);
 
-    private HashMap<String, Integer> shotsReceived = new HashMap<>();
-    private HashMap<String, Integer> shotsInflicted = new HashMap<>();
-    private HashMap<String, Integer> shotsFired = new HashMap<>();
-    private HashMap<String, Integer> shotsFelt = new HashMap<>();
+    private HashMap<String, Integer> shotsReceived = new PredictedHashMap<>(15);
+    private HashMap<String, Integer> shotsInflicted = new PredictedHashMap<>(15);
+    private HashMap<String, Integer> shotsFired = new PredictedHashMap<>(15);
+    private HashMap<String, Integer> shotsFelt = new PredictedHashMap<>(15);
 
-    private HashMap<Pair<String, Integer>, TreeSet<Integer>> meetings = new HashMap<>();
+    private HashMap<Pair<String, Integer>, TreeSet<Integer>> meetings = new PredictedHashMap<>(1000);
 
     public void onStatus(StatusEvent e) {
         time = new BattleTime(e.getTime(), e.getStatus().getRoundNum());

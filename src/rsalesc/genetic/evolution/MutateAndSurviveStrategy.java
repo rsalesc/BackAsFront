@@ -75,8 +75,6 @@ public class MutateAndSurviveStrategy<T extends Comparable<T> & Serializable> ex
                 crossed += 2;
                 nextGen.add(crossoverStrategy.crossover(paired.get(0), paired.get(1)));
             }
-
-            rem -= crossed;
         }
 
         for(Chromosome chromosome : nextGen.getChromosomes()) {
@@ -87,8 +85,8 @@ public class MutateAndSurviveStrategy<T extends Comparable<T> & Serializable> ex
 
         nextGen.unique();
 
-        if(rem > 0) {
-            nextGen.add(Population.random(rem, layout).getChromosomes());
+        if(nextGen.size() < genSize) {
+            nextGen.add(Population.random(genSize - nextGen.size(), layout).getChromosomes());
         }
 
         return nextGen;

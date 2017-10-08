@@ -81,9 +81,9 @@ public class GunBattleTrainer {
 
         GunFitnessFunction fitnessFn = new GunFitnessFunction(superPack, layoutProvider, targetingClazz, threads);
 
-        MutateAndSurviveStrategy<Double> evolution = new MutateAndSurviveStrategy<>(
-                fitnessFn, 0.02, 0.3, 0.5, new TwoPointCrossoverStrategy()
-        );
+//        MutateAndSurviveStrategy<Double> evolution = new MutateAndSurviveStrategy<>(
+//                fitnessFn, 0.02, 0, 0.5, new TwoPointCrossoverStrategy()
+//        );
 
 //        GunHybridStrategy evolution = new GunHybridStrategyBuilder()
 //                .setLearningRate(0.3)
@@ -95,17 +95,17 @@ public class GunBattleTrainer {
 //                .setProvider(layoutProvider)
 //                .createGunGradientDescentStrategy();
 
-//        GunLocalSearchStrategy evolution = new GunLocalSearchStrategyBuilder()
-//                .setStrategy(new TwoPointCrossoverStrategy())
-//                .setFitnessFunction(fitnessFn)
-//                .setProvider(layoutProvider)
-//                .setCrosses(4)
-//                .setLearningRate(0.7)
-//                .setNeighborThreshold(0.4)
-//                .setMaxIterations(3)
-//                .createGunLocalSearchStrategy();
+        GunLocalSearchStrategy evolution = new GunLocalSearchStrategyBuilder()
+                .setStrategy(new TwoPointCrossoverStrategy())
+                .setFitnessFunction(fitnessFn)
+                .setProvider(layoutProvider)
+                .setCrosses(4)
+                .setLearningRate(0.7)
+                .setNeighborThreshold(0.4)
+                .setMaxIterations(3)
+                .createGunLocalSearchStrategy();
 
-//        evolution.log();
+        evolution.log();
 
         Generation<Double> cachedGeneration = loadGeneration(cache, layoutProvider.getLayout());
 

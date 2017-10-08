@@ -41,12 +41,13 @@ public class AntiSurferStrategy extends Strategy {
                 R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
                 R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
                 1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
-                1.0 / (1.0 + 2. * f.timeDecel / f.bft())
+                1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
+                R.constrain(0, f.displaceLast10 / 80, 1)
         };
     }
 
     @Override
     public double[] getWeights() {
-        return new double[]{4, 1, 1.95, 8, 4, 1.5, 1, 2};
+        return new double[]{4, 1, 1.95, 10, 4, 2, 2, 2, 2};
     }
 }

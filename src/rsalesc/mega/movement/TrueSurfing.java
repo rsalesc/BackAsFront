@@ -89,7 +89,7 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
         EnemyWaveCondition hasLogCondition = new EnemyWaveCondition() {
             @Override
             public boolean test(EnemyWave wave) {
-                return wave.getData(LOG_HINT) != null && !wave.hasAnyHit();
+                return wave.getData(LOG_HINT) != null && !wave.hasAnyHit() /*&& wave.getTouchTime(me) > getMediator().getTime()*/;
             }
         };
 
@@ -107,6 +107,13 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
             double stopDanger = 0;
             double clockwiseDanger = 0;
             double counterDanger = 0;
+
+            EnemyWaveCondition hasLogCondition2 = new EnemyWaveCondition() {
+                @Override
+                public boolean test(EnemyWave wave) {
+                    return wave.getData(LOG_HINT) != null && !wave.hasAnyHit() && wave.getTouchTime(me) > nextWave.getTouchTime(me) + 1;
+                }
+            };
 
             AxisRectangle shrinkedField = getMediator().getBattleField().shrinkX(18).shrinkY(18);
             secondWave = getManager().earliestWave(me, enemy, (long) (nextWave.getBreakTime(me.getPoint()) + 1), hasLogCondition);

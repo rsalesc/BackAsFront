@@ -21,10 +21,15 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement;
+package rsalesc.baf2.core.utils;
+
+import java.util.HashMap;
 
 /**
- * Created by Roberto Sales on 01/10/17.
+ * Created by Roberto Sales on 08/10/17.
  */
-public abstract class KnightSurfer extends KnightDCSurfer {
+public class PredictedHashMap<K, V> extends HashMap<K, V> {
+    public PredictedHashMap(int initialCapacity) {
+        super((int) Math.ceil(initialCapacity / 0.75));
+    }
 }

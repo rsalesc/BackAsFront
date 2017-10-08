@@ -31,11 +31,11 @@ import rsalesc.mega.learning.genetic.BaseAdaptiveStrategy;
 public class TunedAdaptiveStrategy extends BaseAdaptiveStrategy {
     @Override
     public double[] getWeights() {
-        return new double[]{1.2, 2, 2.5, 1.9, 2, 1.8, 0.5, 0.1};
+        return new double[]{2.4, 0.8, 2.4, 1.5, 2.4, 1.4, 1.7, 1.4};
     }
 
     @Override
     public double[] getParams() {
-        return new double[]{2.7, 2.7};
+        return new double[]{2, 2.8};
     }
 }

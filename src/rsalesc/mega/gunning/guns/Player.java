@@ -31,7 +31,11 @@ import rsalesc.mega.utils.TargetingLog;
  * Created by Roberto Sales on 19/09/17.
  */
 public interface Player {
-    boolean hasData(EnemyLog enemyLog);
+    default boolean hasData(EnemyLog enemyLog) {
+        return availableData(enemyLog) > 0;
+    }
+    int availableData(EnemyLog enemyLog);
+    int queryableData(EnemyLog enemyLog);
     void log(TargetingLog f, EnemyMovie movie);
-    GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f);
+    GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, Integer K);
 }

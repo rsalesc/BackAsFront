@@ -59,12 +59,17 @@ public abstract class DynamicClusteringPlayer extends StoreComponent implements 
     }
 
     @Override
-    public boolean hasData(EnemyLog enemyLog) {
-        return getKnnSet(enemyLog.getName()).availableData() > 0;
+    public int availableData(EnemyLog enemyLog) {
+        return getKnnSet(enemyLog.getName()).availableData();
     }
 
     @Override
-    public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f) {
+    public int queryableData(EnemyLog enemyLog) {
+        return getKnnSet(enemyLog.getName()).queryableData();
+    }
+
+    @Override
+    public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, Integer K) {
         double power = f.bulletPower;
         double bulletSpeed = Rules.getBulletSpeed(power);
 
@@ -82,7 +87,7 @@ public abstract class DynamicClusteringPlayer extends StoreComponent implements 
         if(knn.availableData() == 0)
             return new GeneratedAngle[0];
 
-        List<Knn.Entry<EnemyMovie>> entries = knn.query(f);
+        List<Knn.Entry<EnemyMovie>> entries = K != null ? knn.query(f, K) : knn.query(f);
 
         for (Knn.Entry<EnemyMovie> entry : entries) {
             boolean ok = true;

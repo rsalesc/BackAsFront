@@ -49,10 +49,27 @@ import java.util.Comparator;
 public class SwarmGun extends AutomaticGun {
     private AutomaticGun gun;
     private boolean normalize = false;
+    private int maxSumK;
 
-    public SwarmGun(AutomaticGun gun) {
+    public SwarmGun(AutomaticGun gun, int maxSumK) {
+        if(!(gun instanceof MeleeGun))
+            throw new IllegalStateException();
+
         this.gun = gun;
+        this.maxSumK = maxSumK;
     }
+
+    public int getCommonK() {
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        int res = maxSumK / (enemies.length == 0 ? 10 : enemies.length);
+
+        for(EnemyRobot enemy : enemies) {
+            res = Math.min(res, ((MeleeGun) gun).queryableData(EnemyTracker.getInstance().getLog(enemy)));
+        }
+
+        return Math.max(res, 1);
+    }
+
 
     @Override
     public void init(RobotMediator mediator) {
@@ -126,9 +143,12 @@ public class SwarmGun extends AutomaticGun {
 
         ArrayList<GeneratedAngle> everyAngle = new ArrayList<>();
 
+        AutomaticGun gun = getGun();
+        ((MeleeGun) gun).setK(getCommonK());
+
         for(EnemyRobot enemy : enemies) {
             enemyLog = EnemyTracker.getInstance().getLog(enemy);
-            GeneratedAngle[] angles  = getGun().generateFiringAngles(enemyLog, power);
+            GeneratedAngle[] angles  = gun.generateFiringAngles(enemyLog, power);
 
             double sum = 1e-12;
             for(GeneratedAngle angle : angles) {

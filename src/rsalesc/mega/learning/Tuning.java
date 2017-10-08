@@ -43,13 +43,13 @@ public class Tuning {
         final int iteration = 1;
 
         DuelRecorderRunner runner = new DuelRecorderRunner();
-//        DuelRecordSuperPack adaptivePack = ensureAdaptive(runner, iteration);
-        DuelRecordSuperPack randomPack = ensureRandom(runner);
-        DuelRecordSuperPack sampledPack = ensureSampled(runner);
+        DuelRecordSuperPack adaptivePack = ensureAdaptive(runner, iteration);
+//        DuelRecordSuperPack randomPack = ensureRandom(runner);
+//        DuelRecordSuperPack sampledPack = ensureSampled(runner);
 
-        System.out.println(evolveRandom(DuelRecordSuperPack.merge(randomPack, sampledPack)));
+//        System.out.println(evolveRandom(DuelRecordSuperPack.merge(randomPack, sampledPack)));
 
-//        System.out.println(evolveAdaptive(adaptivePack, iteration));
+        System.out.println(evolveAdaptive(adaptivePack, iteration));
 
         runner.getEngineProvider().close();
 
@@ -57,16 +57,16 @@ public class Tuning {
     }
 
     public static Strategy evolveAdaptive(DuelRecordSuperPack pack, int iteration) throws IOException, NoSuchMethodException {
-        File geneticCache = new File("generations/adaptive_pairings_" + iteration + ".dat");
+        File geneticCache = new File("generations/adaptive_pairings_" + iteration + "_1.dat");
 
         // make population bigger than the local search generated candidates to add some random factor to the algorithm
-        GunBattleTrainer trainer = new GunBattleTrainer(10, pack,
+        GunBattleTrainer trainer = new GunBattleTrainer(12, pack,
                 GeneticAdaptiveTargeting.class, new BaseAdaptiveStrategy(), THREADS);
 
         trainer.setCache(geneticCache);
         trainer.log();
 
-        return trainer.train(20);
+        return trainer.train(40);
     }
 
     public static Strategy evolveRandom(DuelRecordSuperPack pack) throws IOException, NoSuchMethodException {

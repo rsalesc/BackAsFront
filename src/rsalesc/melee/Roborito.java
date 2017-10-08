@@ -45,7 +45,6 @@ import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.mega.tracking.MovieTracker;
-import rsalesc.melee.gunning.SegmentedSwarmGun;
 import rsalesc.melee.movement.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
 
@@ -77,11 +76,11 @@ public class Roborito extends BackAsFrontRobot2 {
         meleeArray.addGun(new HeadOnGun());
         meleeArray.log();
 
-        SegmentedSwarmGun swarm = new SegmentedSwarmGun();
-        swarm.setPowerSelector(swarmSelector);
+//        SegmentedSwarmGun swarm = new SegmentedSwarmGun();
+//        swarm.setPowerSelector(swarmSelector);
 
-        swarm.addGun(meleeArray, 4);
-        swarm.addGun(pifGun, 0);
+//        swarm.addGun(meleeArray, 4);
+//        swarm.addGun(pifGun, 0);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
@@ -101,7 +100,7 @@ public class Roborito extends BackAsFrontRobot2 {
         addListener(swarmSelector);
 
         if(!TC) add(move);
-        add(swarm);
+//        add(swarm);
         add(new MultiModeRadar());
     }
 

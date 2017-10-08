@@ -181,7 +181,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
 
-        surfer.log(EnemyTracker.getInstance().getLog(e.getBullet().getName()), f, BreakType.BULLET_HIT);
+        surfer.log(EnemyTracker.getInstance().getLog(e.getHitBullet().getName()), f, BreakType.BULLET_HIT);
     }
 
     protected double getPreciseDanger(EnemyWave wave, GuessFactorStats stats, AngularRange intersection, PredictedPoint pass) {
@@ -198,6 +198,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
         double gfLow = log.getGfFromAngle(intersection.getStartingAngle());
         double gfHigh = log.getGfFromAngle(intersection.getEndingAngle());
+//        double gfCenter = log.getGfFromAngle(intersection.getAngle(intersection.getCenter()));
 
         Range gfRange = new Range();
         gfRange.push(gfLow);

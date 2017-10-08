@@ -23,6 +23,7 @@
 
 package rsalesc.mega.tracking;
 
+import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.Tracker;
@@ -36,7 +37,7 @@ public class MovieTracker extends Tracker {
     private long sequenceSize;
     private long allowedGap;
 
-    private HashMap<String, EnemyRobot> lastLeadActor = new HashMap<>();
+    private HashMap<String, EnemyRobot> lastLeadActor = new PredictedHashMap<>(15);
 
     public MovieTracker(long sequenceSize, long allowedGap) {
         this.sequenceSize = sequenceSize;

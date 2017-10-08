@@ -171,6 +171,10 @@ public class Wave {
         return robot.getPoint().distance(source) / velocity + getTime();
     }
 
+    public double getTouchTime(MyRobot robot)  {
+        return (robot.getPoint().distance(source) - Physics.BOT_WIDTH) / velocity + getTime();
+    }
+
     public double getAngle(Point point) {
         return Physics.absoluteBearing(source, point);
     }

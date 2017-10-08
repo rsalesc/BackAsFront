@@ -47,9 +47,9 @@ public class AntiRandomGun extends GuessFactorGun {
                 set.setDistanceWeighter(new Knn.InverseDistanceWeighter<TimestampedGFRange>(1.0))
                 .add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
-                        .setK(100)
+                        .setK(125)
                         .setRatio(0.1)
-                        .setStrategy(new TunedRandomStrategy())
+                        .setStrategy(new GeneralPurposeStrategy())
                         .logsEverything());
 
                 return set;

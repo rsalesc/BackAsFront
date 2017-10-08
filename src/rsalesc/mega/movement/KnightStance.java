@@ -46,7 +46,7 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
     private TrueSurfing surfing;
 
     public KnightStance(WaveManager manager, StatTracker statTracker) {
-        Surfer surfer = new KnightDCSurfer() {
+        Surfer surfer = new OldKnightDCSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
                 return getGlobalStorage().namespace("knight-stance-surfer");

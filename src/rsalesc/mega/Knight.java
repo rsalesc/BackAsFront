@@ -48,7 +48,8 @@ import java.awt.*;
  * Created by Roberto Sales on 11/09/17.
  */
 public class Knight extends BackAsFrontRobot2 {
-    private boolean MC = false;
+    private boolean MC2k6 = false;
+    private boolean MC = false || MC2k6;
     private boolean TC = false;
 
     public void checkChallenges() {
@@ -84,11 +85,13 @@ public class Knight extends BackAsFrontRobot2 {
             }
         };
 
-        array.setPowerSelector(selector);
+        if(!MC) {
+            array.setPowerSelector(selector);
 
-        array.addGun(randomGun);
-        array.addGun(adaptiveGun);
-        array.log();
+            array.addGun(randomGun);
+            array.addGun(adaptiveGun);
+            array.log();
+        }
 
         if(selector instanceof MirrorPowerSelector)
             tracker.addListener(selector);
@@ -99,9 +102,11 @@ public class Knight extends BackAsFrontRobot2 {
         waveManager.addListener(statTracker);
         if(!TC) waveManager.addListener(move);
 
-        bulletManager.addListener(randomGun);
-        bulletManager.addListener(adaptiveGun);
-        bulletManager.addListener(array);
+        if(!MC) {
+            bulletManager.addListener(randomGun);
+            bulletManager.addListener(adaptiveGun);
+            bulletManager.addListener(array);
+        }
 
         add(tracker);
 
@@ -117,10 +122,11 @@ public class Knight extends BackAsFrontRobot2 {
 
         if(!MC) {
             add(array);
-            add(new PerfectLockRadar());
-        } else {
+        } else if(!MC2k6) {
             add(new RaikoGun());
         }
+
+        add(new PerfectLockRadar());
     }
 
     class Colorizer extends Component implements RoundStartedListener {

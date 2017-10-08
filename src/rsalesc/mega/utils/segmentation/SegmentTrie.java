@@ -23,10 +23,14 @@
 
 package rsalesc.mega.utils.segmentation;
 
+import rsalesc.mega.utils.Ensurer;
+
 /**
  * Created by Roberto Sales on 27/07/17.
  */
 public class SegmentTrie<T> {
+    private static final int INITIAL_SIZE = 1024;
+
     private int[]       segments;
     private int[][]     transitions;
     private Object[]    data;
@@ -38,7 +42,7 @@ public class SegmentTrie<T> {
     public SegmentTrie(int[] segments) {
         this.segments = segments;
         depth = segments.length;
-        length = 2;
+        length = INITIAL_SIZE;
         created = 0;
         transitions = new int[length][];
         data = new Object[length];
@@ -92,6 +96,25 @@ public class SegmentTrie<T> {
             if(next == -1) return null;
             cur = next;
         }
+
+        return (T) data[cur];
+    }
+
+    @SuppressWarnings("unchecked")
+    public T getOrEnsure(int[] attributes, Ensurer ensurer) {
+        if(attributes.length != depth)
+            throw new IllegalArgumentException();
+
+        int cur = rootIndex;
+        for(int i = 0; i < depth; i++) {
+            int next = transitions[cur][attributes[i]];
+            if(next == -1)
+                next = (transitions[cur][attributes[i]] = makeNode(i+1));
+            cur = next;
+        }
+
+        if(data[cur] == null)
+            data[cur] = ensurer.ensure();
 
         return (T) data[cur];
     }

@@ -27,6 +27,7 @@ import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
@@ -49,7 +50,7 @@ import java.util.List;
  * Created by Roberto Sales on 01/10/17.
  */
 public abstract class SegmentedDataSurfer extends StoreComponent implements Surfer {
-    private HashMap<Long, GuessFactorStats> statsCache = new HashMap<>();
+    private HashMap<Long, GuessFactorStats> statsCache = new PredictedHashMap<>(3000);
 
     public abstract SegmentationView<TimestampedGFRange> getNewSegmentationView();
 
@@ -90,7 +91,7 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
         List<WeightedSegmentedData<TimestampedGFRange>> data = view.query(f, o);
         double totalWeight = SegmentedData.getTotalWeight(data);
 
-        double width = Physics.hitAngle(f.distance) / 2;
+        double width = Physics.hitAngle(f.distance); // multiplied by two because the deviation is good
         double bandwidth = width / Math.max(f.preciseMea.maxAbsolute(),
                 f.preciseMea.minAbsolute());
 
