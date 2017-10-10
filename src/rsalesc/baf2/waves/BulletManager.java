@@ -49,6 +49,12 @@ public class BulletManager extends Component implements FireListener, PaintListe
     private boolean checked = false;
     private double lastPower = 0;
 
+    private boolean draw = false;
+
+    public void draw() {
+        draw = true;
+    }
+
     @Override
     public void onFire(FireEvent e) {
         BulletWave wave = new BulletWave(e.getSource(), new BattleTime(e.getTime(), getMediator().getRoundNum()),
@@ -91,12 +97,14 @@ public class BulletManager extends Component implements FireListener, PaintListe
 
     @Override
     public void onPaint(Graphics2D gr) {
-        G g = new G(gr);
-        long time = getMediator().getTime();
+        if(draw) {
+            G g = new G(gr);
+            long time = getMediator().getTime();
 
-        for (BulletWave wave : waves) {
-            g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
-            g.drawRadial(wave.getSource(), wave.getAngle(), 0, wave.getDistanceTraveled(time), Color.DARK_GRAY);
+            for (BulletWave wave : waves) {
+                g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
+                g.drawRadial(wave.getSource(), wave.getAngle(), 0, wave.getDistanceTraveled(time), Color.DARK_GRAY);
+            }
         }
     }
 

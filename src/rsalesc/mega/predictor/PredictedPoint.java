@@ -24,10 +24,18 @@
 package rsalesc.mega.predictor;
 
 import robocode.util.Utils;
+import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.RobotSnapshot;
+import rsalesc.baf2.waves.RobotWave;
+import rsalesc.baf2.waves.Wave;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Created by Roberto Sales on 07/08/17.
@@ -66,6 +74,25 @@ public class PredictedPoint extends Point {
         return new PredictedPoint(robot.getPoint(), robot.getHeading(), robot.getVelocity(), robot.getTime());
     }
 
+    public static <T extends Wave> void filterBreakable(List<PredictedPoint> path, List<T> waves) {
+        long timeDelta = path.size() - 1;
+        waves.removeIf(new Predicate<T>() {
+            @Override
+            public boolean test(T t) {
+                double breakTime = t.getBreakTime(path.get(0));
+                return breakTime < path.get(0).getTime() || breakTime > path.get(0).getTime() + 2 * timeDelta
+                        || t.hasPassed(path.get(0), path.get(0).getTime());
+            }
+        });
+
+        waves.sort(new Comparator<T>() {
+            @Override
+            public int compare(T o1, T o2) {
+                return (int) Math.signum(o1.getBreakTime(path.get(0)) - o2.getBreakTime(path.get(0)));
+            }
+        });
+    }
+
     public PredictedPoint tick(double newHeading, double newVelocity) {
         int newAhead = newVelocity == 0 && velocity != 0 || newVelocity * velocity > 0
                 ? ahead
@@ -86,6 +113,10 @@ public class PredictedPoint extends Point {
 
     public double getVelocity() {
         return velocity;
+    }
+
+    public double getSpeed() {
+        return Math.abs(getVelocity());
     }
 
     public long getTime() {

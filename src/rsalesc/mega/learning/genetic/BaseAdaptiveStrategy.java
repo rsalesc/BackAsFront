@@ -25,7 +25,6 @@ package rsalesc.mega.learning.genetic;
 
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Range;
-import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 
 /**
@@ -41,8 +40,8 @@ public class BaseAdaptiveStrategy extends GeneticStrategy {
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
                 Math.min(f.bft() / 80, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1.25) / 1.25,
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1.25) / 1.25,
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.25) / 1.25,
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.25) / 1.25,
                 1.0 / (1.0 + params[0] * f.timeRevert / f.bft()),
                 1.0 / (1.0 + params[1] * f.timeDecel / f.bft()),
         };

@@ -21,7 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.melee.movement.risk;
 
 import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
@@ -92,8 +92,6 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     public void onPaint(Graphics2D gr) {
         if (isMelee())
             driver.onPaint(gr);
-        else
-            surfing.onPaint(gr);
     }
 
     @Override

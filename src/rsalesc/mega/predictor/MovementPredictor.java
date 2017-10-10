@@ -135,6 +135,62 @@ public abstract class MovementPredictor {
         return res;
     }
 
+    public static PredictedPoint predictStop(PredictedPoint initialPoint, double angle) {
+        PredictedPoint cur = initialPoint;
+        int iterations = 0;
+        while(cur.getSpeed() > 0 && iterations++ < 10) {
+            cur = _tick(cur, angle, 0, Double.POSITIVE_INFINITY);
+        }
+
+        return cur;
+    }
+
+    public static double predictWallSmoothness(AxisRectangle shrinked, PredictedPoint initialPoint, double angle, int preSteps) {
+        PredictedPoint cur = initialPoint;
+        if(!shrinked.strictlyContains(cur))
+            return 0;
+
+        PredictedPoint initCur = cur;
+
+        for(int i = 0; i < preSteps; i++) {
+            cur = _tick(cur, angle, Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
+            if(!shrinked.strictlyContains(cur))
+                return 0;
+        }
+
+        if(shrinked.strictlyContains(cur.project(cur.getBafHeading(), 160)))
+            return Rules.MAX_VELOCITY;
+
+        double l = 0, r = Rules.MAX_VELOCITY;
+        final int maxIterations = 24;
+
+        while(l + 0.05 < r) {
+            double mid = (l+r) / 2;
+
+            int iterations = 0;
+            while(iterations++ < maxIterations && shrinked.strictlyContains(cur))
+                cur = _tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() + Rules.MAX_TURN_RATE_RADIANS),
+                    mid, Double.POSITIVE_INFINITY);
+
+            if(shrinked.strictlyContains(cur))
+                l = mid;
+            else {
+                iterations = 0;
+                while(iterations++ < maxIterations && shrinked.strictlyContains(cur))
+                    cur = _tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() - Rules.MAX_TURN_RATE_RADIANS),
+                            mid, Double.POSITIVE_INFINITY);
+
+                if(shrinked.strictlyContains(cur))
+                    l = mid;
+                else {
+                    r = mid;
+                }
+            }
+        }
+
+        return l;
+    }
+
     /**
      * This method, different from _tick, predicts assuming that the robot will attempt
      * to move infinitely (hit the maximum speed and never break)

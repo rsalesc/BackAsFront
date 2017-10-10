@@ -32,10 +32,13 @@ import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.stats.BinKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
+import rsalesc.mega.utils.stats.PowerKernelDensity;
 import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
@@ -68,15 +71,15 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         return getKnnSet(enemyLog.getName()).availableData(o) > 0;
     }
 
-    public static TimestampedGFRange getGfRange(TargetingLog log) {
+    public static TimestampedGFRange getGfRange(TargetingLog log, IMea mea) {
         AngularRange intersection = log.preciseIntersection;
 
         if (intersection == null)
             throw new NullPointerException();
 
-        double gfMean = log.getGfFromAngle(intersection.getAngle(intersection.getCenter()));
-        double gfLow = log.getGfFromAngle(intersection.getStartingAngle());
-        double gfHigh = log.getGfFromAngle(intersection.getEndingAngle());
+        double gfMean = mea.getGfFromAngle(intersection.getAngle(intersection.getCenter()));
+        double gfLow = mea.getGfFromAngle(intersection.getStartingAngle());
+        double gfHigh = mea.getGfFromAngle(intersection.getEndingAngle());
         if (gfLow > gfHigh) {
             double tmp = gfLow;
             gfLow = gfHigh;
@@ -87,8 +90,8 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
     }
 
     @Override
-    public void log(EnemyLog enemyLog, TargetingLog log, BreakType type) {
-        getKnnSet(enemyLog.getName()).add(log, getGfRange(log), type);
+    public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
+        getKnnSet(enemyLog.getName()).add(log, getGfRange(log, mea), type);
     }
 
     private List<Knn.Entry<TimestampedGFRange>> getMatches(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
@@ -101,7 +104,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
     }
 
     @Override
-    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
+    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex, NamedStatData o) {
         if (f == null)
             throw new IllegalStateException();
 
@@ -116,17 +119,14 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
 
         List<Knn.Entry<TimestampedGFRange>> found = getMatches(enemyLog, f, cacheIndex, o);
 
-        GuessFactorStats stats = new GuessFactorStats(new UncutGaussianKernelDensity()); // TODO: rethink
+//        BinKernelDensity density = new BinKernelDensity(new PowerKernelDensity(0.1), 1.0);
+        GuessFactorStats stats = new GuessFactorStats(new PowerKernelDensity(0.1)); // TODO: rethink
         double totalWeight = Knn.getTotalWeight(found);
-
-        double width = Physics.hitAngle(f.distance) / 2;
-        double bandwidth = width / Math.max(f.preciseMea.maxAbsolute(),
-                                                        f.preciseMea.minAbsolute());
 
         for (Knn.Entry<TimestampedGFRange> entry : found) {
             double gf = entry.payload.mean;
 
-            stats.logGuessFactor(gf, entry.weight / totalWeight, bandwidth);
+            stats.add(stats.getBucket(gf), entry.weight / totalWeight, 1); // TODO: normalize weights
         }
 
         statsCache.put(cacheIndex, stats);
@@ -134,8 +134,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         return stats;
     }
 
-    @Override
-    public double getDanger(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o,
+    public double getDanger(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex, NamedStatData o,
                             AngularRange intersection) {
         if (f == null)
             throw new IllegalStateException();

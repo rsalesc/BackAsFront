@@ -39,8 +39,8 @@ public class OldNormalStrategy extends Strategy {
                 Math.max(Math.abs(f.lateralVelocity) / 8, 1),
                 Math.max((f.advancingVelocity + 8) / 16.0, 1),
                 (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
                 1.0 / (1.0 + 2*f.timeDecel),
                 1.0 / (1.0 + 2*f.timeRevert),
                 Math.max(f.displaceLast10 / 80, 1)

@@ -42,7 +42,7 @@ import java.awt.*;
  * Created by Roberto Sales on 15/09/17.
  */
 public abstract class GuessFactorGun extends AutomaticGun
-        implements BulletWaveListener, BulletWavePreciseListener, PaintListener, TickBulletListener {
+        implements BulletWaveListener, BulletWavePreciseListener, TickBulletListener {
     public static final String LOG_HINT = "loghint";
 
     private final GFTargeting targeting;
@@ -154,23 +154,5 @@ public abstract class GuessFactorGun extends AutomaticGun
     @Override
     public void onBulletWavePass(BulletWave wave, EnemyRobot enemy) {
 
-    }
-
-    @Override
-    public void onPaint(Graphics2D gr) {
-        G g = new G(gr);
-
-        for(BulletWave wave : getManager().getWaves()) {
-            TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
-            if(f == null)
-                continue;
-
-            double dt = wave.getDistanceTraveled(getMediator().getTime());
-
-            if(f.preciseIntersection != null) {
-                g.drawRadial(wave.getSource(), f.preciseIntersection.getStartingAngle(), dt, dt+8, Color.RED);
-                g.drawRadial(wave.getSource(), f.preciseIntersection.getEndingAngle(), dt, dt+8, Color.RED);
-            }
-        }
     }
 }

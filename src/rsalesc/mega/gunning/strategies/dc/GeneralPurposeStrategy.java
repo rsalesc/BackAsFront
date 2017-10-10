@@ -40,8 +40,8 @@ public class GeneralPurposeStrategy extends Strategy {
                 (R.cos(f.relativeHeading) + 1) / 2.,
                 Math.abs(f.velocity) / 8.,
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
                 1.0 / (1.0 + 2. * f.timeDecel),
                 f.virtuality()
         };

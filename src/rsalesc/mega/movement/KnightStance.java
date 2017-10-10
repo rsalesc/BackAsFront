@@ -42,7 +42,7 @@ import java.awt.*;
 /**
  * Created by Roberto Sales on 13/09/17.
  */
-public class KnightStance extends Component implements RoundStartedListener, PaintListener, EnemyWaveListener, EnemyWavePreciseListener {
+public class KnightStance extends Component implements RoundStartedListener, EnemyWaveListener, EnemyWavePreciseListener {
     private TrueSurfing surfing;
 
     public KnightStance(WaveManager manager, StatTracker statTracker) {
@@ -59,11 +59,6 @@ public class KnightStance extends Component implements RoundStartedListener, Pai
     @Override
     public void onRoundStarted(int round) {
         surfing.init(getMediator());
-    }
-
-    @Override
-    public void onPaint(Graphics2D gr) {
-        surfing.onPaint(gr);
     }
 
     @Override

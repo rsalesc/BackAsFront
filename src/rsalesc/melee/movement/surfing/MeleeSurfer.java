@@ -21,32 +21,23 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
+package rsalesc.melee.movement.surfing;
 
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
+import rsalesc.baf2.tracking.EnemyLog;
+import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.IMea;
+import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
+import rsalesc.mega.utils.stats.GuessFactorStats;
+import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 12/09/17.
  */
-public class NormalStrategy extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 80, 1),
-                Math.max(Math.abs(f.lateralVelocity) / 8, 1),
-                Math.max((f.advancingVelocity + 8) / 16.0, 1),
-                (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-        };
-    }
+public interface MeleeSurfer {
+    boolean hasData(EnemyLog enemyLog, NamedStatData o);
 
-    @Override
-    public double[] getWeights() {
-        return new double[]{6, 5, 4, 2, 4, 1, 1, 1};
-    }
+    void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type);
+
+    CircularGuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex);
 }

@@ -38,8 +38,8 @@ public class AntiSurferStrategy extends Strategy {
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
                 Math.min(f.bft() / 80, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
                 1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
                 1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
                 R.constrain(0, f.displaceLast10 / 80, 1)

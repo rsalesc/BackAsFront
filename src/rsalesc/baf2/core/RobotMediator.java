@@ -28,6 +28,7 @@ import rsalesc.baf2.core.controllers.*;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.painting.PaintManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -38,10 +39,16 @@ import java.util.ArrayList;
 public class RobotMediator {
     private final BackAsFrontRobot2 robot;
     private final ControlManager controlManager;
+    private final PaintManager paintManager;
 
-    public RobotMediator(BackAsFrontRobot2 robot) {
+    public RobotMediator(BackAsFrontRobot2 robot, PaintManager paintManager) {
         this.robot = robot;
+        this.paintManager = paintManager;
         controlManager = new ControlManager(robot);
+    }
+
+    public PaintManager getPaintManager() {
+        return paintManager;
     }
 
     public static double getQuickestTurn(double originalTurn) {

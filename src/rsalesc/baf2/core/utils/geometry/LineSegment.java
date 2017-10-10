@@ -89,6 +89,12 @@ public class LineSegment {
     public Point rayLikeIntersect(Circle circle) {
         Point2D.Double pd = jkIntersection(p1.to2D(), p2.to2D(), circle);
         return new Point(pd.x, pd.y);
+//        Point[] p = intersect(circle);
+//        for(int i = 0; i < p.length; i++)
+//            if(isContained(p[i]))
+//                return p[i];
+
+//        throw new IllegalStateException("no intersection was found");
     }
 
     public boolean isContained(Point p) {

@@ -23,6 +23,8 @@
 
 package rsalesc.baf2.waves;
 
+import robocode.Rules;
+import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -205,5 +207,33 @@ public class Wave {
 
     public double getPower() {
         return Physics.bulletPower(velocity);
+    }
+
+    public double getDamage() {
+        return Rules.getBulletDamage(getPower());
+    }
+
+    public double getDifferential() {
+        return Rules.getBulletDamage(getPower()) + Rules.getBulletHitBonus(getPower());
+    }
+
+    public boolean everyoneInside(RobotMediator mediator) {
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+
+        int cntInside = 0;
+        long time = mediator.getTime();
+
+        if (this.getCircle(time).isInside(mediator.getHitBox()))
+            cntInside++;
+
+        for (EnemyRobot enemy : enemies) {
+            if (this.getCircle(time).isInside(enemy.getHitBox()))
+                cntInside++;
+        }
+
+        if (cntInside >= enemies.length + 1)
+            return true;
+        else
+            return false;
     }
 }

@@ -26,19 +26,23 @@ package rsalesc.baf2.waves;
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
+import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.MyRobot;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Roberto Sales on 28/09/17.
  */
-public class ShadowManager extends Component implements BulletWaveListener, EnemyWaveListener, PaintListener {
+public class ShadowManager extends Component implements BulletWaveListener, EnemyWaveListener {
     private final BulletManager bulletManager;
     private final WaveManager waveManager;
 
@@ -91,7 +95,8 @@ public class ShadowManager extends Component implements BulletWaveListener, Enem
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
-
+        if(wave.isShadowed(e.getBullet().getHeadingRadians()))
+            BackAsFrontRobot2.warn("Hit by bullet in shadow!");
     }
 
     @Override
@@ -105,16 +110,22 @@ public class ShadowManager extends Component implements BulletWaveListener, Enem
     }
 
     @Override
-    public void onPaint(Graphics2D gr) {
-        G g = new G(gr);
+    public void setupPaintings(PaintManager manager) {
+        manager.add(KeyEvent.VK_W, "waves", new Painting() {
+            @Override
+            public void paint(G g) {
+                long time = getMediator().getTime();
+                for(EnemyWave wave : waveManager.getWaves()) {
+                    if(wave.everyoneInside(getMediator()))
+                        continue;
 
-        long time = getMediator().getTime();
-        for(EnemyWave wave : waveManager.getWaves()) {
-            for(Shadow shadow : wave.getShadows()) {
-                Point p1 = wave.project(shadow.getIntersection().getStartingAngle(), time);
-                Point p2 = wave.project(shadow.getIntersection().getEndingAngle(), time);
-                g.drawLine(p1, p2, Color.MAGENTA);
+                    for(Shadow shadow : wave.getShadows()) {
+                        Point p1 = wave.project(shadow.getIntersection().getStartingAngle(), time);
+                        Point p2 = wave.project(shadow.getIntersection().getEndingAngle(), time);
+                        g.drawLine(p1, p2, Color.MAGENTA);
+                    }
+                }
             }
-        }
+        }, true);
     }
 }

@@ -25,10 +25,14 @@ package rsalesc.baf2;
 
 import robocode.*;
 import rsalesc.baf2.core.Component;
+import rsalesc.baf2.core.KeyHandler;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.listeners.*;
+import rsalesc.baf2.painting.PaintManager;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +41,7 @@ import java.util.ArrayList;
 public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     private ArrayList<Component> components;
     private RobotMediator mediator;
+    private PaintManager paintManager;
 
     public abstract void initialize();
 
@@ -49,8 +54,19 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
         components.add(component);
     }
 
+    public void initializeDefault() {
+        paintManager = new PaintManager();
+
+        addListener(KeyHandler.getInstance());
+        addListener(paintManager);
+    }
+
+    public PaintManager getPaintManager() {
+        return paintManager;
+    }
+
     protected void build() {
-        mediator = new RobotMediator(this);
+        mediator = new RobotMediator(this, paintManager);
         for (Component component : components) {
             component.init(mediator);
         }
@@ -158,6 +174,16 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     }
 
     @Override
+    public void onKeyPressed(KeyEvent e) {
+        for (Component component : components) {
+            if (component instanceof KeyPressedListener) {
+                KeyPressedListener listener = (KeyPressedListener) component;
+                listener.onKeyPressed(e);
+            }
+        }
+    }
+
+    @Override
     public void onStatus(StatusEvent e) {
         super.onStatus(e);
 
@@ -165,6 +191,7 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
             dissociate();
             components = new ArrayList<>();
             initialize();
+            initializeDefault();
             build();
         }
 
@@ -362,5 +389,9 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
                 listener.onFire(e);
             }
         }
+    }
+
+    public static <T> void warn(T anything) {
+        System.out.println("WARNING: " + anything);
     }
 }

@@ -45,7 +45,7 @@ import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.mega.tracking.MovieTracker;
-import rsalesc.melee.movement.MonkFeet;
+import rsalesc.melee.movement.risk.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
 
 import java.awt.*;

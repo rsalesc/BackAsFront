@@ -21,18 +21,13 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
-
-import rsalesc.baf2.core.Component;
-import rsalesc.baf2.core.StoreComponent;
-import rsalesc.baf2.core.listeners.PaintListener;
-import rsalesc.baf2.core.listeners.RoundStartedListener;
-
-import java.awt.*;
+package rsalesc.melee.movement.risk;
 
 /**
  * Created by Roberto Sales on 25/09/17.
  */
-public abstract class MinimumRisk extends Component implements RoundStartedListener, PaintListener {
-
+public class Monk2ndGenMR extends TrueMinimumRisk {
+    public Monk2ndGenMR() {
+        setEvaluation(new RiskEvaluation2nd());
+    }
 }

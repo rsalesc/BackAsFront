@@ -26,6 +26,7 @@ package rsalesc.mega.movement;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
@@ -36,8 +37,7 @@ import rsalesc.mega.utils.stats.GuessFactorStats;
 public interface Surfer {
     boolean hasData(EnemyLog enemyLog, NamedStatData o);
 
-    void log(EnemyLog enemyLog, TargetingLog log, BreakType type);
+    void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type);
 
-    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o);
-    double getDanger(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o, AngularRange intersection);
+    GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex, NamedStatData o);
 }

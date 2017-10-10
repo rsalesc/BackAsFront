@@ -21,32 +21,29 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
-
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TargetingLog;
+package rsalesc.melee.movement.risk;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 25/09/17.
  */
-public class NormalStrategy extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 80, 1),
-                Math.max(Math.abs(f.lateralVelocity) / 8, 1),
-                Math.max((f.advancingVelocity + 8) / 16.0, 1),
-                (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-        };
+public class Monk1stGenMR extends TrueMinimumRisk {
+    public Monk1stGenMR() {
+        setEvaluation(new RiskEvaluation1st());
     }
 
-    @Override
-    public double[] getWeights() {
-        return new double[]{6, 5, 4, 2, 4, 1, 1, 1};
-    }
+//    @Override
+//    public void onPaint(Graphics2D gr) {
+//        super.onPaint(gr);
+//        G g = new G(gr);
+//
+//        long time = getMediator().getTime();
+//
+//        for(EnemyWave wave : getManager().getWaves()) {
+//            MyRobot pastMe = MyLog.getInstance().exactlyAt(wave.getTime() - 1);
+//            double headOnAngle = Physics.absoluteBearing(wave.getSource(), pastMe.getPoint());
+//            Point projection = wave.project(headOnAngle, time);
+//
+//            g.drawCircle(projection, 3.0, Color.MAGENTA);
+//        }
+//    }
 }

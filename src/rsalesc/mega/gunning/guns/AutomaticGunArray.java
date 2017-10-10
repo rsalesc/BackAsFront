@@ -161,7 +161,7 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
         }
 
         if(bestGun == null)
-            return null;
+            return guns.get(0);
 
         if(lastBest == null || !bestGun.getStorageNamespace().equals(lastBest.getStorageNamespace())) {
             if(log)

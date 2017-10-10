@@ -21,7 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.melee.movement.risk;
 
 import robocode.util.Utils;
 import rsalesc.baf2.core.RobotMediator;

@@ -44,7 +44,7 @@ import java.util.ArrayList;
 /**
  * Created by Roberto Sales on 30/07/17.
  */
-public class TargetingLog implements Serializable {
+public class TargetingLog implements Serializable, IMea {
     private static final long serialVersionUID = 4242424242L;
 
     public static final int BACK_IN_TIME = 80;
@@ -266,7 +266,7 @@ public class TargetingLog implements Serializable {
         return preciseMea;
     }
 
-    public double getMea() {
+    public double getTraditionalMea() {
         return Physics.maxEscapeAngle(Rules.getBulletSpeed(bulletPower));
     }
 
@@ -280,6 +280,11 @@ public class TargetingLog implements Serializable {
 
     public double getGfFromAngle(double angle) {
         return R.constrain(-1, getUnconstrainedGfFromAngle(angle), +1);
+    }
+
+    @Override
+    public Range getMea() {
+        return getPreciseMea();
     }
 
     public double getGf(double offset) {
@@ -310,5 +315,40 @@ public class TargetingLog implements Serializable {
 
     public double getZeroGf() {
         return absBearing;
+    }
+
+    public Imprecise imprecise() {
+        return new Imprecise();
+    }
+
+    private class Imprecise implements IMea {
+        public double getZeroGf() {
+            return absBearing;
+        }
+
+        public double getOffset(double gf) {
+            return R.zeroNan(escapeDirection * gf * getMea().getRadius());
+        }
+
+        public double getAngle(double gf) {
+            return Utils.normalAbsoluteAngle(getZeroGf() + getOffset(gf));
+        }
+
+        public double getUnconstrainedGf(double offset) {
+            return R.zeroNan(escapeDirection * offset / getMea().getRadius());
+        }
+
+        public double getUnconstrainedGfFromAngle(double angle) {
+            return TargetingLog.this.getUnconstrainedGfFromAngle(angle);
+        }
+
+        public double getGfFromAngle(double angle) {
+            return R.constrain(-1, this.getUnconstrainedGfFromAngle(angle), +1);
+        }
+
+        public Range getMea() {
+            double radius = TargetingLog.this.getTraditionalMea();
+            return new Range(-radius, +radius);
+        }
     }
 }

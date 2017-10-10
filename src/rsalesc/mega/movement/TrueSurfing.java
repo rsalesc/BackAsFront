@@ -33,6 +33,8 @@ import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveCondition;
@@ -43,19 +45,20 @@ import rsalesc.mega.movement.distancing.SurfingDistancer;
 import rsalesc.mega.predictor.MovementPredictor;
 import rsalesc.mega.predictor.PredictedPoint;
 import rsalesc.mega.predictor.WallSmoothing;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
-import rsalesc.mega.utils.structures.Knn;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public class TrueSurfing extends BaseSurfing implements PaintListener {
+public class TrueSurfing extends BaseSurfing {
     SurfingDistancer distancer = new DefaultSurfingDistancer();
     private EnemyWave nextWave;
     private EnemyWave secondWave;
@@ -67,14 +70,19 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
     }
 
     @Override
-    public void onPaint(Graphics2D gr) {
-        super.onPaint(gr);
+    public void setupPaintings(PaintManager manager) {
+        super.setupPaintings(manager);
 
-        G g = new G(gr);
+        Painting painting = new Painting() {
+            @Override
+            public void paint(G g) {
+                for(Point point : breakOptions) {
+                    g.drawPoint(point, 36, Color.LIGHT_GRAY);
+                }
+            }
+        };
 
-        for(Point point : breakOptions) {
-            g.drawPoint(point, 36, Color.LIGHT_GRAY);
-        }
+        manager.add(KeyEvent.VK_S, "surfing", painting, true);
     }
 
     public void run() {
@@ -176,8 +184,10 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
         if (f == null)
             throw new IllegalStateException();
 
+        IMea mea = getMea(f);
+
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
-        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
+        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, mea, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
 
         AxisRectangle field = getMediator().getBattleField();
         double distance = nextWave.getSource().distance(initialPoint);
@@ -206,12 +216,12 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
         AngularRange stopIntersection =
                 Wave.preciseIntersection(nextWave, stopPoints);
 
-//        double clockwiseDanger = getPreciseDanger(nextWave, enemyLog, clockwiseIntersection, clockwisePass);
-//        double counterDanger = getPreciseDanger(nextWave, enemyLog, counterIntersection, counterPass);
-//        double stopDanger = getPreciseDanger(nextWave, enemyLog, stopIntersection, stopPass);
-        double clockwiseDanger = getPreciseDanger(nextWave, stats, clockwiseIntersection, clockwisePass);
-        double counterDanger = getPreciseDanger(nextWave, stats, counterIntersection, counterPass);
-        double stopDanger = getPreciseDanger(nextWave, stats, stopIntersection, stopPass);
+//        double clockwiseDanger = getDanger(nextWave, enemyLog, clockwiseIntersection, clockwisePass);
+//        double counterDanger = getDanger(nextWave, enemyLog, counterIntersection, counterPass);
+//        double stopDanger = getDanger(nextWave, enemyLog, stopIntersection, stopPass);
+        double clockwiseDanger = getDanger(nextWave, stats, clockwiseIntersection, clockwisePass, PRECISE);
+        double counterDanger = getDanger(nextWave, stats, counterIntersection, counterPass, PRECISE);
+        double stopDanger = getDanger(nextWave, stats, stopIntersection, stopPass, PRECISE);
 
         SurfingCandidate[] res = new SurfingCandidate[]{
                 new SurfingCandidate(clockwiseDanger, clockwisePass),
@@ -228,10 +238,10 @@ public class TrueSurfing extends BaseSurfing implements PaintListener {
 //                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].passPoint.velocity)) / 4, 1);
 //            }
 
-            res[i].danger *= Physics.bulletPower(nextWave.getVelocity());
+            res[i].danger *= Rules.getBulletDamage(Physics.bulletPower(nextWave.getVelocity()));
             res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
             res[i].danger *=
-                    Math.pow(2.45, distanceToSource / res[i].passPoint.distance(nextWave.getSource()) - 1);
+                    Math.pow(2.5, distanceToSource / res[i].passPoint.distance(nextWave.getSource()) - 1);
         }
 
         return res;

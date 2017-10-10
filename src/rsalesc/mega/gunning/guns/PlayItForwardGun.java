@@ -25,9 +25,14 @@ package rsalesc.mega.gunning.guns;
 
 import robocode.Rules;
 import robocode.util.Utils;
+import rsalesc.baf2.core.listeners.FireEvent;
+import rsalesc.baf2.core.listeners.FireListener;
 import rsalesc.baf2.core.listeners.TickListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
@@ -36,13 +41,24 @@ import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.melee.gunning.MeleeGun;
+import rsalesc.melee.gunning.MonkGun;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Roberto Sales on 19/09/17.
  */
-public abstract class PlayItForwardGun extends AutomaticGun implements MovieListener, MeleeGun {
+public abstract class PlayItForwardGun extends AutomaticGun implements MovieListener, MeleeGun, FireListener {
     private Player player;
     private Integer K;
+    private GeneratedAngle[] lastGenerated;
+    private GeneratedAngle[] lastFired;
+
+    @Override
+    public void onFire(FireEvent e) {
+        lastFired = lastGenerated;
+    }
 
     @Override
     public String getGunName() {
@@ -105,7 +121,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
 
         TargetingLog f = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
 
-        return getPlayer().getFiringAngles(enemyLog, f, K);
+        return lastGenerated = getPlayer().getFiringAngles(enemyLog, f, K);
     }
 
     @Override

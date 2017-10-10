@@ -21,30 +21,11 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
-
-import robocode.util.Utils;
-import rsalesc.baf2.core.utils.Physics;
-import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.baf2.painting.G;
-import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.baf2.tracking.EnemyTracker;
-import rsalesc.baf2.tracking.MyLog;
-import rsalesc.baf2.tracking.MyRobot;
-import rsalesc.baf2.waves.EnemyWave;
-import rsalesc.baf2.waves.EnemyWaveListener;
-import rsalesc.baf2.waves.WaveManager;
-import rsalesc.melee.Monk;
-
-import java.awt.*;
+package rsalesc.melee.movement.surfing;
 
 /**
- * Created by Roberto Sales on 25/09/17.
+ * Created by Roberto Sales on 09/10/17.
  */
-public class Monk2ndGenMR extends TrueMinimumRisk {
-    public Monk2ndGenMR() {
-        setEvaluation(new RiskEvaluation2nd());
-    }
+public interface SurferProvider {
+    MeleeSurfer getSurfer(String name);
 }

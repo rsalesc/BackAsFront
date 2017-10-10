@@ -21,7 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.melee.movement.risk;
 
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
@@ -33,6 +33,7 @@ import rsalesc.baf2.tracking.MyRobot;
 
 /**
  * Created by Roberto Sales on 25/09/17.
+ * TODO: there is a PEB here
  */
 public class RiskEvaluation1st implements RiskEvaluation {
     @Override

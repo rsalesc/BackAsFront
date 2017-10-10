@@ -30,9 +30,11 @@ import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.waves.BulletManager;
+import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
+import rsalesc.mega.gunning.AntiAdaptiveGun;
+import rsalesc.mega.gunning.AntiRandomGun;
 import rsalesc.mega.gunning.guns.*;
-import rsalesc.mega.gunning.power.MeleePowerSelector;
 import rsalesc.mega.gunning.power.MonkPowerSelector;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.tracking.EnemyMovie;
@@ -43,10 +45,9 @@ import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.melee.gunning.AutomaticMeleeGunArray;
-import rsalesc.melee.gunning.MonkGun;
 import rsalesc.mega.tracking.MovieTracker;
-import rsalesc.melee.gunning.SwarmGun;
-import rsalesc.melee.movement.MonkFeet;
+import rsalesc.melee.gunning.SegmentedSwarmGun;
+import rsalesc.melee.movement.risk.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
 
 import java.awt.*;
@@ -66,6 +67,8 @@ public class Monk extends BackAsFrontRobot2 {
         MovieTracker tracker = new MovieTracker(105, 8);
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
+        ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
+
         StatTracker statTracker = StatTracker.getInstance();
 
         MonkFeet move = new MonkFeet(waveManager, statTracker);
@@ -78,10 +81,19 @@ public class Monk extends BackAsFrontRobot2 {
         MeleeGunArray meleeArray = new MeleeGunArray();
         meleeArray.addGun(pifGun);
 
-        SwarmGun swarm = new SwarmGun(meleeArray, 100);
-        swarm.setPowerSelector(new MonkPowerSelector());
+        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
+        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
 
-        tracker.addListener(pifGun);
+        GunArray duelArray = new GunArray();
+        duelArray.addGun(randomGun);
+        duelArray.addGun(adaptiveGun);
+
+        SegmentedSwarmGun swarm = new SegmentedSwarmGun(100);
+        swarm.setPowerSelector(new MonkPowerSelector());
+        swarm.addGun(meleeArray, 2);
+        swarm.addGun(duelArray, 0);
+
+        tracker.addListener(pifGun, meleeArray.getScoringCondition());
 
         waveManager.addListener(statTracker);
         if(!TC) waveManager.addListener(move);
@@ -89,13 +101,21 @@ public class Monk extends BackAsFrontRobot2 {
         add(tracker);
         add(bulletManager);
         add(waveManager);
+        add(shadowManager);
+
         add(statTracker);
 
-        bulletManager.addListener(meleeArray);
+        bulletManager.addListener(randomGun, duelArray.getScoringCondition());
+        bulletManager.addListener(adaptiveGun, duelArray.getScoringCondition());
+
+        bulletManager.addListener(meleeArray, meleeArray.getScoringCondition());
+        bulletManager.addListener(duelArray, duelArray.getScoringCondition());
 
         if(!TC) add(move);
 
         addListener(meleeArray);
+        addListener(duelArray);
+
         add(swarm);
         add(new MultiModeRadar());
     }

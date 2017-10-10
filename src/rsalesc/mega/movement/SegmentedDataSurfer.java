@@ -31,10 +31,7 @@ import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
-import rsalesc.mega.utils.NamedStatData;
-import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.Timestamped;
-import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.*;
 import rsalesc.mega.utils.segmentation.SegmentationView;
 import rsalesc.mega.utils.segmentation.SegmentedData;
 import rsalesc.mega.utils.segmentation.WeightedSegmentedData;
@@ -70,12 +67,13 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
     }
 
     @Override
-    public void log(EnemyLog enemyLog, TargetingLog log, BreakType type) {
-        getSegmentationView(enemyLog.getName()).add(log, DynamicClusteringSurfer.getGfRange(log), type);
+    public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
+        getSegmentationView(enemyLog.getName()).add(log, DynamicClusteringSurfer.getGfRange(log, mea), type);
     }
 
+    // TODO: fix that
     @Override
-    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
+    public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex, NamedStatData o) {
         if(f == null)
             throw new IllegalStateException();
 
@@ -107,10 +105,5 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
 
         statsCache.put(cacheIndex, stats);
         return stats;
-    }
-
-    @Override
-    public double getDanger(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o, AngularRange intersection) {
-        throw new NotImplementedException();
     }
 }

@@ -21,12 +21,11 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.melee.movement.risk;
 
 
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;

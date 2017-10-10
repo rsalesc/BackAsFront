@@ -24,6 +24,7 @@
 package rsalesc.baf2.core;
 
 import robocode.Condition;
+import rsalesc.baf2.painting.PaintManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,10 +36,18 @@ public abstract class Component {
     private RobotMediator mediator;
     private boolean virtual = false;
     private ArrayList<ConditionedListener> listeners = new ArrayList<>();
+    private boolean inited = false;
 
     public void init(RobotMediator mediator) {
+        if(inited)
+            return;
+
+        inited = true;
         this.mediator = mediator;
+        setupPaintings(mediator.getPaintManager());
     }
+
+    public void setupPaintings(PaintManager manager) {}
 
     public boolean isVirtual() {
         return virtual;

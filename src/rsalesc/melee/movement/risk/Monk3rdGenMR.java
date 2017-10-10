@@ -21,26 +21,14 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
-
-import rsalesc.baf2.core.utils.Physics;
-import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.baf2.painting.G;
-import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.baf2.tracking.EnemyTracker;
-import rsalesc.baf2.tracking.MyLog;
-import rsalesc.baf2.tracking.MyRobot;
-import rsalesc.baf2.waves.EnemyWave;
-
-import java.awt.*;
+package rsalesc.melee.movement.risk;
 
 /**
  * Created by Roberto Sales on 25/09/17.
  */
-public class Monk1stGenMR extends TrueMinimumRisk {
-    public Monk1stGenMR() {
-        setEvaluation(new RiskEvaluation1st());
+public class Monk3rdGenMR extends TrueMinimumRisk {
+    public Monk3rdGenMR() {
+        setEvaluation(new RiskEvaluation3rd());
     }
 
 //    @Override

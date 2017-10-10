@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.waves;
 
-import javafx.scene.chart.Axis;
 import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.BulletListener;
@@ -35,9 +34,14 @@ import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.*;
+import rsalesc.mega.predictor.PredictedPoint;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,7 +49,7 @@ import java.util.Iterator;
 /**
  * Created by Roberto Sales on 11/09/17.
  */
-public class WaveManager extends Component implements EnemyFireListener, PaintListener, EnemyWaveListener,
+public class WaveManager extends Component implements EnemyFireListener, EnemyWaveListener,
         ScannedRobotListener, BulletListener, HitListener, EnemyWavePreciseListener {
     private boolean checked = false;
     private ArrayList<EnemyWave> waves = new ArrayList<>();
@@ -134,13 +138,20 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
     }
 
     @Override
-    public void onPaint(Graphics2D gr) {
-        G g = new G(gr);
-        long time = getMediator().getTime();
+    public void setupPaintings(PaintManager manager) {
+        manager.add(KeyEvent.VK_W, "waves", new Painting() {
+            @Override
+            public void paint(G g) {
+                long time = getMediator().getTime();
 
-        for (EnemyWave wave : waves) {
-            g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
-        }
+                for (EnemyWave wave : waves) {
+                    if(wave.everyoneInside(getMediator()))
+                        continue;
+
+                    g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
+                }
+            }
+        }, true);
     }
 
     @Override
@@ -286,6 +297,38 @@ public class WaveManager extends Component implements EnemyFireListener, PaintLi
             return null;
 
         return waves[0];
+    }
+
+    public EnemyWave earliestWave(MyRobot me, long time, EnemyWaveCondition condition) {
+        EnemyWave[] waves = earliestWaves(1, me.getPoint(), time, new EnemyWaveCondition() {
+            @Override
+            public boolean test(EnemyWave wave) {
+                return condition.test(wave);
+            }
+        });
+
+        if (waves.length == 0)
+            return null;
+
+        return waves[0];
+    }
+
+    public EnemyWave earliestWave(PredictedPoint predictedPoint, long time, EnemyWaveCondition condition) {
+        EnemyWave[] waves = earliestWaves(1, predictedPoint, time, new EnemyWaveCondition() {
+            @Override
+            public boolean test(EnemyWave wave) {
+                return condition.test(wave);
+            }
+        });
+
+        if (waves.length == 0)
+            return null;
+
+        return waves[0];
+    }
+
+    public EnemyWave earliestWave(PredictedPoint predictedPoint, EnemyWaveCondition condition) {
+        return earliestWave(predictedPoint, predictedPoint.getTime(), condition);
     }
 
     public EnemyWave earliestWave(MyRobot me, EnemyRobot enemy, EnemyWaveCondition condition) {

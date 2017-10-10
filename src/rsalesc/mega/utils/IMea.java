@@ -21,32 +21,19 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
+package rsalesc.mega.utils;
 
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TargetingLog;
+import rsalesc.baf2.core.utils.geometry.Range;
 
 /**
- * Created by Roberto Sales on 21/08/17.
+ * Created by Roberto Sales on 09/10/17.
  */
-public class NormalStrategy extends Strategy {
-    @Override
-    public double[] getQuery(TargetingLog f) {
-        return new double[]{
-                Math.max(f.bft() / 80, 1),
-                Math.max(Math.abs(f.lateralVelocity) / 8, 1),
-                Math.max((f.advancingVelocity + 8) / 16.0, 1),
-                (f.accel + 1) * 0.5,
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-        };
-    }
-
-    @Override
-    public double[] getWeights() {
-        return new double[]{6, 5, 4, 2, 4, 1, 1, 1};
-    }
+public interface IMea {
+    double getZeroGf();
+    double getOffset(double gf);
+    double getAngle(double gf);
+    double getUnconstrainedGf(double offset);
+    double getUnconstrainedGfFromAngle(double angle);
+    double getGfFromAngle(double angle);
+    Range getMea();
 }

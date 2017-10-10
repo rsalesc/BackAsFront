@@ -40,8 +40,8 @@ public class BaseRandomStrategy extends GeneticStrategy {
                 Math.min(Math.abs(f.lateralVelocity) / 8, 1),
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getMea(), 1.25),
-                R.constrain(0, -f.getPreciseMea().min / f.getMea(), 1.25),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.25),
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.25),
                 1.0 / (1.0 + params[0] * f.timeDecel),
                 f.virtuality()
         };

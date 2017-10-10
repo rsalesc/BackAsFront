@@ -39,21 +39,21 @@ import java.util.LinkedList;
  * Created by Roberto Sales on 24/07/17.
  */
 public class G {
-    private static final Gradient DANGER_GRADIENT;
-    private static final Gradient SAFE_GRADIENT;
+    private static final Gradient HEAT_GRADIENT;
+    private static final Gradient WAVE_GRADIENT;
     private static final Gradient SAFE_DISCRETE_GRADIENT;
 
     static {
-        DANGER_GRADIENT = new Gradient(new Gradient.GradientColor[]{
+        HEAT_GRADIENT = new Gradient(new Gradient.GradientColor[]{
                 new Gradient.GradientColor(Color.WHITE, 0),
                 new Gradient.GradientColor(Color.YELLOW, 0.5),
                 new Gradient.GradientColor(Color.RED, 1)
         });
 
-        SAFE_GRADIENT = new Gradient(new Gradient.GradientColor[]{
-                new Gradient.GradientColor(Color.GREEN, 0),
-                new Gradient.GradientColor(Color.YELLOW, 0.5),
-                new Gradient.GradientColor(Color.RED, 1)
+        WAVE_GRADIENT = new Gradient(new Gradient.GradientColor[]{
+                new Gradient.GradientColor(Color.DARK_GRAY, 0),
+//                new Gradient.GradientColor(Color.YELLOW, 0.5),
+                new Gradient.GradientColor(new Color(255, 218, 0), 1)
         });
 
         SAFE_DISCRETE_GRADIENT = new Gradient(new Gradient.GradientColor[]{
@@ -75,12 +75,16 @@ public class G {
         colorStack.add(g.getColor());
     }
 
-    public static Color getDangerColor(double alpha) {
-        return DANGER_GRADIENT.evaluate(alpha);
+    public Graphics2D getGraphics() {
+        return g;
     }
 
-    public static Color getSafeColor(double alpha) {
-        return SAFE_GRADIENT.evaluate(alpha);
+    public static Color getHeatColor(double alpha) {
+        return HEAT_GRADIENT.evaluate(alpha);
+    }
+
+    public static Color getWaveDangerColor(double alpha) {
+        return WAVE_GRADIENT.evaluate(alpha);
     }
 
     public static Color getDiscreteSafeColor(double alpha) {
@@ -198,5 +202,11 @@ public class G {
 
     public void drawString(Point p, String s) {
         g.drawString(s, (float) p.x, (float) p.y);
+    }
+
+    public void drawString(Point p, String s, Color c) {
+        pushColor(c);
+        drawString(p, s);
+        popColor();
     }
 }

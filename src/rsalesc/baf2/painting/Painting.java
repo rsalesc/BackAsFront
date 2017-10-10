@@ -21,14 +21,11 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
-
-import rsalesc.baf2.core.RobotMediator;
-import rsalesc.baf2.core.utils.geometry.Point;
+package rsalesc.baf2.painting;
 
 /**
- * Created by Roberto Sales on 25/09/17.
+ * Created by Roberto Sales on 09/10/17.
  */
-public interface RiskEvaluation {
-    double evaluateDanger(RobotMediator mediator, Point dest, double maxDistance, double[] closestDist);
+public interface Painting {
+    void paint(G g);
 }

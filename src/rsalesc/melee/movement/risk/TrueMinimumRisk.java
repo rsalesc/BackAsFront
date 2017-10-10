@@ -21,12 +21,9 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement;
+package rsalesc.melee.movement.risk;
 
-import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
-import rsalesc.baf2.core.listeners.PaintListener;
-import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
@@ -36,6 +33,8 @@ import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.MyLog;
 import rsalesc.baf2.tracking.MyRobot;
+import rsalesc.mega.predictor.MovementPredictor;
+import rsalesc.mega.predictor.PredictedPoint;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ import java.util.ArrayList;
  * Created by Roberto Sales on 12/09/17.
  */
 public class TrueMinimumRisk extends MinimumRisk {
-    private static final int NUM_POINTS = 65;
+    private static final int NUM_POINTS = 50;
     private static final double STICK_LENGTH = 100;
     private static final double DISTANCE_TO_WALL = 22;
     private static final double WALL_STICK = 240;
@@ -61,7 +60,9 @@ public class TrueMinimumRisk extends MinimumRisk {
 
     @Override
     public void run() {
-        Point dest = bestDestination();
+        MoveCandidate candidate = bestDestination();
+        Point dest = candidate.destination;
+
         double angle = Physics.absoluteBearing(getMediator().getPoint(), dest);
         double distance = dest.distance(getMediator().getPoint());
         if (distance < 0.01)
@@ -70,10 +71,11 @@ public class TrueMinimumRisk extends MinimumRisk {
         Controller controller = getMediator().getBodyControllerOrDummy();
 
         controller.setBackAsFront(angle, distance);
+        controller.setMaxVelocity(candidate.maxVel);
         controller.release();
     }
 
-    public Point bestDestination() {
+    public MoveCandidate bestDestination() {
         MyRobot me = MyLog.getInstance().getLatest();
         Point myPoint = getMediator().getPoint();
         EnemyRobot[] enemies = tracker.getLatest();
@@ -94,24 +96,39 @@ public class TrueMinimumRisk extends MinimumRisk {
         lastMaxDistance = maxDistance;
 
         double bestDanger = Double.POSITIVE_INFINITY;
-        Point bestDest = myPoint;
+        MoveCandidate bestCandidate = null;
         candidates = new ArrayList<>();
 
         double ratio = R.DOUBLE_PI / NUM_POINTS;
         for (int i = 0; i < NUM_POINTS; i++) {
             double angle = ratio * i;
             Point dest = myPoint.project(angle, maxDistance).clip(shrinkedField);
+            double moveAngle = Physics.absoluteBearing(me.getPoint(), dest);
+
+            double maxVel = MovementPredictor.predictWallSmoothness(shrinkedField, PredictedPoint.from(me), moveAngle, 1);
 
             double danger = getEvaluation().evaluateDanger(getMediator(), dest, maxDistance, pairwiseClosestDistance);
-            candidates.add(new MoveCandidate(danger, dest));
+            MoveCandidate candidate = new MoveCandidate(danger, dest, maxVel);
+            candidates.add(candidate);
+
+            Point decelDest = MovementPredictor.predictStop(PredictedPoint.from(me), angle);
+            double decelDanger = getEvaluation().evaluateDanger(getMediator(), decelDest, maxDistance, pairwiseClosestDistance);
+            MoveCandidate decelCandidate = new MoveCandidate(decelDanger, decelDest, 0);
+
+            candidates.add(decelCandidate);
 
             if (danger < bestDanger) {
                 bestDanger = danger;
-                bestDest = dest;
+                bestCandidate = candidate;
+            }
+
+            if(decelDanger < bestDanger) {
+                bestDanger = decelDanger;
+                bestCandidate = decelCandidate;
             }
         }
 
-        return bestDest;
+        return bestCandidate;
     }
 
     public double[] getPairwiseClosestDistance(EnemyRobot[] enemies) {
@@ -156,10 +173,12 @@ public class TrueMinimumRisk extends MinimumRisk {
     private class MoveCandidate {
         public final double danger;
         public final Point destination;
+        public final double maxVel;
 
-        private MoveCandidate(double danger, Point destination) {
+        private MoveCandidate(double danger, Point destination, double maxVel) {
             this.danger = danger;
             this.destination = destination;
+            this.maxVel = maxVel;
         }
     }
 }

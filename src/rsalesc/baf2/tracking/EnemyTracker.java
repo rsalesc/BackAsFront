@@ -29,10 +29,7 @@ import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Roberto Sales on 21/07/17.
@@ -131,6 +128,18 @@ public class EnemyTracker {
         Arrays.sort(res, new LatestSeenComparator());
 
         return res;
+    }
+
+    public EnemyRobot[] getLatest(long atLeast) {
+        ArrayList<EnemyRobot> res = new ArrayList<>();
+
+        for(Map.Entry<String, EnemyLog> entry : seenEnemies.entrySet()) {
+            if(entry.getValue().isAlive() && entry.getValue().getLatest() != null &&
+                    entry.getValue().getLatest().getTime() >= atLeast)
+                res.add(entry.getValue().getLatest());
+        }
+
+        return res.toArray(new EnemyRobot[0]);
     }
 
     public EnemyRobot[] getLatestDeadOrAlive() {

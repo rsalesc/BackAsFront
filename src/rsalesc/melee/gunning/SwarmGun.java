@@ -25,12 +25,19 @@ package rsalesc.melee.gunning;
 
 import robocode.Rules;
 import robocode.util.Utils;
+import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.controllers.Controller;
+import rsalesc.baf2.core.listeners.FireEvent;
+import rsalesc.baf2.core.listeners.FireListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.AngularRange;
+import rsalesc.baf2.core.utils.geometry.*;
+import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
@@ -39,32 +46,49 @@ import rsalesc.mega.gunning.guns.GeneratedAngle;
 import rsalesc.mega.utils.StatData;
 import rsalesc.mega.utils.StatTracker;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 /**
  * Created by Roberto Sales on 20/09/17.
+ * TODO: let go of enemies i dont see for a long time
  */
-public class SwarmGun extends AutomaticGun {
+public class SwarmGun extends AutomaticGun implements FireListener {
+    private static final int THRESHOLD = 10;
+
     private AutomaticGun gun;
     private boolean normalize = false;
     private int maxSumK;
 
+    private GeneratedAngle[] lastGenerated;
+    private GeneratedAngle[] lastFired;
+
+    private GeneratedAngle lastPicked;
+    private GeneratedAngle lastFirePicked;
+
+    private Point lastFireSource;
+
     public SwarmGun(AutomaticGun gun, int maxSumK) {
-        if(!(gun instanceof MeleeGun))
+        if(gun != null && !(gun instanceof MeleeGun))
             throw new IllegalStateException();
 
         this.gun = gun;
         this.maxSumK = maxSumK;
     }
 
+    public EnemyRobot[] getLatestSeen() {
+        return EnemyTracker.getInstance().getLatest(getMediator().getTime() - THRESHOLD);
+    }
+
     public int getCommonK() {
-        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        EnemyRobot[] enemies = getLatestSeen();
         int res = maxSumK / (enemies.length == 0 ? 10 : enemies.length);
 
         for(EnemyRobot enemy : enemies) {
-            res = Math.min(res, ((MeleeGun) gun).queryableData(EnemyTracker.getInstance().getLog(enemy)));
+            res = Math.min(res, ((MeleeGun) getGun()).queryableData(EnemyTracker.getInstance().getLog(enemy)));
         }
 
         return Math.max(res, 1);
@@ -112,7 +136,7 @@ public class SwarmGun extends AutomaticGun {
                         controller.setGunTo(pickBestAngle(null, angles, lastPower));
                     } else {
                         // head-on backup
-                        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+                        EnemyRobot[] enemies = getLatestSeen();
                         if (enemies.length > 0) {
                             Arrays.sort(enemies, new Comparator<EnemyRobot>() {
                                 @Override
@@ -135,16 +159,41 @@ public class SwarmGun extends AutomaticGun {
     }
 
     @Override
+    public void setupPaintings(PaintManager manager) {
+        manager.add(KeyEvent.VK_P, "swarm", new Painting() {
+            @Override
+            public void paint(G g) {
+                if(!(getGun() instanceof MeleeGun))
+                    return;
+
+                if (lastFired != null) {
+                    for (GeneratedAngle angle : lastFired) {
+                        g.drawPoint(lastFireSource.project(angle.angle, angle.distance),
+                                Physics.BOT_WIDTH * 2, new Color(29, 29, 29, 150));
+                    }
+                }
+
+                if(lastFirePicked != null) {
+                    g.drawPoint(lastFireSource.project(lastFirePicked.angle, lastFirePicked.distance),
+                            Physics.BOT_WIDTH * 2, new Color(118, 119, 119, 200));
+                }
+            }
+        }, true);
+    }
+
+    @Override
     public GeneratedAngle[] generateFiringAngles(EnemyLog enemyLog, double power) {
         if(enemyLog != null)
             throw new IllegalStateException();
 
-        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        EnemyRobot[] enemies = getLatestSeen();
 
         ArrayList<GeneratedAngle> everyAngle = new ArrayList<>();
 
         AutomaticGun gun = getGun();
-        ((MeleeGun) gun).setK(getCommonK());
+
+        if(gun instanceof MeleeGun)
+            ((MeleeGun) gun).setK(getCommonK());
 
         for(EnemyRobot enemy : enemies) {
             enemyLog = EnemyTracker.getInstance().getLog(enemy);
@@ -162,41 +211,63 @@ public class SwarmGun extends AutomaticGun {
             }
         }
 
-        return everyAngle.toArray(new GeneratedAngle[0]);
+        return lastGenerated = everyAngle.toArray(new GeneratedAngle[0]);
     }
 
     @Override
     public double pickBestAngle(EnemyLog enemyLog, GeneratedAngle[] angles, double power) {
         int remaining = getMediator().getTicksToCool();
 
-        double delta = Math.max(R.PI, Rules.GUN_TURN_RATE_RADIANS * Math.max(remaining * 1.1, 1));
+        double delta = Math.min(R.PI, Rules.GUN_TURN_RATE_RADIANS * Math.max(remaining * 1.1, 1));
         AngularRange range = new AngularRange(getMediator().getGunHeadingRadians(), -delta, +delta);
 
         double bestDensity = Double.NEGATIVE_INFINITY;
         GeneratedAngle bestAngle = null;
 
-        for (GeneratedAngle shootAngle : angles) {
-            if(!range.isAngleNearlyContained(shootAngle.angle))
-                continue;
+        for(int i = 0; i < 5; i++) {
+            for (GeneratedAngle shootAngle : angles) {
+                if (i < 4 && !range.isAngleNearlyContained(shootAngle.angle))
+                    continue;
 
-            double density = 0;
-            for (GeneratedAngle candidate : angles) {
-                double distance = candidate.distance;
-                double angle = candidate.angle;
-                double off = Utils.normalRelativeAngle(shootAngle.angle - angle);
+                double density = 0;
+                for (GeneratedAngle candidate : angles) {
+                    double distance = candidate.distance;
+                    double angle = candidate.angle;
+                    double off = Utils.normalRelativeAngle(shootAngle.angle - angle);
 
-                double x = off / (Physics.hitAngle(distance) * 0.9);
-                if (Math.abs(x) < 1) {
-                    density += R.cubicKernel(x) * candidate.weight / R.sqrt(distance);
+                    double x = off / (Physics.hitAngle(distance) * 0.9);
+                    if (Math.abs(x) < 1) {
+                        density += R.cubicKernel(x) * candidate.weight / R.sqrt(distance);
+                    }
+                }
+
+                if (density > bestDensity) {
+                    bestDensity = density;
+                    bestAngle = shootAngle;
                 }
             }
 
-            if (density > bestDensity) {
-                bestDensity = density;
-                bestAngle = shootAngle;
+            if(bestAngle != null) {
+                lastPicked = bestAngle;
+                return bestAngle.angle;
+            }
+
+            if(i == 0)
+                range = new AngularRange(getMediator().getGunHeadingRadians(), -R.PI/4, +R.PI/4);
+            else {
+                range.min *= 2;
+                range.max *= 2;
             }
         }
 
-        return bestAngle.angle;
+        BackAsFrontRobot2.warn("No angle was picked at SwarmGun.pickBestAngle, picking one arbitrarily.");
+        return angles[(int) (angles.length * Math.random())].angle;
+    }
+
+    @Override
+    public void onFire(FireEvent e) {
+        lastFireSource = e.getSource();
+        lastFired = lastGenerated;
+        lastFirePicked = lastPicked;
     }
 }

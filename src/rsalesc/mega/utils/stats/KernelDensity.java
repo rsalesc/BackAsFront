@@ -27,9 +27,6 @@ package rsalesc.mega.utils.stats;
  * Created by Roberto Sales on 12/09/17.
  */
 public abstract class KernelDensity {
-    private double[] profile = new double[]{_getDensity(0)};
-    private int profileLength = 1;
-
     protected abstract double _getDensity(double x);
 
     public double getDensity(double x) {
