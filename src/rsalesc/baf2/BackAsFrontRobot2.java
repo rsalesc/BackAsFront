@@ -42,6 +42,12 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     private ArrayList<Component> components;
     private RobotMediator mediator;
     private PaintManager paintManager;
+    private int skippedTurns = 0;
+
+    @Override
+    public void onSkippedTurn(SkippedTurnEvent event) {
+        skippedTurns++;
+    }
 
     public abstract void initialize();
 
@@ -164,6 +170,11 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
         }
 
         for (Component component : components) {
+            if (component instanceof BatchScannedRobotListener) {
+                BatchScannedRobotListener listener = (BatchScannedRobotListener) component;
+                listener.onBatchScannedRobot(getScannedRobotEvents());
+            }
+
             if (component instanceof ScannedRobotListener) {
                 ScannedRobotListener listener = (ScannedRobotListener) component;
                 for (ScannedRobotEvent e : getScannedRobotEvents()) {
@@ -344,6 +355,10 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
                 RoundEndedListener listener = (RoundEndedListener) component;
                 listener.onRoundEnded(event);
             }
+        }
+
+        if(skippedTurns > 0) {
+            warn(getName() + " skipped " + skippedTurns + " turn(s) this round!");
         }
     }
 

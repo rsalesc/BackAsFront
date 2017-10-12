@@ -46,15 +46,14 @@ import rsalesc.mega.utils.structures.KnnView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public abstract class DynamicClusteringSurfer extends StoreComponent implements Surfer, KnnProvider<TimestampedGFRange> {
-    private HashMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new PredictedHashMap<>(3000);
-    private HashMap<Long, GuessFactorStats> statsCache = new PredictedHashMap<>(3000);
-
-    public abstract KnnView<TimestampedGFRange> getNewKnnSet();
+public abstract class KnnSurfer extends StoreComponent implements Surfer, KnnProvider<TimestampedGFRange> {
+    private TreeMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new TreeMap<>();
+    private TreeMap<Long, GuessFactorStats> statsCache = new TreeMap<>();
 
     public KnnView<TimestampedGFRange> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
@@ -126,7 +125,7 @@ public abstract class DynamicClusteringSurfer extends StoreComponent implements 
         for (Knn.Entry<TimestampedGFRange> entry : found) {
             double gf = entry.payload.mean;
 
-            stats.add(stats.getBucket(gf), entry.weight / totalWeight, 1); // TODO: normalize weights
+            stats.add(stats.getBucket(gf), entry.weight / totalWeight, 1);
         }
 
         statsCache.put(cacheIndex, stats);

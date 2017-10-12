@@ -87,23 +87,25 @@ public class CircularStats {
             buffer[i] += x;
         else {
             double density;
-            int j = i - 1;
-            int ptr = j;
+            int j = (i - 1 + buffer.length) % buffer.length;
+            int ptr = i - 1;
 
             while (j != i && (density = binKernel.getBinDensity(i - ptr)) > 0) {
-                if(j > 0) j += buffer.length;
                 buffer[j--] += density * x;
                 ptr--;
+
+                if(j < 0) j += buffer.length;
             }
 
             buffer[i] += binKernel.getBinDensity(0) * x;
 
-            j = i + 1;
-            ptr = j;
+            j = (i + 1) % buffer.length;
+            ptr = i + 1;
             while (j != i && (density = binKernel.getBinDensity(i - ptr)) > 0) {
-                if(j >= buffer.length) j -= buffer.length;
                 buffer[j++] += density * x;
                 ptr++;
+
+                if(j >= buffer.length) j -= buffer.length;
             }
         }
     }
@@ -113,36 +115,50 @@ public class CircularStats {
             buffer[i] += x;
         else {
             double density;
-            int j = i - 1;
-            int ptr = j;
+            int j = (i - 1 + buffer.length) % buffer.length;
+            int ptr = i - 1;
             while (j != i && (density = kernel.getDensity(i - ptr, bandwidth)) > 0) {
-                if(j > 0) j += buffer.length;
                 buffer[j--] += density * x;
                 ptr--;
+
+                if(j < 0) j += buffer.length;
             }
 
             buffer[i] += kernel.getDensity(0) * x;
 
-            j = i + 1;
-            ptr = j;
+            j = (i + 1) % buffer.length;
+            ptr = i + 1;
             while (j != i && (density = kernel.getDensity(i - ptr, bandwidth)) > 0) {
-                if(j >= buffer.length) j -= buffer.length;
                 buffer[j++] += density * x;
                 ptr++;
+
+                if(j >= buffer.length) j -= buffer.length;
             }
         }
     }
 
     public void normalize() {
-        double max = 0;
+        double max = 1e-20;
         for (int i = 0; i < buffer.length; i++)
             max = Math.max(max, Math.abs(buffer[i]));
 
-        if (!R.isNear(max, 0)) {
-            for (int i = 0; i < buffer.length; i++) {
-                buffer[i] /= max;
-            }
+        for (int i = 0; i < buffer.length; i++) {
+            buffer[i] /= max;
         }
+    }
+
+    public void normalizeSum() {
+        double sum = 1e-20;
+        for(int i = 0; i < buffer.length; i++)
+            sum += buffer[i];
+
+        for(int i = 0; i < buffer.length; i++)
+            buffer[i] /= sum;
+    }
+
+    public void scale(double x) {
+        for(int i = 0; i < buffer.length; i++)
+            buffer[i] *= x;
     }
 
     public void clear() {

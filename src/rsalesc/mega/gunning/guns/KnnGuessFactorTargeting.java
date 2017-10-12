@@ -49,7 +49,7 @@ import java.util.List;
  * TC1: had payload bandwidth and inverse distance weighter, besides ratio 0.1
  * TC2: had hit-angle bandwidth and gauss distance weighter, besides ratio 0.33
  */
-public abstract class DynamicClusteringGFTargeting extends StoreComponent implements GFTargeting, KnnProvider<TimestampedGFRange> {
+public abstract class KnnGuessFactorTargeting extends StoreComponent implements GFTargeting, KnnProvider<TimestampedGFRange> {
     public abstract KnnView<TimestampedGFRange> getNewKnnSet();
 
     public KnnView<TimestampedGFRange> getKnnSet(String name) {

@@ -25,11 +25,10 @@ package rsalesc.mega.gunning;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.waves.BulletManager;
-import rsalesc.mega.gunning.guns.DynamicClusteringGFTargeting;
+import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.gunning.strategies.dc.AntiSurferStrategy;
-import rsalesc.mega.gunning.strategies.dc.TunedAdaptiveStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
@@ -40,7 +39,7 @@ import rsalesc.mega.utils.structures.KnnTree;
  */
 public class AntiAdaptiveGun extends GuessFactorGun {
     public AntiAdaptiveGun(BulletManager manager, PowerSelector selector) {
-        super(new DynamicClusteringGFTargeting() {
+        super(new KnnGuessFactorTargeting() {
             @Override
             public KnnView<TimestampedGFRange> getNewKnnSet() {
                 return new KnnView<TimestampedGFRange>()

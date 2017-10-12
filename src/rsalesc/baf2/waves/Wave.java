@@ -213,8 +213,12 @@ public class Wave {
         return Rules.getBulletDamage(getPower());
     }
 
+    public double getBonus() {
+        return Rules.getBulletHitBonus(getPower());
+    }
+
     public double getDifferential() {
-        return Rules.getBulletDamage(getPower()) + Rules.getBulletHitBonus(getPower());
+        return getDamage() + getBonus();
     }
 
     public boolean everyoneInside(RobotMediator mediator) {

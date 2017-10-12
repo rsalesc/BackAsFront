@@ -24,17 +24,13 @@
 package rsalesc.mega.learning.genetic;
 
 import rsalesc.baf2.core.StorageNamespace;
-import rsalesc.mega.gunning.guns.DynamicClusteringGFTargeting;
+import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.utils.Strategy;
-import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
-import rsalesc.mega.utils.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 02/10/17.
  */
-public abstract class GeneticGunTargeting extends DynamicClusteringGFTargeting {
+public abstract class GeneticGunTargeting extends KnnGuessFactorTargeting {
     private final int threadNumber;
     private final Strategy geneticStrategy;
 

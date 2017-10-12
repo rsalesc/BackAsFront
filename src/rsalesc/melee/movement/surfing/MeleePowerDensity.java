@@ -21,20 +21,23 @@
  *    distribution.
  */
 
-package rsalesc.mega.utils;
+package rsalesc.melee.movement.surfing;
 
-import rsalesc.baf2.core.utils.geometry.Range;
+import rsalesc.mega.utils.stats.PowerKernelDensity;
 
 /**
- * Created by Roberto Sales on 09/10/17.
+ * Created by Roberto Sales on 11/10/17.
  */
-public interface IMea {
-    double getZeroGf();
-    double getOffset(double gf);
-    double getAngle(double gf);
-    double getUnconstrainedGf(double offset);
-    double getUnconstrainedGfFromAngle(double angle);
-    double getGfFromAngle(double angle);
-    double getGf(double offset);
-    Range getMea();
+public class MeleePowerDensity extends PowerKernelDensity {
+    private final double cutoff;
+
+    public MeleePowerDensity(double ratio, double cutoff) {
+        super(ratio);
+        this.cutoff = cutoff;
+    }
+
+    @Override
+    public double cutoff() {
+        return cutoff;
+    }
 }

@@ -26,6 +26,7 @@ package rsalesc.baf2.tracking;
 import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
 import rsalesc.baf2.core.utils.PredictedHashMap;
+import rsalesc.baf2.waves.EnemyWave;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
 /**
  * Created by Roberto Sales on 29/08/17.
  */
-public class HeatTracker {
+public class HeatTracker implements CrossFireListener {
     private static final HeatTracker SINGLETON = new HeatTracker();
 
     double coolingRate = 0.1;
@@ -79,6 +80,10 @@ public class HeatTracker {
         return ensure(e.getName());
     }
 
+    public double getDifferential(EnemyRobot e) {
+        return ensure(e).getDifferential(e);
+    }
+
     public EnemyFireEvent push(EnemyRobot e) {
         return ensure(e).push(e);
     }
@@ -89,5 +94,11 @@ public class HeatTracker {
 
     public void onHitByBullet(HitByBulletEvent e) {
         ensure(e.getName()).onHitByBullet(e);
+    }
+
+    @Override
+    public void onCrossHit(EnemyWave wave, EnemyRobot hitEnemy) {
+        ensure(hitEnemy).lostEnergy(wave.getDamage());
+        ensure(wave.getEnemy()).gainedEnergy(wave.getBonus());
     }
 }

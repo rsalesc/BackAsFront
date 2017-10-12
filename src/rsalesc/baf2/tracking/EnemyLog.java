@@ -27,9 +27,14 @@ package rsalesc.baf2.tracking;
  * Created by Roberto Sales on 21/07/17.
  */
 
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.R;
+import rsalesc.mega.predictor.MovementPredictor;
+import rsalesc.mega.predictor.PredictedPoint;
 
 import java.util.ArrayList;
 import java.util.Collections;

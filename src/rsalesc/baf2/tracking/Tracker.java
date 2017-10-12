@@ -27,11 +27,17 @@ import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Roberto Sales on 11/09/17.
+ * TODO: handle onDeath event like damage
  */
 public class Tracker extends Component implements TickListener, ScannedRobotListener, RoundStartedListener,
         RobotDeathListener, BulletListener, HitListener, EnemyFireListener {
+    public static final int SEEN_THRESHOLD = 10;
+
     @Override
     public void onTick(long time) {
         MyLog.getInstance().push(new MyRobot(getMediator()));

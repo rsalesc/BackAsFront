@@ -23,6 +23,7 @@
 
 package rsalesc.mega.tracking;
 
+import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public class MovieTracker extends Tracker {
+public class MovieTracker extends Component {
     private long sequenceSize;
     private long allowedGap;
 
@@ -50,7 +51,7 @@ public class MovieTracker extends Tracker {
 
     @Override
     public void beforeRun() {
-        super.beforeRun();
+//        super.beforeRun();
 
         long time = getMediator().getTime();
         EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();

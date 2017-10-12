@@ -29,10 +29,9 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.colors.Gradient;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -197,6 +196,47 @@ public class G {
     public void drawRadial(Point center, double angle, double start, double end, Color color) {
         pushColor(color);
         drawRadial(center, angle, start, end);
+        popColor();
+    }
+
+    public GeneralPath getPath(Collection<Point> points) {
+        GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, points.size());
+        int cnt = 0;
+        for(Point point : points) {
+            if(cnt == 0)
+                path.moveTo(point.x, point.y);
+            else
+                path.lineTo(point.x, point.y);
+
+            cnt++;
+        }
+
+        return path;
+    }
+
+    public GeneralPath getPolygon(Collection<Point> points) {
+        GeneralPath path = getPath(points);
+        path.closePath();
+        return path;
+    }
+
+    public void drawBeam(Point center, double startAngle, double endAngle) {
+        g.draw(getPolygon(Arrays.asList(center, center.project(startAngle, 1500), center.project(endAngle, 1500))));
+    }
+
+    public void drawBeam(Point center, double startAngle, double endAngle, Color color) {
+        pushColor(color);
+        drawBeam(center, startAngle, endAngle);
+        popColor();
+    }
+
+    public void fillBeam(Point center, double startAngle, double endAngle) {
+        g.fill(getPolygon(Arrays.asList(center, center.project(startAngle, 1500), center.project(endAngle, 1500))));
+    }
+
+    public void fillBeam(Point center, double startAngle, double endAngle, Color color) {
+        pushColor(color);
+        fillBeam(center, startAngle, endAngle);
         popColor();
     }
 

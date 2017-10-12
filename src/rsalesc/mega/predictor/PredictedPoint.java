@@ -27,6 +27,7 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.RobotSnapshot;
 import rsalesc.baf2.waves.RobotWave;
@@ -142,5 +143,9 @@ public class PredictedPoint extends Point {
         if (getAhead() < 0)
             return Utils.normalAbsoluteAngle(heading + R.PI);
         return heading;
+    }
+
+    public AxisRectangle getHitBox() {
+        return new AxisRectangle(this, Physics.BOT_WIDTH);
     }
 }

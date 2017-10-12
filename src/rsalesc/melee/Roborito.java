@@ -32,7 +32,7 @@ import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
-import rsalesc.mega.gunning.guns.DynamicClusteringPlayer;
+import rsalesc.mega.gunning.guns.KnnPlayer;
 import rsalesc.mega.gunning.guns.HeadOnGun;
 import rsalesc.mega.gunning.guns.PlayItForwardGun;
 import rsalesc.mega.gunning.power.MirrorSwarmSelector;
@@ -124,7 +124,7 @@ public class Roborito extends BackAsFrontRobot2 {
 
     private static class PifGun extends PlayItForwardGun {
         public PifGun(PowerSelector selector) {
-            super(new DynamicClusteringPlayer() {
+            super(new KnnPlayer() {
                 @Override
                 public KnnView<EnemyMovie> getNewKnnSet() {
                     return new KnnView<EnemyMovie>()

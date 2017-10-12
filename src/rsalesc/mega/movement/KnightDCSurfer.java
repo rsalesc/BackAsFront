@@ -28,7 +28,6 @@ import rsalesc.mega.movement.strategies.dc.FlatteningStrategy;
 import rsalesc.mega.movement.strategies.dc.NormalStrategy;
 import rsalesc.mega.movement.strategies.dc.UnsegStrats;
 import rsalesc.mega.utils.NamedStatData;
-import rsalesc.mega.utils.Timestamped;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnView;
@@ -37,7 +36,7 @@ import rsalesc.mega.utils.structures.KnnTree;
 /**
  * Created by Roberto Sales on 13/09/17.
  */
-public abstract class KnightDCSurfer extends DynamicClusteringSurfer {
+public abstract class KnightDCSurfer extends KnnSurfer {
     private static Knn.ParametrizedCondition CONTRADICTION = (new NamedStatData.HitCondition(new Range(1, 1), 0));
 
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =

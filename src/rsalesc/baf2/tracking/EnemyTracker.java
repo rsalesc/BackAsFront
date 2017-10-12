@@ -99,6 +99,10 @@ public class EnemyTracker {
         return getLog(e.getName());
     }
 
+    public EnemyLog getLog(InterpolatedSnapshot e) {
+        return getLog(e.getName());
+    }
+
     public EnemyRobot getLatestState(String name) {
         return getLog(name).getLatest();
     }
@@ -162,7 +166,7 @@ public class EnemyTracker {
     }
 
     public void killAll() {
-        for (EnemyRobot enemy : getLatest()) {
+        for (EnemyRobot enemy : getLatestDeadOrAlive()) {
             getLog(enemy).clear();
             getLog(enemy).kill();
         }

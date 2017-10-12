@@ -23,6 +23,7 @@
 
 package rsalesc.melee.utils.stats;
 
+import robocode.util.Utils;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.Range;
@@ -36,7 +37,7 @@ import java.util.Arrays;
  * Created by Roberto Sales on 10/10/17.
  */
 public class CircularGuessFactorStats extends CircularStats {
-    public static final int BUCKET_COUNT = 120;
+    public static final int BUCKET_COUNT = 240;
 
     public CircularGuessFactorStats(KernelDensity kernel) {
         super(BUCKET_COUNT, kernel);
@@ -69,6 +70,22 @@ public class CircularGuessFactorStats extends CircularStats {
         return new CircularGuessFactorStats(buffer, null);
     }
 
+    public static CircularGuessFactorStats mergeSum(CircularGuessFactorStats[] sts, double[] weights) {
+        int size = BUCKET_COUNT;
+        double[] buffer = new double[size];
+        for (int i = 0; i < sts.length; i++) {
+            if (sts[i] == null)
+                continue;
+            CircularGuessFactorStats normalized = (CircularGuessFactorStats) (sts[i].clone());
+            normalized.normalizeSum();
+            for (int j = 0; j < size; j++) {
+                buffer[j] += normalized.get(j);
+            }
+        }
+
+        return new CircularGuessFactorStats(buffer, null);
+    }
+
     @Override
     public Object clone() {
         double[] newBuffer = Arrays.copyOf(buffer, buffer.length);
@@ -77,12 +94,12 @@ public class CircularGuessFactorStats extends CircularStats {
     }
 
     public int getBucket(double angle) {
-        int index = (int) (angle * BUCKET_COUNT);
+        int index = (int) (angle / R.DOUBLE_PI * BUCKET_COUNT);
         return R.constrain(0, index, BUCKET_COUNT - 1);
     }
 
     public double getAngle(int index) {
-        return R.constrain(-1, (double) index / BUCKET_COUNT * R.DOUBLE_PI, +1);
+        return Utils.normalAbsoluteAngle((double) index / BUCKET_COUNT * R.DOUBLE_PI);
     }
 
     public int getBestBucket(AngularRange range) {

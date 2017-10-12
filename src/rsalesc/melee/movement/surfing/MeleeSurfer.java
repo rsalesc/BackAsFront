@@ -35,7 +35,7 @@ import rsalesc.melee.utils.stats.CircularGuessFactorStats;
  * Created by Roberto Sales on 12/09/17.
  */
 public interface MeleeSurfer {
-    boolean hasData(EnemyLog enemyLog, NamedStatData o);
+    boolean hasData(EnemyLog enemyLog);
 
     void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type);
 

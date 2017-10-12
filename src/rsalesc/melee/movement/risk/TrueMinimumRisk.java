@@ -131,7 +131,7 @@ public class TrueMinimumRisk extends MinimumRisk {
         return bestCandidate;
     }
 
-    public double[] getPairwiseClosestDistance(EnemyRobot[] enemies) {
+    public static double[] getPairwiseClosestDistance(EnemyRobot[] enemies) {
         double[] res = new double[enemies.length];
 
         for (int i = 0; i < enemies.length; i++) {

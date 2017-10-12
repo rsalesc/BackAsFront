@@ -92,9 +92,16 @@ public class HeatLog {
         return fireEvent;
     }
 
+    public double getDifferential(EnemyRobot enemy) {
+        if(lastEnemy == null)
+            return 0;
+        return enemy.getEnergy() - lastEnergy;
+    }
+
     private EnemyFireEvent checkShot(EnemyRobot enemy) {
-        double energyDelta = enemy.getEnergy() - lastEnergy;
-        if (ticksSinceCool() > 0 && R.nearOrBetween(-Physics.MAX_POWER, energyDelta, -Physics.MIN_POWER)) {
+        double energyDelta = getDifferential(enemy);
+        if ((lastEnemy == null || lastEnemy.getTime() >= enemy.getTime() - 10) && ticksSinceCool() > 0
+                && R.nearOrBetween(-Physics.MAX_POWER, energyDelta, -Physics.MIN_POWER)) {
             long lastCool = currentTime - ticksSinceCool();
             EnemyFireEvent fireEvent = new EnemyFireEvent(enemy, Math.max(lastCool, lastEnemy.getTime()), -energyDelta);
 
@@ -120,12 +127,20 @@ public class HeatLog {
         return Math.max(-1, currentTime - (lastShot.getTime() + ticksNeeded));
     }
 
+    public void lostEnergy(double energy) {
+        lastEnergy -= energy;
+    }
+
+    public void gainedEnergy(double energy) {
+        lastEnergy += energy;
+    }
+
     public void onHitByBullet(HitByBulletEvent e) {
-        lastEnergy += Rules.getBulletHitBonus(e.getBullet().getPower());
+        gainedEnergy(Rules.getBulletDamage(e.getBullet().getPower()));
     }
 
     public void onBulletHit(BulletHitEvent e) {
-        lastEnergy -= Rules.getBulletDamage(e.getBullet().getPower());
+        lostEnergy(Rules.getBulletDamage(e.getBullet().getPower()));
     }
 
     public double getHeat() {

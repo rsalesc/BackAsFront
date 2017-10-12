@@ -27,6 +27,7 @@ import javafx.scene.effect.Shadow;
 import robocode.Bullet;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.tracking.EnemyRobot;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 public class RobotWave extends Wave {
     private Bullet hit;
     private Bullet bulletHit;
+    private EnemyRobot crossHit;
     private long hitTime = Long.MAX_VALUE;
     private boolean missed = false;
 
@@ -83,7 +85,23 @@ public class RobotWave extends Wave {
         return bulletHit;
     }
 
+    public boolean hasCrossHit() {
+        return crossHit != null;
+    }
+
+    public void setCrossHit(EnemyRobot enemyHit) {
+        crossHit = enemyHit;
+    }
+
+    public EnemyRobot getCrossHit() {
+        return crossHit;
+    }
+
     public boolean hasAnyHit() {
+        return hasHit() || hasBulletHit() || hasCrossHit();
+    }
+
+    public boolean hasCertainHit() {
         return hasHit() || hasBulletHit();
     }
 }

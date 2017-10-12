@@ -106,7 +106,7 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
             if(pastEnemy == null)
                 continue;
 
-            MyRobot pastMe = MyLog.getInstance().exactlyAt(pastEnemy.getTime());
+            InterpolatedSnapshot pastMe = MyLog.getInstance().interpolate(pastEnemy.getTime());
 
             if(pastMe == null)
                 continue;

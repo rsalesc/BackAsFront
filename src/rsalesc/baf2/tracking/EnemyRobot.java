@@ -45,6 +45,7 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
     private double approachingVelocity;
     private double distanceToWall;
     private int ahead;
+    private int others;
 
     private BattleTime battleTime;
 
@@ -60,7 +61,7 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
         throw new UnsupportedOperationException();
     }
 
-    public void update(ScannedRobotEvent e, RobotMediator mediator) {
+    private void update(ScannedRobotEvent e, RobotMediator mediator) {
         super.update(e);
         battleTime = mediator.getBattleTime();
         AxisRectangle field = mediator.getBattleField();
@@ -70,6 +71,7 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
         Point projected = mediator.getPoint().project(absBearing, e.getDistance());
         x = projected.x;
         y = projected.y;
+        others = mediator.getOthers();
 
         lateralVelocity = Physics.getLateralVelocityFromStationary(absBearing, getVelocity(), getHeading());
         angularVelocity = Physics.getAngularVelocityFromStationary(absBearing, getDistance(), getVelocity(), getHeading());
@@ -171,5 +173,9 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
         if (getAhead() < 0)
             return Utils.normalAbsoluteAngle(getHeading() + R.PI);
         return getHeading();
+    }
+
+    public int getOthers() {
+        return others;
     }
 }

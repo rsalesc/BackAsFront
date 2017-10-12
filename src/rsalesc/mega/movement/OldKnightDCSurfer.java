@@ -34,7 +34,7 @@ import rsalesc.mega.utils.structures.KnnTree;
 /**
  * Created by Roberto Sales on 13/09/17.
  */
-public abstract class OldKnightDCSurfer extends DynamicClusteringSurfer {
+public abstract class OldKnightDCSurfer extends KnnSurfer {
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =
             new NamedStatData.HitCondition(new Range(0.035, Double.POSITIVE_INFINITY), 0);
 

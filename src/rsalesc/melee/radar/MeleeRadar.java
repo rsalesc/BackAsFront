@@ -35,11 +35,15 @@ import java.util.Comparator;
 
 /**
  * Created by Roberto Sales on 12/09/17.
+ * TODO: improve radar, maybe kill by inactivity
  */
 public class MeleeRadar extends Component {
+    private EnemyRobot lastEnemy;
+    private double lastSignal;
+
     @Override
     public void run() {
-        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - 8);
         Arrays.sort(enemies, new Comparator<EnemyRobot>() {
             @Override
             public int compare(EnemyRobot o1, EnemyRobot o2) {
@@ -49,20 +53,21 @@ public class MeleeRadar extends Component {
 
         Controller controller = getMediator().getRadarControllerOrDummy();
 
+        lastEnemy = null;
+
         if (enemies.length < getMediator().getOthers() || enemies.length == 0) {
             controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
         } else {
             double absBearing = enemies[0].getAbsoluteBearing();
 
-            double signal = Math.signum(Utils.normalRelativeAngle(
+            double signal = enemies[0] != lastEnemy ? Math.signum(Utils.normalRelativeAngle(
                     absBearing - getMediator().getRadarHeadingRadians()
-            ));
+            )) : lastSignal;
 
-            if (MyLog.getInstance().getRadarRange().isAngleNearlyContained(absBearing)) {
-                controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
-            } else {
-                controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY * signal);
-            }
+            controller.setTurnRadarRightRadians(Double.POSITIVE_INFINITY * signal);
+
+            lastSignal = signal;
+            lastEnemy = enemies[0];
         }
 
         controller.release();

@@ -24,10 +24,18 @@
 package rsalesc.melee.radar;
 
 import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
+import rsalesc.baf2.painting.G;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
+import rsalesc.baf2.tracking.MyLog;
+import rsalesc.baf2.tracking.MyRobot;
 import rsalesc.mega.radar.PerfectLockRadar;
+
+import java.awt.*;
 
 /**
  * Created by Roberto Sales on 12/09/17.
@@ -57,5 +65,24 @@ public class MultiModeRadar extends Component implements RoundStartedListener, S
     public void onScannedRobot(ScannedRobotEvent e) {
         if (getMediator().getOthers() == 1)
             perfectRadar.onScannedRobot(e);
+    }
+
+    @Override
+    public void setupPaintings(PaintManager manager) {
+        manager.add(new Painting() {
+            @Override
+            public void paint(G g) {
+                MyRobot me = MyLog.getInstance().getLatest();
+                MyRobot pastMe = MyLog.getInstance().before(me);
+
+                if(pastMe == null)
+                    return;
+
+                double startAngle = pastMe.getRadarHeading();
+                double endAngle = me.getRadarHeading();
+
+                g.fillBeam(me.getPoint(), startAngle, endAngle, new Color(255, 0, 0, 50));
+            }
+        });
     }
 }

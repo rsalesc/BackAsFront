@@ -29,26 +29,31 @@ import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.tracking.Tracker;
+import rsalesc.baf2.tracking.MeleeTracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.AntiAdaptiveGun;
 import rsalesc.mega.gunning.AntiRandomGun;
-import rsalesc.mega.gunning.guns.*;
+import rsalesc.mega.gunning.guns.AutomaticGunArray;
+import rsalesc.mega.gunning.guns.KnnPlayer;
+import rsalesc.mega.gunning.guns.PlayItForwardGun;
 import rsalesc.mega.gunning.power.MonkPowerSelector;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.tracking.EnemyMovie;
+import rsalesc.mega.tracking.MovieTracker;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.melee.gunning.AutomaticMeleeGunArray;
-import rsalesc.mega.tracking.MovieTracker;
 import rsalesc.melee.gunning.SegmentedSwarmGun;
 import rsalesc.melee.movement.risk.MonkFeet;
+import rsalesc.melee.movement.surfing.MedinaBoard;
+import rsalesc.melee.movement.surfing.MeleeSurfer;
+import rsalesc.melee.movement.surfing.MeleeSurfing;
 import rsalesc.melee.radar.MultiModeRadar;
 
 import java.awt.*;
@@ -56,7 +61,7 @@ import java.awt.*;
 /**
  * Created by Roberto Sales on 11/09/17.
  */
-public class Monk extends BackAsFrontRobot2 {
+public class Medina extends BackAsFrontRobot2 {
     private static final boolean TC = false;
 
     @Override
@@ -65,19 +70,21 @@ public class Monk extends BackAsFrontRobot2 {
 
         add(new Colorizer());
 
-        Tracker tracker = new Tracker();
-        MovieTracker movieTracker = new MovieTracker(105, 8);
-
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
+
+        MeleeTracker tracker = new MeleeTracker(waveManager);
+        MovieTracker movieTracker = new MovieTracker(105, 8);
+
         ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
 
         StatTracker statTracker = StatTracker.getInstance();
 
-        MonkFeet move = new MonkFeet(waveManager, statTracker);
+        MeleeSurfing move = new MedinaBoard(waveManager);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
+        if(!TC) tracker.addListener(move);
 
         PlayItForwardGun pifGun = new PifGun(null);
 
@@ -128,10 +135,10 @@ public class Monk extends BackAsFrontRobot2 {
         @Override
         public void onRoundStarted(int round) {
             RobotMediator mediator = getMediator();
-            mediator.setBodyColor(new Color(255, 182, 135));
-            mediator.setGunColor(new Color(165, 24, 6));
-            mediator.setRadarColor(new Color(165, 24, 6));
-            mediator.setScanColor(new Color(255, 0, 0));
+            mediator.setBodyColor(new Color(34, 164, 23));
+            mediator.setGunColor(new Color(255, 247, 34));
+            mediator.setRadarColor(new Color(28, 149, 27));
+            mediator.setScanColor(new Color(57, 225, 255));
         }
     }
 

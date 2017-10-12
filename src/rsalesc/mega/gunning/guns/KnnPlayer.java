@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * Created by Roberto Sales on 19/09/17.
  */
-public abstract class DynamicClusteringPlayer extends StoreComponent implements Player, KnnProvider<EnemyMovie> {
+public abstract class KnnPlayer extends StoreComponent implements Player, KnnProvider<EnemyMovie> {
     public abstract KnnView<EnemyMovie> getNewKnnSet();
 
     public KnnView<EnemyMovie> getKnnSet(String name) {

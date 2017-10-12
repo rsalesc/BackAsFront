@@ -34,7 +34,6 @@ import rsalesc.baf2.waves.BreakType;
 import rsalesc.genetic.Chromosome;
 import rsalesc.genetic.ChromosomePerformance;
 import rsalesc.genetic.FitnessFunction;
-import rsalesc.mega.gunning.guns.DynamicClusteringGFTargeting;
 import rsalesc.mega.gunning.guns.GeneratedAngle;
 import rsalesc.mega.learning.recording.DuelRecord;
 import rsalesc.mega.learning.recording.DuelRecordSuperPack;

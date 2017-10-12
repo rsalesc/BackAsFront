@@ -56,4 +56,6 @@ public interface RobotSnapshot {
     double getHeading();
 
     double getBafHeading();
+
+    int getOthers();
 }

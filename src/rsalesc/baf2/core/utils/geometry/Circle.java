@@ -44,13 +44,25 @@ public class Circle {
         return center.distance(point) < radius + R.EPSILON;
     }
 
-    public boolean isInside(AxisRectangle rect) {
-        for(Point point : rect.getCorners()) {
+    public boolean isInside(Point ...points) {
+        for(Point point : points)
             if(!isInside(point))
                 return false;
-        }
 
         return true;
+    }
+
+    public int countInside(Point ...points) {
+        int res = 0;
+        for(Point point : points)
+            if(isInside(point))
+                res++;
+
+        return res;
+    }
+
+    public boolean isInside(AxisRectangle rect) {
+        return isInside(rect.getCorners());
     }
 
     public Point[] intersect(AxisRectangle rect) {

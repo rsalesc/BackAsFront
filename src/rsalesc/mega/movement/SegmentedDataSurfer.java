@@ -28,7 +28,6 @@ import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.PredictedHashMap;
-import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.*;
@@ -38,7 +37,6 @@ import rsalesc.mega.utils.segmentation.WeightedSegmentedData;
 import rsalesc.mega.utils.stats.BinKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +66,7 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
 
     @Override
     public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
-        getSegmentationView(enemyLog.getName()).add(log, DynamicClusteringSurfer.getGfRange(log, mea), type);
+        getSegmentationView(enemyLog.getName()).add(log, KnnSurfer.getGfRange(log, mea), type);
     }
 
     // TODO: fix that

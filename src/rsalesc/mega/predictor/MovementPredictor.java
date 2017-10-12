@@ -65,7 +65,7 @@ public abstract class MovementPredictor {
             double pointingAngle = Physics.absoluteBearing(wave.getSource(), cur) + perpendiculator * direction;
             double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, stick, cur,
                     pointingAngle, direction));
-            cur = _tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
+            cur = tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
             res.add(cur);
         }
 
@@ -82,7 +82,7 @@ public abstract class MovementPredictor {
         while (hasToPass && !wave.hasPassedRobot(cur, cur.time) || !wave.hasPassed(cur, cur.time)) {
             double distance = cur.distance(dest);
             double angle = R.isNear(distance, 0) ? cur.heading : Physics.absoluteBearing(cur, dest);
-            cur = _tick(cur, angle, Rules.MAX_VELOCITY, distance);
+            cur = tick(cur, angle, Rules.MAX_VELOCITY, distance);
             res.add(cur);
         }
 
@@ -94,7 +94,6 @@ public abstract class MovementPredictor {
         List<PredictedPoint> points =
                 predictOnWaveImpact(field, stick, initialPoint, wave, direction, perpendiculator, hasToPass, false);
 
-        points.add(0, initialPoint);
         PredictedPoint back = points.get(points.size() - 1);
 
         for (int i = 0; i < 3; i++) {
@@ -139,26 +138,53 @@ public abstract class MovementPredictor {
         PredictedPoint cur = initialPoint;
         int iterations = 0;
         while(cur.getSpeed() > 0 && iterations++ < 10) {
-            cur = _tick(cur, angle, 0, Double.POSITIVE_INFINITY);
+            cur = tick(cur, angle, 0, Double.POSITIVE_INFINITY);
         }
 
         return cur;
     }
 
+    public static List<PredictedPoint> tracePath(PredictedPoint initialPoint, Point dest, double maxVel, long deltaTime) {
+        PredictedPoint cur = initialPoint;
+        ArrayList<PredictedPoint> path = new ArrayList<>();
+        path.add(cur);
+
+        long end = initialPoint.getTime() + deltaTime;
+
+        while(cur.distance(dest) > 0.1 && cur.getTime() < end) {
+            double distance = cur.distance(dest);
+            double angle = R.isNear(distance, 0) ? cur.heading : Physics.absoluteBearing(cur, dest);
+            cur = tick(cur, angle, maxVel, cur.distance(dest));
+            path.add(cur);
+        }
+
+        return path;
+    }
+
+    public static boolean collides(AxisRectangle shrinkedField, PredictedPoint initialPoint, Point dest, double maxVel) {
+        List<PredictedPoint> path = tracePath(initialPoint, dest, maxVel, 100);
+
+        for(PredictedPoint point : path)
+            if(!shrinkedField.contains(point))
+                return true;
+
+        return false;
+    }
+
     public static double predictWallSmoothness(AxisRectangle shrinked, PredictedPoint initialPoint, double angle, int preSteps) {
         PredictedPoint cur = initialPoint;
-        if(!shrinked.strictlyContains(cur))
+        if(!shrinked.contains(cur))
             return 0;
 
         PredictedPoint initCur = cur;
 
         for(int i = 0; i < preSteps; i++) {
-            cur = _tick(cur, angle, Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
-            if(!shrinked.strictlyContains(cur))
+            cur = tick(cur, angle, Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
+            if(!shrinked.contains(cur))
                 return 0;
         }
 
-        if(shrinked.strictlyContains(cur.project(cur.getBafHeading(), 160)))
+        if(shrinked.contains(cur.project(cur.getBafHeading(), 160)))
             return Rules.MAX_VELOCITY;
 
         double l = 0, r = Rules.MAX_VELOCITY;
@@ -168,19 +194,19 @@ public abstract class MovementPredictor {
             double mid = (l+r) / 2;
 
             int iterations = 0;
-            while(iterations++ < maxIterations && shrinked.strictlyContains(cur))
-                cur = _tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() + Rules.MAX_TURN_RATE_RADIANS),
+            while(iterations++ < maxIterations && shrinked.contains(cur))
+                cur = tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() + Rules.MAX_TURN_RATE_RADIANS),
                     mid, Double.POSITIVE_INFINITY);
 
-            if(shrinked.strictlyContains(cur))
+            if(shrinked.contains(cur))
                 l = mid;
             else {
                 iterations = 0;
-                while(iterations++ < maxIterations && shrinked.strictlyContains(cur))
-                    cur = _tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() - Rules.MAX_TURN_RATE_RADIANS),
+                while(iterations++ < maxIterations && shrinked.contains(cur))
+                    cur = tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() - Rules.MAX_TURN_RATE_RADIANS),
                             mid, Double.POSITIVE_INFINITY);
 
-                if(shrinked.strictlyContains(cur))
+                if(shrinked.contains(cur))
                     l = mid;
                 else {
                     r = mid;
@@ -192,10 +218,10 @@ public abstract class MovementPredictor {
     }
 
     /**
-     * This method, different from _tick, predicts assuming that the robot will attempt
+     * This method, different from tick, predicts assuming that the robot will attempt
      * to move infinitely (hit the maximum speed and never break)
      * <p>
-     * This is usually quicker than _tick for wavesurfing because it does not rely
+     * This is usually quicker than tick for wavesurfing because it does not rely
      * on getNewVelocity() to get the velocity the bot must hit to still be able to break
      * and stop at the destination. There is no real destination here. You can tick, for
      * example, while the enemy's wave does not hit you.
@@ -219,7 +245,7 @@ public abstract class MovementPredictor {
         return last.tick(newHeading, newVelocity);
     }
 
-    private static PredictedPoint _tick(PredictedPoint last, double angle, double maxVelocity, double remaining) {
+    public  static PredictedPoint tick(PredictedPoint last, double angle, double maxVelocity, double remaining) {
         double offset = Utils.normalRelativeAngle(angle - last.heading);
         double turn = BackAsFrontRobot2.getQuickestTurn(offset);
         int ahead = offset == turn ? +1 : -1;

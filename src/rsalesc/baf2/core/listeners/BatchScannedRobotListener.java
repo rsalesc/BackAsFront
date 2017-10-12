@@ -21,20 +21,15 @@
  *    distribution.
  */
 
-package rsalesc.mega.utils;
+package rsalesc.baf2.core.listeners;
 
-import rsalesc.baf2.core.utils.geometry.Range;
+import robocode.ScannedRobotEvent;
+
+import java.util.List;
 
 /**
- * Created by Roberto Sales on 09/10/17.
+ * Created by Roberto Sales on 10/10/17.
  */
-public interface IMea {
-    double getZeroGf();
-    double getOffset(double gf);
-    double getAngle(double gf);
-    double getUnconstrainedGf(double offset);
-    double getUnconstrainedGfFromAngle(double angle);
-    double getGfFromAngle(double angle);
-    double getGf(double offset);
-    Range getMea();
+public interface BatchScannedRobotListener {
+    void onBatchScannedRobot(List<ScannedRobotEvent> events);
 }
