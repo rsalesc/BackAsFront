@@ -26,11 +26,9 @@ package rsalesc.mega.movement;
 import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.controllers.Controller;
-import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -43,8 +41,8 @@ import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.*;
 import rsalesc.mega.movement.distancing.FallbackSurfingDistancer;
-import rsalesc.mega.predictor.PredictedPoint;
-import rsalesc.mega.predictor.WallSmoothing;
+import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.WallSmoothing;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.StatTracker;
@@ -257,21 +255,21 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
                 shrinkedField,
                 WALL_STICK,
                 my.getPoint(),
-                Utils.normalAbsoluteAngle(absBearing + perp),
+                R.normalAbsoluteAngle(absBearing + perp),
                 +1
         );
         double counterAngle = WallSmoothing.naive(
                 shrinkedField,
                 WALL_STICK,
                 my.getPoint(),
-                Utils.normalAbsoluteAngle(absBearing - perp),
+                R.normalAbsoluteAngle(absBearing - perp),
                 -1
         );
 
         controller.setMaxVelocity(Rules.MAX_VELOCITY);
 
-        if (Math.abs(Utils.normalRelativeAngle(clockwiseAngle - absBearing))
-                < Math.abs(Utils.normalRelativeAngle(counterAngle - absBearing))) {
+        if (Math.abs(R.normalRelativeAngle(clockwiseAngle - absBearing))
+                < Math.abs(R.normalRelativeAngle(counterAngle - absBearing))) {
             controller.setBackAsFront(clockwiseAngle);
         } else {
             controller.setBackAsFront(counterAngle);

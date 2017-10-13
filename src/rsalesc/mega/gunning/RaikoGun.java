@@ -32,6 +32,7 @@ import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
 import rsalesc.baf2.core.listeners.TickListener;
+import rsalesc.baf2.core.utils.R;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -176,7 +177,7 @@ public class RaikoGun extends Component implements RoundStartedListener, Scanned
                 bestGF = gf;
 
         Controller controller = getMediator().getGunControllerOrDummy();
-        controller.setTurnGunRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getGunHeadingRadians() + w.bearingDirection*(bestGF-GF_ZERO) ));
+        controller.setTurnGunRightRadians(R.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getGunHeadingRadians() + w.bearingDirection*(bestGF-GF_ZERO) ));
 
 //
         if (getMediator().getEnergy() > 1 || distanceIndex == 0) {
@@ -188,7 +189,7 @@ public class RaikoGun extends Component implements RoundStartedListener, Scanned
         controller.release();
 
 //        controller = getMediator().getRadarControllerOrDummy();
-//        controller.setTurnRadarRightRadians(Utils.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getRadarHeadingRadians()) * 2);
+//        controller.setTurnRadarRightRadians(R.normalRelativeAngle(enemyAbsoluteBearing - getMediator().getRadarHeadingRadians()) * 2);
 //        controller.release();
     }
 //    public void onHitByBullet(HitByBulletEvent e) {
@@ -270,7 +271,7 @@ public class RaikoGun extends Component implements RoundStartedListener, Scanned
 
             if ((RaikoGun.enemyLocation).distance(firePosition) <= (distance+=bulletVelocity) + bulletVelocity){
                 try {
-                    waveGuessFactors[(int)Math.round((Utils.normalRelativeAngle(absoluteBearing(firePosition, RaikoGun.enemyLocation) - enemyAbsBearing))/bearingDirection + GF_ZERO)]++;
+                    waveGuessFactors[(int)Math.round((R.normalRelativeAngle(absoluteBearing(firePosition, RaikoGun.enemyLocation) - enemyAbsBearing))/bearingDirection + GF_ZERO)]++;
                 } catch (ArrayIndexOutOfBoundsException e){}
 //                bot.removeCustomEvent(this);
                 return true;

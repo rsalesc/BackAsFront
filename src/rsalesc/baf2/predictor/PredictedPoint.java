@@ -21,19 +21,15 @@
  *    distribution.
  */
 
-package rsalesc.mega.predictor;
+package rsalesc.baf2.predictor;
 
-import robocode.util.Utils;
-import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.RobotSnapshot;
-import rsalesc.baf2.waves.RobotWave;
 import rsalesc.baf2.waves.Wave;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,8 +77,8 @@ public class PredictedPoint extends Point {
             @Override
             public boolean test(T t) {
                 double breakTime = t.getBreakTime(path.get(0));
-                return breakTime < path.get(0).getTime() || breakTime > path.get(0).getTime() + 2 * timeDelta
-                        || t.hasPassed(path.get(0), path.get(0).getTime());
+                return breakTime < path.get(0).time || breakTime > path.get(0).time + 2 * timeDelta
+                        || t.hasPassed(path.get(0), path.get(0).time);
             }
         });
 
@@ -108,40 +104,40 @@ public class PredictedPoint extends Point {
         return new PredictedPoint(this.project(jumpAngle, jumpSize), newHeading, newVelocity, time + 1, newAhead);
     }
 
-    public double getHeading() {
-        return heading;
-    }
+//    public double getHeading() {
+//        return heading;
+//    }
 
-    public double getVelocity() {
-        return velocity;
-    }
+//    public double getVelocity() {
+//        return velocity;
+//    }
 
     public double getSpeed() {
-        return Math.abs(getVelocity());
+        return Math.abs(velocity);
     }
 
-    public long getTime() {
-        return time;
-    }
+//    public long getTime() {
+//        return time;
+//    }
 
-    public int getAhead() {
-        return ahead;
-    }
+//    public int getAhead() {
+//        return ahead;
+//    }
 
     public int getDirection(Point from) {
-        double head = getHeading();
+        double head = heading;
         if (ahead < 0)
             head += R.PI;
         double absBearing = Physics.absoluteBearing(this, from);
-        double off = Utils.normalRelativeAngle(head - absBearing);
+        double off = R.normalRelativeAngle(head - absBearing);
         if (off > 0) return -1;
         else if (off < 0) return 1;
         else return 0;
     }
 
     public double getBafHeading() {
-        if (getAhead() < 0)
-            return Utils.normalAbsoluteAngle(heading + R.PI);
+        if (ahead < 0)
+            return R.normalAbsoluteAngle(heading + R.PI);
         return heading;
     }
 

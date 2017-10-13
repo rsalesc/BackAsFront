@@ -23,45 +23,52 @@
 
 package rsalesc.baf2.tracking;
 
-import robocode.Robot;
 import robocode.Rules;
+import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.predictor.MovementPredictor;
-import rsalesc.mega.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.FastPredictor;
+import rsalesc.baf2.predictor.PrecisePredictor;
+import rsalesc.baf2.predictor.PredictedPoint;
+
+import java.util.HashMap;
+import java.util.Hashtable;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
-public interface RobotLog {
-    RobotSnapshot exactlyAt(long time);
+public abstract class RobotLog {
+    public abstract RobotSnapshot exactlyAt(long time);
 
-    RobotSnapshot atLeastAt(long time);
+    public abstract RobotSnapshot atLeastAt(long time);
 
-    RobotSnapshot atMostAt(long time);
+    public abstract RobotSnapshot atMostAt(long time);
 
-    RobotSnapshot getLatest();
+    public abstract RobotSnapshot getLatest();
 
-    RobotSnapshot getKthLatest(int k);
+    public abstract RobotSnapshot getKthLatest(int k);
 
-    RobotSnapshot getAtLeastKthLatest(int k);
+    public abstract RobotSnapshot getAtLeastKthLatest(int k);
 
-    RobotSnapshot before(RobotSnapshot robot);
+    public abstract RobotSnapshot before(RobotSnapshot robot);
 
-    RobotSnapshot after(RobotSnapshot robot);
+    public abstract RobotSnapshot after(RobotSnapshot robot);
 
-    int size();
+    public abstract int size();
 
-    default InterpolatedSnapshot interpolate(long time) {
+    // TODO: optimize this function in general
+    public InterpolatedSnapshot interpolate(long time) {
         RobotSnapshot atMost = atMostAt(time);
 
         if(atMost == null)
             return null;
 
-        PredictedPoint cur = PredictedPoint.from(atMost);
-
         if(atMost.getTime() == time)
             return new InterpolatedSnapshot(atMost, PredictedPoint.from(atMost));
+
+        InterpolatedSnapshot res;
+
+        PredictedPoint cur = PredictedPoint.from(atMost);
 
         RobotSnapshot after = after(atMost);
 
@@ -75,21 +82,17 @@ public interface RobotLog {
 
             double maxVel = accel == 0 ? atMost.getVelocity() : (accel < 0 ? 0 : Rules.MAX_VELOCITY);
 
-            while(cur.getTime() < time)
-                cur = MovementPredictor.tick(cur, atMost.getHeading(), maxVel, Double.POSITIVE_INFINITY);
+            // TODO: cache the whole process
+            while(cur.time < time)
+                cur = PrecisePredictor.tick(cur, atMost.getHeading(), maxVel, Double.POSITIVE_INFINITY);
+
+            res = new PredictedSnapshot(atMost, cur);
         } else {
-            PredictedPoint afterCur = PredictedPoint.from(after);
-
-            while(afterCur.getSpeed() > R.EPSILON) {
-                afterCur = MovementPredictor.tick(afterCur, after.getHeading(), 0, Double.POSITIVE_INFINITY);
-            }
-
-            while(cur.getTime() < time) {
-                double angle = Physics.absoluteBearing(cur, afterCur);
-                cur = MovementPredictor.tick(cur, angle, Rules.MAX_VELOCITY, cur.distance(afterCur));
-            }
+            // TODO: use smarter interpolation here
+            cur = FastPredictor.interpolate(cur, PredictedPoint.from(after), time);
+            res = new InterpolatedSnapshot(atMost, cur);
         }
 
-        return new InterpolatedSnapshot(atMost, cur);
+        return res;
     }
 }

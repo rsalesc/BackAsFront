@@ -33,7 +33,7 @@ import rsalesc.baf2.core.utils.geometry.AngularRange;
 /**
  * Created by Roberto Sales on 23/07/17.
  */
-public class MyLog implements RobotLog {
+public class MyLog extends RobotLog {
     private static final int LOG_SIZE = 2000;
 
     private MyRobot[] log;
@@ -217,8 +217,8 @@ public class MyLog implements RobotLog {
             return null;
 
         MyRobot pastMe = getAtLeastKthLatest(2);
-        double diff = Utils.normalRelativeAngle(me.getRadarHeading() - pastMe.getRadarHeading());
-        double center = Utils.normalAbsoluteAngle(pastMe.getRadarHeading() + diff / 2);
+        double diff = R.normalRelativeAngle(me.getRadarHeading() - pastMe.getRadarHeading());
+        double center = R.normalAbsoluteAngle(pastMe.getRadarHeading() + diff / 2);
 
         AngularRange range = new AngularRange(center, -diff / 2, diff / 2);
         return range;

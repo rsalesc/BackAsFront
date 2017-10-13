@@ -27,11 +27,11 @@ import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.KeyHandler;
 import rsalesc.baf2.core.RobotMediator;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.listeners.*;
 import rsalesc.baf2.painting.PaintManager;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -43,6 +43,7 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     private RobotMediator mediator;
     private PaintManager paintManager;
     private int skippedTurns = 0;
+    private boolean hasEnded = false;
 
     @Override
     public void onSkippedTurn(SkippedTurnEvent event) {
@@ -63,6 +64,8 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     public void initializeDefault() {
         paintManager = new PaintManager();
 
+        Benchmark.getInstance().enable(); // TODO: improve this
+        addListener(Benchmark.getInstance());
         addListener(KeyHandler.getInstance());
         addListener(paintManager);
     }
@@ -347,19 +350,34 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
         }
     }
 
-    @Override
-    public void onRoundEnded(RoundEndedEvent event) {
-        super.onRoundEnded(event);
+    public void onEnded() {
+        if(hasEnded)
+            return;
+
+        hasEnded = true;
+
         for (Component component : components) {
-            if (component instanceof RoundEndedListener) {
-                RoundEndedListener listener = (RoundEndedListener) component;
-                listener.onRoundEnded(event);
+            if (component instanceof LastBreathListener) {
+                LastBreathListener listener = (LastBreathListener) component;
+                listener.onLastBreath();
             }
         }
 
         if(skippedTurns > 0) {
             warn(getName() + " skipped " + skippedTurns + " turn(s) this round!");
         }
+    }
+
+    @Override
+    public void onRoundEnded(RoundEndedEvent event) {
+        super.onRoundEnded(event);
+        onEnded();
+    }
+
+    @Override
+    public void onDeath(DeathEvent event) {
+        super.onDeath(event);
+        onEnded();
     }
 
     @Override

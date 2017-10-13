@@ -62,45 +62,54 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
 
         ArrayList<EnemyWave> waves = this.waves.getWaves();
 
-        for(EnemyWave enemyWave : waves) {
-            if(enemyWave.hasAnyHit())
-                continue;
+        for(EnemyRobot enemy : enemies) {
+            // check if last enemy wasn't inside of this wave and if so, check hit
+            EnemyRobot lastEnemy = EnemyTracker.getInstance().getLog(enemy).atMostAt(getMediator().getTime() - 1);
+            if(lastEnemy != null && lastEnemy.getTime() < getMediator().getTime() - Tracker.SEEN_THRESHOLD)
+                lastEnemy = null;
 
-            EnemyRobot enemyHit = null;
-            double waveDamage = enemyWave.getDamage();
+            boolean isCool = heatTracker.ensure(enemy).isCool();
 
-            for(EnemyRobot enemy : enemies) {
-                if(enemy.getName().equals(enemyWave.getEnemy().getName()))
+            EnemyWave bestWave = null;
+            EnemyWave bestBothWave = null;
+
+            for(EnemyWave enemyWave : waves) {
+                if(enemyWave.hasAnyHit() && enemy.getName().equals(enemyWave.getEnemy().getName()))
                     continue;
 
-                EnemyRobot lastEnemy = EnemyTracker.getInstance().getLog(enemy).atMostAt(getMediator().getTime() - 1);
-                if(lastEnemy != null && lastEnemy.getTime() < getMediator().getTime() - Tracker.SEEN_THRESHOLD)
-                    lastEnemy = null;
+                double waveDamage = enemyWave.getDamage();
 
-                if((lastEnemy == null || !enemyWave.getCircle(lastEnemy.getTime()).isInside(lastEnemy.getHitBox()))
+                if ((lastEnemy == null || !enemyWave.getCircle(lastEnemy.getTime()).isInside(lastEnemy.getHitBox()))
                         && enemyWave.getCircle(getMediator().getTime()).countInside(enemy.getHitBox().getCorners()) > 0) {
 
                     double enemyDifferential = heatTracker.getDifferential(enemy);
 
                     if (R.isNear(enemyDifferential, -waveDamage)) {
-                        enemyHit = enemy;
-                        enemyWave.setCrossHit(enemy);
+                        bestWave = enemyWave;
                         break;
+                    }
+
+                    if ((isCool && waveDamage > 3.001 && waveDamage < -enemyDifferential - 0.01 && -enemyDifferential < waveDamage + 3)) {
+                        bestBothWave = enemyWave;
                     }
                 }
             }
 
-            if(enemyHit != null) {
-//                System.out.println(enemyHit.getName() + " was cross-hit!");
+            if(bestWave == null)
+                bestWave = bestBothWave;
+
+            if(bestWave != null) {
+                bestWave.setCrossHit(enemy);
 
                 for(Object listener : getListeners()) {
                     if(listener instanceof CrossFireListener) {
                         CrossFireListener lis = (CrossFireListener) listener;
-                        lis.onCrossHit(enemyWave, enemyHit);
+                        lis.onCrossHit(bestWave, enemy);
                     }
                 }
             }
         }
+
 
         for(EnemyRobot enemy : enemies) {
             EnemyFireEvent fireEvent = HeatTracker.getInstance().push(enemy);

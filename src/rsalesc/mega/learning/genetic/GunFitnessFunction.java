@@ -167,7 +167,7 @@ public class GunFitnessFunction extends FitnessFunction<Double> {
 //                         + " " + intersection.isAngleNearlyContained(firedAngle, -1e-8));
                         resCnt++;
                         double bandwidth = intersection.getRadius();
-                        res += R.gaussKernel(Utils.normalRelativeAngle(
+                        res += R.gaussKernel(R.normalRelativeAngle(
                                 firedAngle - intersection.getAngle(intersection.getCenter()))
                                 / bandwidth);
 //                        res += intersection.isAngleNearlyContained(firedAngle, 1e-11) ? 1 : 0;

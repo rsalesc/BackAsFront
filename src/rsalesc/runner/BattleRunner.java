@@ -93,7 +93,7 @@ public class BattleRunner {
 //    }
 //
 //    @Override
-//    public void onRoundEnded(RoundEndedEvent event) {
+//    public void onLastBreath(RoundEndedEvent event) {
 //        System.out.println("=== Round " + event.getRound() + " ended with " + event.getTurns() + " turns");
 //
 //        if(duelData.size() > 0 && R.getLast(duelData) != null) {

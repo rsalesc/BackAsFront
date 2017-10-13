@@ -114,10 +114,10 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
         double head = getHeading();
         if (ahead < 0) {
             head += R.PI;
-            head = Utils.normalAbsoluteAngle(head);
+            head = R.normalAbsoluteAngle(head);
         }
         double absBearing = Physics.absoluteBearing(getPoint(), from);
-        double off = Utils.normalRelativeAngle(head - absBearing);
+        double off = R.normalRelativeAngle(head - absBearing);
         if (off > 0) return -1;
         else if (off < 0) return 1;
         else return 0;
@@ -171,11 +171,16 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
 
     public double getBafHeading() {
         if (getAhead() < 0)
-            return Utils.normalAbsoluteAngle(getHeading() + R.PI);
+            return R.normalAbsoluteAngle(getHeading() + R.PI);
         return getHeading();
     }
 
     public int getOthers() {
         return others;
+    }
+
+    @Override
+    public boolean isFuture() {
+        return false;
     }
 }

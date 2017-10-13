@@ -133,11 +133,8 @@ public class EnemyWave extends RobotWave {
     }
 
     public static Shadow getShadow(EnemyWave wave, BulletWave bullet) {
-        R.pushFastMath(false);
-
         LineSegment intersection = getShadowSegment(wave, bullet);
         if(intersection == null) {
-            R.popFastMath();
             return null;
         }
 
@@ -149,13 +146,10 @@ public class EnemyWave extends RobotWave {
         range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
         range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
 
-        R.popFastMath();
-
         return new Shadow(range, bullet);
     }
 
     public static LineSegment getShadowSegment(EnemyWave wave, BulletWave bullet) {
-        R.pushFastMath(false);
 
         long time = Math.max(bullet.getTime(), wave.getTime());
         long maxTime = Integer.MAX_VALUE;
@@ -163,7 +157,6 @@ public class EnemyWave extends RobotWave {
             maxTime = Math.min(maxTime, bullet.getHitTime());
 
         if(wave.getSource().distance(bullet.project(time)) < wave.getDistanceTraveled(time) - R.EPSILON) {
-            R.popFastMath();
             return null;
         }
 
@@ -173,7 +166,6 @@ public class EnemyWave extends RobotWave {
         }
 
         if(iterations > 120 || time > maxTime) {
-            R.popFastMath();
             return null;
         }
 
@@ -192,7 +184,6 @@ public class EnemyWave extends RobotWave {
         else
             pA = segment.rayLikeIntersect(wave.getCircle(time));
 
-        R.popFastMath();
         return new LineSegment(pA, pB);
     }
 }

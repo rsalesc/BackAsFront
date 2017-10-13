@@ -58,8 +58,6 @@ public class RecorderBot extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         checkChallenges();
 
         add(new Colorizer());

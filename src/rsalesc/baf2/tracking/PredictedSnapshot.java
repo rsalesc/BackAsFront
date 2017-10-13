@@ -23,41 +23,18 @@
 
 package rsalesc.baf2.tracking;
 
-import rsalesc.baf2.core.utils.BattleTime;
-import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.predictor.PredictedPoint;
 
 /**
- * Created by Roberto Sales on 11/09/17.
+ * Created by Roberto Sales on 13/10/17.
  */
-public interface RobotSnapshot {
-    String getName();
+public class PredictedSnapshot extends InterpolatedSnapshot {
+    public PredictedSnapshot(RobotSnapshot base, PredictedPoint predicted) {
+        super(base, predicted);
+    }
 
-    long getTime();
-
-    BattleTime getBattleTime();
-
-    Point getPoint();
-
-    double getLateralVelocity(Point from);
-
-    double getAdvancingVelocity(Point from);
-
-    int getDirection(Point from);
-
-    int getAhead();
-
-    AxisRectangle getHitBox();
-
-    double getEnergy();
-
-    double getVelocity();
-
-    double getHeading();
-
-    double getBafHeading();
-
-    int getOthers();
-
-    boolean isFuture();
+    @Override
+    public boolean isFuture() {
+        return true;
+    }
 }

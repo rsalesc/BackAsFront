@@ -49,7 +49,7 @@ import java.awt.*;
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
-    private boolean MC = true || MC2k6;
+    private boolean MC = false || MC2k6;
     private boolean TC = false;
 
     public void checkChallenges() {
@@ -58,7 +58,6 @@ public class Knight extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
 
         checkChallenges();
 

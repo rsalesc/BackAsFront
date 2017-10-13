@@ -21,43 +21,13 @@
  *    distribution.
  */
 
-package rsalesc.baf2.tracking;
+package rsalesc.baf2.core.listeners;
 
-import rsalesc.baf2.core.utils.BattleTime;
-import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
+import robocode.RoundEndedEvent;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
-public interface RobotSnapshot {
-    String getName();
-
-    long getTime();
-
-    BattleTime getBattleTime();
-
-    Point getPoint();
-
-    double getLateralVelocity(Point from);
-
-    double getAdvancingVelocity(Point from);
-
-    int getDirection(Point from);
-
-    int getAhead();
-
-    AxisRectangle getHitBox();
-
-    double getEnergy();
-
-    double getVelocity();
-
-    double getHeading();
-
-    double getBafHeading();
-
-    int getOthers();
-
-    boolean isFuture();
+public interface LastBreathListener {
+    void onLastBreath();
 }

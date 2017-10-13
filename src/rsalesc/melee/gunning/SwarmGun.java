@@ -233,7 +233,7 @@ public class SwarmGun extends AutomaticGun implements FireListener {
                 for (GeneratedAngle candidate : angles) {
                     double distance = candidate.distance;
                     double angle = candidate.angle;
-                    double off = Utils.normalRelativeAngle(shootAngle.angle - angle);
+                    double off = R.normalRelativeAngle(shootAngle.angle - angle);
 
                     double x = off / (Physics.hitAngle(distance) * 0.9);
                     if (Math.abs(x) < 1) {

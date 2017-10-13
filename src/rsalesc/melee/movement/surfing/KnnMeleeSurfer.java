@@ -26,6 +26,7 @@ package rsalesc.melee.movement.surfing;
 import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -43,6 +44,7 @@ import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -50,27 +52,18 @@ import java.util.TreeMap;
  * Created by Roberto Sales on 11/10/17.
  */
 public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurfer, KnnProvider<TimestampedGFRange> {
-    private TreeMap<String, TreeMap<Long, CircularGuessFactorStats>> cache = new TreeMap<>();
+    private Hashtable<Pair<String, Long>, CircularGuessFactorStats> cache = new Hashtable<>();
 
     public KnnView<TimestampedGFRange> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
-        if (ns.contains("knn"))
-            return (KnnView) ns.get("knn");
+
+        Object res = ns.get("knn");
+        if(res != null)
+            return (KnnView) res;
 
         KnnView<TimestampedGFRange> knn = getNewKnnSet();
         ns.put("knn", knn);
         return knn;
-    }
-
-    private TreeMap<Long, CircularGuessFactorStats> getCache(String name) {
-        if(!cache.containsKey(name)) {
-            TreeMap<Long, CircularGuessFactorStats> tree = new TreeMap<>();
-            cache.put(name, tree);
-
-            return tree;
-        }
-
-        return cache.get(name);
     }
 
     @Override
@@ -107,10 +100,13 @@ public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurf
         if(f == null)
             throw new IllegalStateException();
 
-        TreeMap<Long, CircularGuessFactorStats> enemyCache = getCache(enemyLog.getName());
+        Pair<String, Long> cacheKey = new Pair<>(enemyLog.getName(), cacheIndex);
 
-        if(cacheIndex != -1 && enemyCache.containsKey(cacheIndex))
-            return enemyCache.get(cacheIndex);
+        if(cacheIndex != -1) {
+            CircularGuessFactorStats res = cache.get(cacheKey);
+            if(res != null)
+                return res;
+        }
 
         KnnView<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
 
@@ -134,7 +130,7 @@ public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurf
         }
 
         if(cacheIndex != -1)
-            enemyCache.put(cacheIndex, stats);
+            cache.put(cacheKey, stats);
 
         return stats;
     }

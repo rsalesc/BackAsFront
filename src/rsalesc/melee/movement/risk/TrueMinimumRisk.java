@@ -23,6 +23,7 @@
 
 package rsalesc.melee.movement.risk;
 
+import robocode.Rules;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -33,8 +34,8 @@ import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.MyLog;
 import rsalesc.baf2.tracking.MyRobot;
-import rsalesc.mega.predictor.MovementPredictor;
-import rsalesc.mega.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.PrecisePredictor;
+import rsalesc.baf2.predictor.PredictedPoint;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -105,13 +106,13 @@ public class TrueMinimumRisk extends MinimumRisk {
             Point dest = myPoint.project(angle, maxDistance).clip(shrinkedField);
             double moveAngle = Physics.absoluteBearing(me.getPoint(), dest);
 
-            double maxVel = MovementPredictor.predictWallSmoothness(shrinkedField, PredictedPoint.from(me), moveAngle, 1);
+//            double maxVel = PrecisePredictor.predictWallSmoothness(shrinkedField, PredictedPoint.from(me), moveAngle, 1);
 
             double danger = getEvaluation().evaluateDanger(getMediator(), dest, maxDistance, pairwiseClosestDistance);
-            MoveCandidate candidate = new MoveCandidate(danger, dest, maxVel);
+            MoveCandidate candidate = new MoveCandidate(danger, dest, Rules.MAX_VELOCITY);
             candidates.add(candidate);
 
-            Point decelDest = MovementPredictor.predictStop(PredictedPoint.from(me), angle);
+            Point decelDest = PrecisePredictor.predictStop(PredictedPoint.from(me), angle);
             double decelDanger = getEvaluation().evaluateDanger(getMediator(), decelDest, maxDistance, pairwiseClosestDistance);
             MoveCandidate decelCandidate = new MoveCandidate(decelDanger, decelDest, 0);
 

@@ -61,8 +61,6 @@ public class Monk extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         add(new Colorizer());
 
         Tracker tracker = new Tracker();

@@ -60,10 +60,15 @@ public class CircularGuessFactorStats extends CircularStats {
         for (int i = 0; i < sts.length; i++) {
             if (sts[i] == null)
                 continue;
-            CircularGuessFactorStats normalized = (CircularGuessFactorStats) (sts[i].clone());
-            normalized.normalize();
+            double sum = 1e-20;
+            for(int j = 0; j < size; j++) {
+                if(sts[i].buffer[j] > sum) {
+                    sum = sts[i].buffer[j];
+                }
+            }
+
             for (int j = 0; j < size; j++) {
-                buffer[j] += normalized.get(j);
+                buffer[j] += sts[i].buffer[j] / sum * weights[i];
             }
         }
 
@@ -76,10 +81,13 @@ public class CircularGuessFactorStats extends CircularStats {
         for (int i = 0; i < sts.length; i++) {
             if (sts[i] == null)
                 continue;
-            CircularGuessFactorStats normalized = (CircularGuessFactorStats) (sts[i].clone());
-            normalized.normalizeSum();
+            double sum = 1e-20;
+            for(int j = 0; j < size; j++) {
+                sum += sts[i].buffer[j];
+            }
+
             for (int j = 0; j < size; j++) {
-                buffer[j] += normalized.get(j);
+                buffer[j] += sts[i].buffer[j] / sum * weights[i];
             }
         }
 
@@ -89,8 +97,7 @@ public class CircularGuessFactorStats extends CircularStats {
     @Override
     public Object clone() {
         double[] newBuffer = Arrays.copyOf(buffer, buffer.length);
-        CircularGuessFactorStats res = new CircularGuessFactorStats(newBuffer, kernel);
-        return res;
+        return new CircularGuessFactorStats(newBuffer, kernel);
     }
 
     public int getBucket(double angle) {
@@ -99,7 +106,7 @@ public class CircularGuessFactorStats extends CircularStats {
     }
 
     public double getAngle(int index) {
-        return Utils.normalAbsoluteAngle((double) index / BUCKET_COUNT * R.DOUBLE_PI);
+        return R.normalAbsoluteAngle((double) index / BUCKET_COUNT * R.DOUBLE_PI);
     }
 
     public int getBestBucket(AngularRange range) {

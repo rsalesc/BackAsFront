@@ -103,7 +103,9 @@ public class HeatLog {
         if ((lastEnemy == null || lastEnemy.getTime() >= enemy.getTime() - 10) && ticksSinceCool() > 0
                 && R.nearOrBetween(-Physics.MAX_POWER, energyDelta, -Physics.MIN_POWER)) {
             long lastCool = currentTime - ticksSinceCool();
-            EnemyFireEvent fireEvent = new EnemyFireEvent(enemy, Math.max(lastCool, lastEnemy.getTime()), -energyDelta);
+            long shotTime = Math.max(lastCool, lastEnemy.getTime());
+            EnemyFireEvent fireEvent =
+                    new EnemyFireEvent(enemy, shotTime, (int) (enemy.getTime() - shotTime - 1), -energyDelta);
 
             lastPower = -energyDelta;
             lastShot = new BattleTime(fireEvent.getTime(), enemy.getBattleTime().getRound());

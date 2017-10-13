@@ -58,8 +58,6 @@ public class TickRecorderBot extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         checkChallenges();
 
         add(new Colorizer());

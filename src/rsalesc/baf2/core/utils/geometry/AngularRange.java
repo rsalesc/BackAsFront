@@ -24,6 +24,7 @@
 package rsalesc.baf2.core.utils.geometry;
 
 import robocode.util.Utils;
+import rsalesc.baf2.core.utils.R;
 
 import java.io.Serializable;
 
@@ -46,11 +47,11 @@ public class AngularRange extends Range implements Serializable {
     }
 
     public double getAngle(double offset) {
-        return Utils.normalAbsoluteAngle(reference + offset);
+        return R.normalAbsoluteAngle(reference + offset);
     }
 
     public double getOffset(double angle) {
-        return Utils.normalRelativeAngle(angle - reference);
+        return R.normalRelativeAngle(angle - reference);
     }
 
     public double getStartingAngle() {

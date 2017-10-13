@@ -30,7 +30,7 @@ import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.*;
 import rsalesc.baf2.tracking.*;
-import rsalesc.mega.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.PredictedPoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +75,7 @@ public class Wave {
         double refAngle = Physics.absoluteBearing(wave.getSource(), R.getLast(predicted));
 
         int ptr = predicted.size() - 1;
-        while (ptr > 0 && wave.hasTouchedRobot(predicted.get(ptr), predicted.get(ptr).getTime()))
+        while (ptr > 0 && wave.hasTouchedRobot(predicted.get(ptr), predicted.get(ptr).time))
             ptr--;
 
         AngularRange range = new AngularRange(refAngle, new Range());
@@ -86,16 +86,16 @@ public class Wave {
             AxisRectangle botRect = new AxisRectangle(nextEnemy, Physics.BOT_WIDTH * 2);
 
             for (Point corner : botRect.getCorners()) {
-                if (wave.hasPassed(corner, nextEnemy.getTime()) && !wave.hasPassed(corner, me.getTime())) {
+                if (wave.hasPassed(corner, nextEnemy.time) && !wave.hasPassed(corner, me.time)) {
                     range.pushAngle(wave.getAngle(corner));
                 }
             }
 
-            for (Point intersect : wave.getCircle(me.getTime()).intersect(botRect)) {
+            for (Point intersect : wave.getCircle(me.time).intersect(botRect)) {
                 range.pushAngle(wave.getAngle(intersect));
             }
 
-            for (Point intersect : wave.getCircle(nextEnemy.getTime()).intersect(botRect)) {
+            for (Point intersect : wave.getCircle(nextEnemy.time).intersect(botRect)) {
                 range.pushAngle(wave.getAngle(intersect));
             }
 

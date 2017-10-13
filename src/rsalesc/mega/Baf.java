@@ -77,7 +77,7 @@ public class Baf extends BackAsFrontRobot2 {
             else {
                 EnemyRobot[] latest = EnemyTracker.getInstance().getLatest();
                 if (latest.length > 0) {
-                    controller.setTurnRadarRightRadians(Utils.normalRelativeAngle(latest[0].getAbsoluteBearing()
+                    controller.setTurnRadarRightRadians(R.normalRelativeAngle(latest[0].getAbsoluteBearing()
                             - getMediator().getRadarHeadingRadians()) * 1.99999999);
                 }
             }
