@@ -25,16 +25,10 @@ package rsalesc.genetic;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import rsalesc.baf2.core.utils.Timer;
-import rsalesc.genetic.crossover.SinglePointCrossoverStrategy;
 import rsalesc.genetic.crossover.TwoPointCrossoverStrategy;
-import rsalesc.genetic.crossover.UniformCrossoverStrategy;
 import rsalesc.genetic.evolution.MutateAndSurviveStrategy;
 
-import javax.lang.model.type.UnionType;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by Roberto Sales on 30/09/17.

@@ -27,7 +27,6 @@ import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.BulletListener;
 import rsalesc.baf2.core.listeners.HitListener;
-import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -37,10 +36,9 @@ import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
 import rsalesc.baf2.tracking.*;
-import rsalesc.mega.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.PredictedPoint;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -328,7 +326,7 @@ public class WaveManager extends Component implements EnemyFireListener, EnemyWa
     }
 
     public EnemyWave earliestWave(PredictedPoint predictedPoint, EnemyWaveCondition condition) {
-        return earliestWave(predictedPoint, predictedPoint.getTime(), condition);
+        return earliestWave(predictedPoint, predictedPoint.time, condition);
     }
 
     public EnemyWave earliestWave(MyRobot me, EnemyRobot enemy, EnemyWaveCondition condition) {

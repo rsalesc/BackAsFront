@@ -27,7 +27,7 @@ import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.mega.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.PredictedPoint;
 
 /**
  * Created by Roberto Sales on 11/10/17.
@@ -48,7 +48,7 @@ public class InterpolatedSnapshot implements RobotSnapshot {
 
     @Override
     public long getTime() {
-        return predictedPoint.getTime();
+        return predictedPoint.time;
     }
 
     @Override
@@ -64,15 +64,15 @@ public class InterpolatedSnapshot implements RobotSnapshot {
     @Override
     public double getLateralVelocity(Point from) {
         return Physics.getLateralVelocityFromStationary(Physics.absoluteBearing(from, predictedPoint),
-                predictedPoint.getVelocity(),
-                predictedPoint.getHeading());
+                predictedPoint.velocity,
+                predictedPoint.heading);
     }
 
     @Override
     public double getAdvancingVelocity(Point from) {
         return Physics.getApproachingVelocityFromStationary(Physics.absoluteBearing(from, predictedPoint),
-                predictedPoint.getVelocity(),
-                predictedPoint.getHeading());
+                predictedPoint.velocity,
+                predictedPoint.heading);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class InterpolatedSnapshot implements RobotSnapshot {
 
     @Override
     public int getAhead() {
-        return predictedPoint.getAhead();
+        return predictedPoint.ahead;
     }
 
     @Override
@@ -97,12 +97,12 @@ public class InterpolatedSnapshot implements RobotSnapshot {
 
     @Override
     public double getVelocity() {
-        return predictedPoint.getVelocity();
+        return predictedPoint.velocity;
     }
 
     @Override
     public double getHeading() {
-        return predictedPoint.getHeading();
+        return predictedPoint.heading;
     }
 
     @Override
@@ -113,6 +113,11 @@ public class InterpolatedSnapshot implements RobotSnapshot {
     @Override
     public int getOthers() {
         return base.getOthers();
+    }
+
+    @Override
+    public boolean isFuture() {
+        return false;
     }
 
     public boolean isMe() {

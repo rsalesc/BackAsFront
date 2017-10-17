@@ -107,7 +107,7 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
                 int ptr = 0;
                 long firstTime = movie.get(0).getTime();
 
-                double rotation = Utils.normalRelativeAngle(movie.get(0).getBafHeading() - enemy.getBafHeading());
+                double rotation = R.normalRelativeAngle(movie.get(0).getBafHeading() - enemy.getBafHeading());
                 Point translation = movie.get(0).getPoint().subtract(enemy.getPoint());
 
                 Point transformedMe = nextPosition.add(translation).rotate(rotation, movie.get(0).getPoint());
@@ -181,7 +181,7 @@ public class MonkGun extends StoreComponent implements MovieListener, PaintListe
             for (CandidateAngle candidate : angles) {
                 double distance = candidate.point.distance(nextPosition);
                 double angle = candidate.angle;
-                double off = Utils.normalRelativeAngle(shootAngle.angle - angle);
+                double off = R.normalRelativeAngle(shootAngle.angle - angle);
 
                 double x = off / (Physics.hitAngle(distance) * 0.9);
                 if (Math.abs(x) < 1) {

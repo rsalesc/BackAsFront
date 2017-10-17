@@ -26,6 +26,7 @@ package rsalesc.melee.radar;
 import robocode.util.Utils;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.tracking.MyLog;
@@ -60,7 +61,7 @@ public class MeleeRadar extends Component {
         } else {
             double absBearing = enemies[0].getAbsoluteBearing();
 
-            double signal = enemies[0] != lastEnemy ? Math.signum(Utils.normalRelativeAngle(
+            double signal = enemies[0] != lastEnemy ? Math.signum(R.normalRelativeAngle(
                     absBearing - getMediator().getRadarHeadingRadians()
             )) : lastSignal;
 

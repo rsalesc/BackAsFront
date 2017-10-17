@@ -28,7 +28,6 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.WaveManager;
@@ -58,8 +57,6 @@ public class TickRecorderBot extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         checkChallenges();
 
         add(new Colorizer());
@@ -73,7 +70,7 @@ public class TickRecorderBot extends BackAsFrontRobot2 {
 
         PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector();
 
-        KnightStance move = new KnightStance(waveManager, statTracker);
+        KnightStance move = new KnightStance(waveManager);
 
         AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
 //        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);

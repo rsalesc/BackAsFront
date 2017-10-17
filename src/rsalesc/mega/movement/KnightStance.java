@@ -27,7 +27,6 @@ import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.StorageNamespace;
-import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.MyRobot;
@@ -35,9 +34,6 @@ import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.utils.StatTracker;
-
-import java.awt.*;
 
 /**
  * Created by Roberto Sales on 13/09/17.
@@ -45,7 +41,7 @@ import java.awt.*;
 public class KnightStance extends Component implements RoundStartedListener, EnemyWaveListener, EnemyWavePreciseListener {
     private TrueSurfing surfing;
 
-    public KnightStance(WaveManager manager, StatTracker statTracker) {
+    public KnightStance(WaveManager manager) {
         Surfer surfer = new OldKnightDCSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
@@ -53,7 +49,7 @@ public class KnightStance extends Component implements RoundStartedListener, Ene
             }
         };
 
-        surfing = new TrueSurfing(surfer, manager, statTracker);
+        surfing = new TrueSurfing(surfer, manager);
     }
 
     @Override

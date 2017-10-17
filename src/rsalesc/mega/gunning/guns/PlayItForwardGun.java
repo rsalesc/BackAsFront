@@ -94,7 +94,7 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
         for(GeneratedAngle shootAngle : angles) {
             double density = 0;
             for(GeneratedAngle angle : angles) {
-                double diff = Utils.normalRelativeAngle(angle.angle - shootAngle.angle);
+                double diff = R.normalRelativeAngle(angle.angle - shootAngle.angle);
                 double bandwidth = Physics.hitAngle(angle.distance) * 0.9;
                 double x = diff / bandwidth;
                 if(Math.abs(x) < 1)

@@ -24,6 +24,8 @@
 package rsalesc.baf2.core;
 
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,10 +34,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GlobalStorage {
     private static final GlobalStorage SINGLETON = new GlobalStorage();
 
-    ConcurrentHashMap<String, Object> hash;
+    Hashtable<String, Object> hash;
 
     private GlobalStorage() {
-        hash = new ConcurrentHashMap<>(500);
+        hash = new Hashtable<>();
     }
 
     public void clear() {

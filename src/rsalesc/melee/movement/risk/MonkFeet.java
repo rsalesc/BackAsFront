@@ -39,7 +39,6 @@ import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.movement.KnightDCSurfer;
 import rsalesc.mega.movement.Surfer;
 import rsalesc.mega.movement.TrueSurfing;
-import rsalesc.mega.utils.StatTracker;
 
 import java.awt.*;
 
@@ -50,7 +49,7 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
     private MinimumRisk driver;
     private TrueSurfing surfing;
 
-    public MonkFeet(WaveManager manager, StatTracker statTracker) {
+    public MonkFeet(WaveManager manager) {
         Surfer surfer = new KnightDCSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
@@ -59,7 +58,7 @@ public class MonkFeet extends Component implements RoundStartedListener, PaintLi
         };
 
         driver = new Monk1stGenMR();
-        surfing = new TrueSurfing(surfer, manager, statTracker);
+        surfing = new TrueSurfing(surfer, manager);
     }
 
     @Override

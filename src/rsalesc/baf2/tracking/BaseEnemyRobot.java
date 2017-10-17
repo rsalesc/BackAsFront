@@ -24,8 +24,6 @@
 package rsalesc.baf2.tracking;
 
 import robocode.ScannedRobotEvent;
-import rsalesc.baf2.core.utils.Physics;
-import rsalesc.mega.predictor.PredictedPoint;
 
 /**
  * Created by Roberto Sales on 21/07/17.

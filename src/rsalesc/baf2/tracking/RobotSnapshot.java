@@ -58,4 +58,6 @@ public interface RobotSnapshot {
     double getBafHeading();
 
     int getOthers();
+
+    boolean isFuture();
 }

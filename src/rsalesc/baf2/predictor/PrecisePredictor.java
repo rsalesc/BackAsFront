@@ -21,10 +21,9 @@
  *    distribution.
  */
 
-package rsalesc.mega.predictor;
+package rsalesc.baf2.predictor;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -40,7 +39,7 @@ import java.util.List;
  * This class has methods to support precise movement prediction.
  * Note that all methods assume that you are using a BackAsFrontRobot-like robot.
  */
-public abstract class MovementPredictor {
+public abstract class PrecisePredictor {
     public static List<PredictedPoint> lastEscape = null;
     private static boolean SHARP_TURNING = false;
 
@@ -63,7 +62,7 @@ public abstract class MovementPredictor {
         PredictedPoint cur = initialPoint;
         while (hasToPass && !wave.hasPassedRobot(cur, cur.time) || !wave.hasPassed(cur, cur.time)) {
             double pointingAngle = Physics.absoluteBearing(wave.getSource(), cur) + perpendiculator * direction;
-            double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, stick, cur,
+            double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, stick, cur,
                     pointingAngle, direction));
             cur = tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
             res.add(cur);
@@ -97,11 +96,11 @@ public abstract class MovementPredictor {
         PredictedPoint back = points.get(points.size() - 1);
 
         for (int i = 0; i < 3; i++) {
-            double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(field, stick, back,
+            double angle = R.normalAbsoluteAngle(WallSmoothing.naive(field, stick, back,
                     Physics.absoluteBearing(wave.getSource(), back)
                             + perpendiculator * direction, direction));
 
-            PredictedPoint next = back.fakeTick(angle, back.getVelocity(), angle, Rules.MAX_VELOCITY);
+            PredictedPoint next = back.fakeTick(angle, back.velocity, angle, Rules.MAX_VELOCITY);
             points.add(next);
             back = next;
         }
@@ -122,13 +121,13 @@ public abstract class MovementPredictor {
 
         lastEscape = new ArrayList<>();
         for (PredictedPoint pos : posList) {
-            res.push(Utils.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
             lastEscape.add(pos);
         }
 
         for (PredictedPoint neg : negList) {
             lastEscape.add(neg);
-            res.push(Utils.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
         }
 
         return res;
@@ -149,12 +148,12 @@ public abstract class MovementPredictor {
         ArrayList<PredictedPoint> path = new ArrayList<>();
         path.add(cur);
 
-        long end = initialPoint.getTime() + deltaTime;
+        long end = initialPoint.time + deltaTime;
 
-        while(cur.distance(dest) > 0.1 && cur.getTime() < end) {
-            double distance = cur.distance(dest);
-            double angle = R.isNear(distance, 0) ? cur.heading : Physics.absoluteBearing(cur, dest);
-            cur = tick(cur, angle, maxVel, cur.distance(dest));
+        double distance;
+        while((distance = cur.distance(dest)) > 0.1 || cur.getSpeed() > 0.1) {
+            double angle = distance < 1 ? cur.getBafHeading() : Physics.absoluteBearing(cur, dest);
+            cur = tick(cur, angle, maxVel, distance);
             path.add(cur);
         }
 
@@ -162,8 +161,10 @@ public abstract class MovementPredictor {
     }
 
     public static boolean collides(AxisRectangle shrinkedField, PredictedPoint initialPoint, Point dest, double maxVel) {
-        List<PredictedPoint> path = tracePath(initialPoint, dest, maxVel, 100);
+        return smartCollides(shrinkedField, tracePath(initialPoint, dest, maxVel, 100));
+    }
 
+    public static boolean collides(AxisRectangle shrinkedField, List<PredictedPoint> path) {
         for(PredictedPoint point : path)
             if(!shrinkedField.contains(point))
                 return true;
@@ -171,50 +172,20 @@ public abstract class MovementPredictor {
         return false;
     }
 
-    public static double predictWallSmoothness(AxisRectangle shrinked, PredictedPoint initialPoint, double angle, int preSteps) {
-        PredictedPoint cur = initialPoint;
-        if(!shrinked.contains(cur))
-            return 0;
+    public static boolean smartCollides(AxisRectangle shrinkedField, List<PredictedPoint> path) {
+        PredictedPoint lastPoint = null;
+        for(PredictedPoint point : path) {
+            if(lastPoint != null && R.isNear(lastPoint.velocity, point.velocity) &&
+                    R.isNearAngle(lastPoint.heading, point.heading))
+                return !shrinkedField.contains(R.getLast(path));
 
-        PredictedPoint initCur = cur;
+            if (!shrinkedField.contains(point))
+                return true;
 
-        for(int i = 0; i < preSteps; i++) {
-            cur = tick(cur, angle, Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
-            if(!shrinked.contains(cur))
-                return 0;
+            lastPoint = point;
         }
 
-        if(shrinked.contains(cur.project(cur.getBafHeading(), 160)))
-            return Rules.MAX_VELOCITY;
-
-        double l = 0, r = Rules.MAX_VELOCITY;
-        final int maxIterations = 24;
-
-        while(l + 0.05 < r) {
-            double mid = (l+r) / 2;
-
-            int iterations = 0;
-            while(iterations++ < maxIterations && shrinked.contains(cur))
-                cur = tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() + Rules.MAX_TURN_RATE_RADIANS),
-                    mid, Double.POSITIVE_INFINITY);
-
-            if(shrinked.contains(cur))
-                l = mid;
-            else {
-                iterations = 0;
-                while(iterations++ < maxIterations && shrinked.contains(cur))
-                    cur = tick(cur, Utils.normalAbsoluteAngle(cur.getBafHeading() - Rules.MAX_TURN_RATE_RADIANS),
-                            mid, Double.POSITIVE_INFINITY);
-
-                if(shrinked.contains(cur))
-                    l = mid;
-                else {
-                    r = mid;
-                }
-            }
-        }
-
-        return l;
+        return false;
     }
 
     /**
@@ -232,13 +203,12 @@ public abstract class MovementPredictor {
      *                    usually: Physics.MAX_VELOCITY
      * @return the current predicted point
      */
-    private static PredictedPoint _fastTick(PredictedPoint last, double angle, double maxVelocity) {
-        double offset = Utils.normalRelativeAngle(angle - last.heading);
+    public static PredictedPoint fastTick(PredictedPoint last, double angle, double maxVelocity) {
+        double offset = R.normalRelativeAngle(angle - last.heading);
         double turn = BackAsFrontRobot2.getQuickestTurn(offset);
         int ahead = offset == turn ? +1 : -1;
 
-        double maxTurning = Physics.maxTurningRate(last.velocity);
-        double newHeading = Utils.normalAbsoluteAngle(R.constrain(-maxTurning, turn, maxTurning) + last.heading);
+        double newHeading = getNewHeading(last.heading, turn, last.velocity);
 
         double newVelocity = getTickVelocity(last.velocity, maxVelocity, ahead, Double.POSITIVE_INFINITY);
 
@@ -246,16 +216,13 @@ public abstract class MovementPredictor {
     }
 
     public  static PredictedPoint tick(PredictedPoint last, double angle, double maxVelocity, double remaining) {
-        double offset = Utils.normalRelativeAngle(angle - last.heading);
+        double offset = R.normalRelativeAngle(angle - last.heading);
         double turn = BackAsFrontRobot2.getQuickestTurn(offset);
         int ahead = offset == turn ? +1 : -1;
 
-        double maxTurning = Physics.maxTurningRate(last.velocity);
-        double newHeading = Utils.normalAbsoluteAngle(R.constrain(-maxTurning, turn, maxTurning) + last.heading);
+        double newHeading = getNewHeading(last.heading, turn, last.velocity);
 
-        double newVelocity = new Range(-maxTurning, maxTurning).isNearlyContained(turn) || !SHARP_TURNING
-                ? getTickVelocity(last.velocity, maxVelocity, ahead, remaining)
-                : getTickVelocity(last.velocity, 0, ahead, remaining);
+        double newVelocity = getTickVelocity(last.velocity, maxVelocity, ahead, remaining);
 
         return last.tick(newHeading, newVelocity);
     }
@@ -270,24 +237,8 @@ public abstract class MovementPredictor {
 
     public static double getNewHeading(double heading, double turn, double velocity) {
         double turnRate = Rules.getTurnRateRadians(velocity);
-        return Utils.normalAbsoluteAngle(heading + R.constrain(-turnRate, turn, +turnRate));
+        return R.normalAbsoluteAngle(heading + R.constrain(-turnRate, turn, +turnRate));
     }
-
-    /*
-    *    DISCLAIMER: The next three functions were COPIED from the Robocode engine itself,
-    *    since it's pretty much impossible to deduce what is going under the hood as the Robocode
-    *    physics differ from real world physics because time in Robocode is discrete.
-    *
-    *    Instead of doing random guesses and trying to get a (hopefully) correct formula by interpolating
-    *    these guesses, I decided to copy it from the Robocode source itself, which is open,
-    *    since I see no valuable merit in the effort of trying to randomly guess things about
-    *    the game which are already open in the engine itself.
-    *
-    *    Hope this is not seen as an issue. Moreover, it's the only
-    *    copied piece of code in this whole project.
-    *
-    *    Roberto.
-     */
 
     public static double getNewVelocity(double velocity, double maxVelocity, double distance) {
         if (distance < 0) {
@@ -331,5 +282,4 @@ public abstract class MovementPredictor {
 
         return Math.min(1, decelTime) * Rules.DECELERATION + Math.max(0, accelTime) * Rules.ACCELERATION;
     }
-
 }

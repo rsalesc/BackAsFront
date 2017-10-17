@@ -23,13 +23,11 @@
 
 package rsalesc.mega.utils;
 
-import org.omg.CORBA.ObjectHelper;
 import robocode.*;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.listeners.BulletListener;
-import rsalesc.baf2.core.listeners.HitListener;
-import rsalesc.baf2.core.listeners.RoundEndedListener;
+import rsalesc.baf2.core.listeners.LastBreathListener;
 import rsalesc.baf2.core.listeners.StatusListener;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.*;
@@ -41,7 +39,7 @@ import rsalesc.runner.SerializeHelper;
  * Created by Roberto Sales on 13/09/17.
  */
 public class StatTracker extends StoreComponent implements StatusListener, BulletListener,
-        EnemyWaveListener, RoundEndedListener {
+        EnemyWaveListener, LastBreathListener {
     private static final int MEETING_THRESHOLD = 35;
     private static final StatTracker SINGLETON = new StatTracker();
 
@@ -172,7 +170,7 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
     }
 
     @Override
-    public void onRoundEnded(RoundEndedEvent e) {
+    public void onLastBreath() {
         getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
         getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
 

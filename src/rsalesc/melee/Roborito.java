@@ -66,7 +66,7 @@ public class Roborito extends BackAsFrontRobot2 {
         StatTracker statTracker = StatTracker.getInstance();
 
         AutomaticGunArray meleeArray = new GunArray();
-        MonkFeet move = new MonkFeet(waveManager, statTracker);
+        MonkFeet move = new MonkFeet(waveManager);
 
         MirrorSwarmSelector swarmSelector = new MirrorSwarmSelector();
 

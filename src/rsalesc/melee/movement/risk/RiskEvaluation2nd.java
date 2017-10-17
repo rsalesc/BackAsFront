@@ -26,6 +26,7 @@ package rsalesc.melee.movement.risk;
 import robocode.util.Utils;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.EnemyRobot;
@@ -51,7 +52,7 @@ public class RiskEvaluation2nd implements RiskEvaluation {
             res += Math.max(5 * maxDistance - dest.distance(enemy.getPoint()), 0);
             double absBearing = Physics.absoluteBearing(enemy.getPoint(), dest);
             double bafHeading = Physics.absoluteBearing(me.getPoint(), dest);
-            double diff = Utils.normalRelativeAngle(bafHeading - absBearing);
+            double diff = R.normalRelativeAngle(bafHeading - absBearing);
 
             double factor = Math.abs(Math.cos(diff)) * (maxDistance - enemy.getDistance()) / maxDistance;
             res += factor * 3;

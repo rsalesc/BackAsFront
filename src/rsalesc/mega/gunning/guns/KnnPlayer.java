@@ -28,6 +28,7 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
@@ -95,7 +96,7 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
             int ptr = 0;
             long firstTime = movie.get(0).getTime();
 
-            double rotation = Utils.normalRelativeAngle(movie.get(0).getBafHeading() - enemy.getBafHeading());
+            double rotation = R.normalRelativeAngle(movie.get(0).getBafHeading() - enemy.getBafHeading());
             Point translation = movie.get(0).getPoint().subtract(enemy.getPoint());
 
             Point transformedMe = nextPosition.add(translation).rotate(rotation, movie.get(0).getPoint());

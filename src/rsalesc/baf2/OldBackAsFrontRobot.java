@@ -24,12 +24,12 @@
 package rsalesc.baf2;
 
 import robocode.*;
-import robocode.util.Utils;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.predictor.PrecisePredictor;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -48,7 +48,7 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
         if (Math.abs(originalTurn) < R.HALF_PI)
             return originalTurn;
         else
-            return Utils.normalRelativeAngle(originalTurn + R.PI);
+            return R.normalRelativeAngle(originalTurn + R.PI);
     }
 
     public void dissociate() {
@@ -186,28 +186,28 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
     }
 
     public int setQuickTurnTo(double radians) {
-        radians = Utils.normalAbsoluteAngle(radians);
-        double angle = Utils.normalRelativeAngle(radians - getHeadingRadians());
+        radians = R.normalAbsoluteAngle(radians);
+        double angle = R.normalRelativeAngle(radians - getHeadingRadians());
         double narrowAngle = getQuickestTurn(angle);
         setTurnRightRadians(narrowAngle);
         return (angle == narrowAngle ? 1 : -1);
     }
 
     public void setTurnTo(double radians) {
-        radians = Utils.normalAbsoluteAngle(radians);
-        double offset = Utils.normalRelativeAngle(radians - getHeadingRadians());
+        radians = R.normalAbsoluteAngle(radians);
+        double offset = R.normalRelativeAngle(radians - getHeadingRadians());
         setTurnRightRadians(offset);
     }
 
     public void setGunTo(double radians) {
-        radians = Utils.normalAbsoluteAngle(radians);
-        double offset = Utils.normalRelativeAngle(radians - getGunHeadingRadians());
+        radians = R.normalAbsoluteAngle(radians);
+        double offset = R.normalRelativeAngle(radians - getGunHeadingRadians());
         setTurnGunRightRadians(offset);
     }
 
     public void setRadarTo(double radians) {
-        radians = Utils.normalAbsoluteAngle(radians);
-        double offset = Utils.normalRelativeAngle(radians - getRadarHeadingRadians());
+        radians = R.normalAbsoluteAngle(radians);
+        double offset = R.normalRelativeAngle(radians - getRadarHeadingRadians());
         setTurnRadarRightRadians(offset);
     }
 
@@ -216,11 +216,11 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
     }
 
     public double getNewVelocity() {
-        return Physics.getNewVelocity(getVelocity(), getMaxVelocity(), getDistanceRemaining());
+        return PrecisePredictor.getNewVelocity(getVelocity(), getMaxVelocity(), getDistanceRemaining());
     }
 
     public double getNewHeading() {
-        return Physics.getNewHeading(getHeadingRadians(), getVelocity(), getTurnRemainingRadians());
+        return PrecisePredictor.getNewHeading(getHeadingRadians(), getVelocity(), getTurnRemainingRadians());
     }
 
     public Point getNextPosition() {

@@ -30,7 +30,7 @@ import robocode.RoundEndedEvent;
 import robocode.util.Utils;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
-import rsalesc.baf2.core.listeners.RoundEndedListener;
+import rsalesc.baf2.core.listeners.LastBreathListener;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.PredictedHashMap;
@@ -46,7 +46,7 @@ import java.util.*;
 /**
  * Created by Roberto Sales on 20/09/17.
  */
-public abstract class AutomaticGunArray extends AutomaticGun implements BulletWaveListener, RoundEndedListener {
+public abstract class AutomaticGunArray extends AutomaticGun implements BulletWaveListener, LastBreathListener {
     private ArrayList<AutomaticGun> guns = new ArrayList<>();
     private boolean log = false;
     private boolean scoring = true;
@@ -246,7 +246,7 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
                 if (best == null)
                     continue;
 
-                double x = Utils.normalRelativeAngle(angle - best) / bandwidth;
+                double x = R.normalRelativeAngle(angle - best) / bandwidth;
                 if (Math.abs(x) < 1) {
                     getGunScoreKeeper(gun).log(enemyLog, R.gaussKernel(x));
                 }
@@ -274,7 +274,7 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
     }
 
     @Override
-    public void onRoundEnded(RoundEndedEvent e) {
+    public void onLastBreath() {
         if(log) {
             for(AutomaticGun gun : guns) {
                 ScoreKeeper keeper = getGunScoreKeeper(gun);

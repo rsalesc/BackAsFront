@@ -21,13 +21,30 @@
  *    distribution.
  */
 
-package rsalesc.baf2.core.listeners;
+package rsalesc.baf2.core.benchmark;
 
-import robocode.RoundEndedEvent;
+import rsalesc.baf2.core.utils.Timer;
 
 /**
- * Created by Roberto Sales on 11/09/17.
+ * Created by Roberto Sales on 12/10/17.
  */
-public interface RoundEndedListener {
-    void onRoundEnded(RoundEndedEvent e);
+public class BenchmarkNode {
+    private final Benchmark benchmark;
+    private final String group;
+
+    private Timer timer;
+
+    public BenchmarkNode(Benchmark benchmark, String group) {
+        this.benchmark = benchmark;
+        this.group = group;
+        this.timer = new Timer();
+    }
+
+    public void start() {
+        timer.start();
+    }
+
+    public void stop() {
+        benchmark.log(group, (double) timer.stop() / 1e6);
+    }
 }

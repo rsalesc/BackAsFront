@@ -26,10 +26,7 @@ package rsalesc.baf2.painting;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.KeyHandler;
 import rsalesc.baf2.core.listeners.PaintListener;
-import rsalesc.baf2.core.utils.Pair;
-import rsalesc.baf2.core.utils.geometry.*;
 import rsalesc.baf2.core.utils.geometry.Point;
-
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

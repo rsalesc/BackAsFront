@@ -24,9 +24,7 @@
 package rsalesc.mega.movement;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.controllers.Controller;
-import rsalesc.baf2.core.listeners.PaintListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -35,6 +33,9 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
+import rsalesc.baf2.predictor.PrecisePredictor;
+import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.WallSmoothing;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveCondition;
@@ -42,11 +43,7 @@ import rsalesc.baf2.waves.Wave;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.movement.distancing.DefaultSurfingDistancer;
 import rsalesc.mega.movement.distancing.SurfingDistancer;
-import rsalesc.mega.predictor.MovementPredictor;
-import rsalesc.mega.predictor.PredictedPoint;
-import rsalesc.mega.predictor.WallSmoothing;
 import rsalesc.mega.utils.IMea;
-import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 
@@ -65,8 +62,8 @@ public class TrueSurfing extends BaseSurfing {
 
     private ArrayList<Point> breakOptions = new ArrayList<>();
 
-    public TrueSurfing(Surfer surfer, WaveManager manager, StatTracker statTracker) {
-        super(surfer, manager, statTracker);
+    public TrueSurfing(Surfer surfer, WaveManager manager) {
+        super(surfer, manager);
     }
 
     @Override
@@ -154,18 +151,18 @@ public class TrueSurfing extends BaseSurfing {
                 if (stopDirection == 0) stopDirection = 1;
 
                 controller.setMaxVelocity(0);
-                double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 + perp * stopDirection, stopDirection));
                 controller.setBackAsFront(angle);
             } else if (clockwiseDanger < counterDanger) {
-                double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 + perp, +1));
                 controller.setMaxVelocity(Rules.MAX_VELOCITY);
                 controller.setBackAsFront(angle);
             } else {
-                double angle = Utils.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 - perp, -1));
                 controller.setMaxVelocity(Rules.MAX_VELOCITY);
@@ -196,13 +193,13 @@ public class TrueSurfing extends BaseSurfing {
         int stopDirection = initialPoint.getDirection(nextWave.getSource());
         if (stopDirection == 0) stopDirection = 1;
 
-        List<PredictedPoint> clockwisePoints = MovementPredictor
+        List<PredictedPoint> clockwisePoints = PrecisePredictor
                 .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, +1, perp, true, false);
 
-        List<PredictedPoint> counterPoints = MovementPredictor
+        List<PredictedPoint> counterPoints = PrecisePredictor
                 .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, -1, perp, true, false);
 
-        List<PredictedPoint> stopPoints = MovementPredictor
+        List<PredictedPoint> stopPoints = PrecisePredictor
                 .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, stopDirection, perp, true, true);
 
         PredictedPoint clockwisePass = R.getLast(clockwisePoints);
@@ -230,7 +227,7 @@ public class TrueSurfing extends BaseSurfing {
         };
 
         double distanceToSource = initialPoint.distance(nextWave.getSource());
-        double impactTime = Math.max((distanceToSource - nextWave.getDistanceTraveled(initialPoint.getTime()))
+        double impactTime = Math.max((distanceToSource - nextWave.getDistanceTraveled(initialPoint.time))
                 / nextWave.getVelocity(), 1);
 
         for (int i = 0; i < 3; i++) {

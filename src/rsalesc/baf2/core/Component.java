@@ -39,11 +39,13 @@ public abstract class Component {
     private boolean inited = false;
 
     public void init(RobotMediator mediator) {
+        this.mediator = mediator;
+
         if(inited)
             return;
 
         inited = true;
-        this.mediator = mediator;
+
         setupPaintings(mediator.getPaintManager());
     }
 

@@ -158,9 +158,9 @@ public class G {
     public Shape getArcShape(Point center, double radius, double startAngle, double angle) {
         if (angle > 0) {
             angle = -angle;
-            startAngle = Utils.normalAbsoluteAngle(startAngle + angle);
+            startAngle = R.normalAbsoluteAngle(startAngle + angle);
         }
-        double fixedStart = Utils.normalAbsoluteAngle(-startAngle + R.HALF_PI);
+        double fixedStart = R.normalAbsoluteAngle(-startAngle + R.HALF_PI);
         return new Arc2D.Double(center.x, center.y, radius, radius, fixedStart, -angle, Arc2D.OPEN);
     }
 

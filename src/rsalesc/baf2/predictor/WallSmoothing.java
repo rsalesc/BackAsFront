@@ -21,9 +21,8 @@
  *    distribution.
  */
 
-package rsalesc.mega.predictor;
+package rsalesc.baf2.predictor;
 
-import robocode.util.Utils;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
@@ -86,7 +85,7 @@ public abstract class WallSmoothing {
             if (i < 0) i += 4;
             else if (i >= 4) i -= 4;
 
-            if (Math.abs(Utils.normalRelativeAngle(NORMAL_ANGLES[i] - angle)) > R.HALF_PI)
+            if (Math.abs(R.normalRelativeAngle(NORMAL_ANGLES[i] - angle)) > R.HALF_PI)
                 continue;
 
             Point base = new Point(0, 0);

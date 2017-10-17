@@ -28,6 +28,7 @@ import robocode.util.Utils;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.listeners.ScannedRobotListener;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 
@@ -58,7 +59,7 @@ public class PerfectLockRadar extends Component implements ScannedRobotListener 
 
                 EnemyRobot enemy = enemies[0];
 
-                double turn = Utils.normalRelativeAngle(enemy.getAbsoluteBearing() - getMediator().getRadarHeadingRadians());
+                double turn = R.normalRelativeAngle(enemy.getAbsoluteBearing() - getMediator().getRadarHeadingRadians());
                 controller.setTurnRadarRightRadians(turn * 2);
             }
         }

@@ -28,7 +28,6 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
@@ -61,8 +60,6 @@ public class Monk extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         add(new Colorizer());
 
         Tracker tracker = new Tracker();
@@ -74,7 +71,7 @@ public class Monk extends BackAsFrontRobot2 {
 
         StatTracker statTracker = StatTracker.getInstance();
 
-        MonkFeet move = new MonkFeet(waveManager, statTracker);
+        MonkFeet move = new MonkFeet(waveManager);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);

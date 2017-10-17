@@ -23,6 +23,7 @@
 
 package rsalesc.baf2.core.utils;
 
+import jk.math.FastTrig;
 import robocode.util.Utils;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
@@ -42,49 +43,46 @@ public class R {
     public static final double DOUBLE_PI = PI * 2;
     public static final double EPSILON = 1e-9;
     private static final DecimalFormat PERCENTAGE_FORMATTER = new DecimalFormat("#.##");
-    public static boolean FAST_MATH = false;
+    public static final boolean FAST_MATH = true;
     public static final LinkedList<Boolean> fm = new LinkedList<>();
-
-    public static void pushFastMath(boolean state) {
-        fm.push(FAST_MATH);
-        FAST_MATH = state;
-    }
-
-    public static void popFastMath() {
-        if(!fm.isEmpty())
-            FAST_MATH = fm.pollLast();
-        else
-            FAST_MATH = false;
-    }
 
     public static double sin(double radians) {
         if (!FAST_MATH)
             return Math.sin(radians);
-        return FastMath.sin((float) radians);
+//        return FastMath.sin((float) radians);
+        return FastTrig.sin(radians);
     }
 
     public static double cos(double radians) {
         if (!FAST_MATH)
             return Math.cos(radians);
-        return FastMath.cos((float) radians);
+//        return FastMath.cos((float) radians);
+        return FastTrig.cos(radians);
     }
 
     public static double asin(double x) {
-        return Math.asin(x);
+        if(!FAST_MATH)
+            return Math.asin(x);
+        return FastTrig.asin(x);
     }
 
     public static double acos(double x) {
-        return Math.acos(x);
+        if(!FAST_MATH)
+            return Math.acos(x);
+        return FastTrig.acos(x);
     }
 
     public static double atan(double x) {
-        return Math.atan(x);
+        if(!FAST_MATH)
+            return Math.atan(x);
+        return FastTrig.atan(x);
     }
 
     public static double atan2(double y, double x) {
         if (!FAST_MATH)
             return Math.atan2(y, x);
-        return FastMath.atan2((float) y, (float) x);
+//        return FastMath.atan2((float) y, (float) x);
+        return FastTrig.atan2(y, x);
     }
 
     public static double tan(double radians) {
@@ -160,7 +158,7 @@ public class R {
     }
 
     public static double transposeAngle(double angle) {
-        return Utils.normalAbsoluteAngle(-Utils.normalRelativeAngle(angle) + R.HALF_PI);
+        return R.normalAbsoluteAngle(-R.normalRelativeAngle(angle) + R.HALF_PI);
     }
 
     public static double getWallEscape(AxisRectangle field, Point point, double heading) {
@@ -256,5 +254,21 @@ public class R {
             res++;
 
         return res - 1;
+    }
+
+    public static boolean isNearAngle(double heading, double heading1) {
+        return R.isNear(R.normalRelativeAngle(heading - heading1), 0);
+    }
+
+    public static double normalRelativeAngle(double x) {
+        if(!FAST_MATH)
+            return Utils.normalRelativeAngle(x);
+        return FastTrig.normalRelativeAngle(x);
+    }
+
+    public static double normalAbsoluteAngle(double x) {
+        if(!FAST_MATH)
+            return Utils.normalAbsoluteAngle(x);
+        return FastTrig.normalAbsoluteAngle(x);
     }
 }

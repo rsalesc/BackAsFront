@@ -167,7 +167,7 @@ public class Point implements Serializable {
      * @return angle in robocode notation
      */
     public double absoluteBearing() {
-        return Utils.normalAbsoluteAngle(R.atan2(x, y));
+        return R.normalAbsoluteAngle(R.atan2(x, y));
     }
 
     public Point project(double angle, double length) {
@@ -187,7 +187,7 @@ public class Point implements Serializable {
     }
 
     public Point rotate(double theta) {
-        theta = Utils.normalRelativeAngle(theta);
+        theta = R.normalRelativeAngle(theta);
         return new Point(R.cos(-theta) * x - R.sin(-theta) * y, R.sin(-theta) * x + R.cos(-theta) * y);
     }
 

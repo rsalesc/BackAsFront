@@ -59,7 +59,7 @@ public class GuessFactorStats extends Stats {
             GuessFactorStats normalized = (GuessFactorStats) (sts[i].clone());
             normalized.normalize();
             for (int j = 0; j < size; j++) {
-                buffer[j] += normalized.get(j);
+                buffer[j] += normalized.get(j) * weights[i];
             }
         }
 

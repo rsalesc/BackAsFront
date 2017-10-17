@@ -25,6 +25,9 @@ package rsalesc.melee.movement.surfing;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.waves.WaveManager;
+import rsalesc.mega.movement.BaseSurfing;
+import rsalesc.mega.movement.KnightDCSurfer;
+import rsalesc.mega.movement.TrueSurfing;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
@@ -35,9 +38,22 @@ import rsalesc.mega.utils.structures.KnnView;
 /**
  * Created by Roberto Sales on 11/10/17.
  */
-public class MedinaBoard extends MeleeSurfing {
+public class MedinaBoard extends MultiModeSurfing {
     public MedinaBoard(WaveManager waves) {
-        super(new SurferProvider() {
+        super(getMelee(waves), getDuel(waves));
+    }
+
+    private static BaseSurfing getDuel(WaveManager waves) {
+        return new TrueSurfing(new KnightDCSurfer() {
+            @Override
+            public StorageNamespace getStorageNamespace() {
+                return getGlobalStorage().namespace("medina-knight");
+            }
+        }, waves);
+    }
+
+    private static MeleeSurfing getMelee(WaveManager waves) {
+        SurferProvider provider = new SurferProvider() {
             @Override
             public MeleeSurfer getSurfer(String name) {
                 return new KnnMeleeSurfer() {
@@ -51,15 +67,17 @@ public class MedinaBoard extends MeleeSurfing {
                         return new KnnView<TimestampedGFRange>()
                                 .setDistanceWeighter(new Knn.InverseDistanceWeighter<>(1.0))
                                 .add(new KnnTree<TimestampedGFRange>()
-                                    .setMode(KnnTree.Mode.MANHATTAN)
-                                    .setRatio(0.5)
-                                    .setK(3)
-                                    .setStrategy(new MedinaSurfingStrategy())
-                                    .logsHit());
+                                        .setMode(KnnTree.Mode.MANHATTAN)
+                                        .setRatio(0.5)
+                                        .setK(3)
+                                        .setStrategy(new MedinaSurfingStrategy())
+                                        .logsHit());
                     }
                 };
             }
-        }, waves);
+        };
+
+        return new MeleeSurfing(provider, waves);
     }
 
     private static class MedinaSurfingStrategy extends Strategy {

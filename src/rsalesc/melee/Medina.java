@@ -28,13 +28,9 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.MeleeTracker;
 import rsalesc.baf2.waves.BulletManager;
-import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.gunning.AntiAdaptiveGun;
-import rsalesc.mega.gunning.AntiRandomGun;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
 import rsalesc.mega.gunning.guns.KnnPlayer;
 import rsalesc.mega.gunning.guns.PlayItForwardGun;
@@ -49,11 +45,8 @@ import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.melee.gunning.AutomaticMeleeGunArray;
-import rsalesc.melee.gunning.SegmentedSwarmGun;
-import rsalesc.melee.movement.risk.MonkFeet;
+import rsalesc.melee.gunning.SwarmGun;
 import rsalesc.melee.movement.surfing.MedinaBoard;
-import rsalesc.melee.movement.surfing.MeleeSurfer;
-import rsalesc.melee.movement.surfing.MeleeSurfing;
 import rsalesc.melee.radar.MultiModeRadar;
 
 import java.awt.*;
@@ -66,8 +59,6 @@ public class Medina extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-        R.pushFastMath(true);
-
         add(new Colorizer());
 
         BulletManager bulletManager = new BulletManager();
@@ -76,11 +67,11 @@ public class Medina extends BackAsFrontRobot2 {
         MeleeTracker tracker = new MeleeTracker(waveManager);
         MovieTracker movieTracker = new MovieTracker(105, 8);
 
-        ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
+//        ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
 
         StatTracker statTracker = StatTracker.getInstance();
 
-        MeleeSurfing move = new MedinaBoard(waveManager);
+        MedinaBoard move = new MedinaBoard(waveManager);
 
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
@@ -88,22 +79,10 @@ public class Medina extends BackAsFrontRobot2 {
 
         PlayItForwardGun pifGun = new PifGun(null);
 
-        MeleeGunArray meleeArray = new MeleeGunArray();
-        meleeArray.addGun(pifGun);
-
-        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
-        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
-
-        GunArray duelArray = new GunArray();
-        duelArray.addGun(randomGun);
-        duelArray.addGun(adaptiveGun);
-
-        SegmentedSwarmGun swarm = new SegmentedSwarmGun(100);
+        SwarmGun swarm = new SwarmGun(pifGun, 100);
         swarm.setPowerSelector(new MonkPowerSelector());
-        swarm.addGun(meleeArray, 2);
-        swarm.addGun(duelArray, 0);
 
-        movieTracker.addListener(pifGun, meleeArray.getScoringCondition());
+        movieTracker.addListener(pifGun);
 
         waveManager.addListener(statTracker);
         if(!TC) waveManager.addListener(move);
@@ -112,20 +91,11 @@ public class Medina extends BackAsFrontRobot2 {
         add(movieTracker);
         add(bulletManager);
         add(waveManager);
-        add(shadowManager);
+//        add(shadowManager);
 
         add(statTracker);
 
-        bulletManager.addListener(randomGun, duelArray.getScoringCondition());
-        bulletManager.addListener(adaptiveGun, duelArray.getScoringCondition());
-
-        bulletManager.addListener(meleeArray, meleeArray.getScoringCondition());
-        bulletManager.addListener(duelArray, duelArray.getScoringCondition());
-
         if(!TC) add(move);
-
-        addListener(meleeArray);
-        addListener(duelArray);
 
         add(swarm);
         add(new MultiModeRadar());

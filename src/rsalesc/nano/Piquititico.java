@@ -27,6 +27,7 @@ import robocode.AdvancedRobot;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
+import rsalesc.baf2.core.utils.R;
 
 /**
  * Created by Roberto Sales on 27/09/17.
@@ -66,7 +67,7 @@ public class Piquititico extends AdvancedRobot {
 
         while((matchPosition = enemyHistory.indexOf(enemyHistory.substring(0, --inteiro), 64)) < 0);
 
-        setTurnRightRadians(Utils.normalRelativeAngle(
+        setTurnRightRadians(R.normalRelativeAngle(
                 e.getBearingRadians() - Math.PI * (0.5 - ((inteiro = (int) e.getDistance()) - PREFERRED_DISTANCE) / PREFERRED_DISTANCE_DEN * Math.signum(mDirection))
         ));
 
@@ -76,7 +77,7 @@ public class Piquititico extends AdvancedRobot {
             absBearing += ((short) enemyHistory.charAt(--matchPosition)) /  e.getDistance();
         } while ((inteiro -= BULLET_VELOCITY) > 0);
 
-        setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()));
+        setTurnGunRightRadians(R.normalRelativeAngle(absBearing - getGunHeadingRadians()));
 
         // it works because the remaining degrees always > than the remaining radians
         setTurnRadarLeftRadians(getRadarTurnRemaining());
