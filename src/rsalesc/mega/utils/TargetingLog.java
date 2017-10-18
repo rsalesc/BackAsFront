@@ -48,7 +48,7 @@ import java.util.ArrayList;
 public class TargetingLog implements Serializable, IMea {
     private static final long serialVersionUID = 4242424242L;
 
-    private static final int SEEN_THRESHOLD = 10;
+    public static final int SEEN_THRESHOLD = 10;
     public static final int BACK_IN_TIME = 80;
     private static final int MEA_STICK = 105;
 

@@ -282,7 +282,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double distance = wave.getSource().distance(point);
         double angle = Physics.absoluteBearing(wave.getSource(), point);
 
-        double bandwidth = 36 / distance; // imprecise to make it faster
+        double bandwidth = (36 / distance) * 1.1; // imprecise to make it faster
         AngularRange range = new AngularRange(angle, -bandwidth, +bandwidth);
 
         return getPreciseDanger(wave, range, point);
@@ -364,7 +364,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             if(Math.abs(diff) > 2.4 * classicMea)
                 continue;
 
-            stats[i] = getSurfer(logs[i].first).getStats(shooterLog, f, f.imprecise(), getCacheIndex(wave));
+            stats[i] = getSurfer(logs[i].first).getStats(shooterLog, f, f.linear(), getCacheIndex(wave));
             weights[i] = 1.0 / (f.distance * f.distance);
         }
 
@@ -473,7 +473,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double bandwidth = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -bandwidth, +bandwidth);
 
-        getSurfer(hitRobot.getName()).log(enemyLog, f, f.imprecise(), BreakType.BULLET_HIT);
+        getSurfer(hitRobot.getName()).log(enemyLog, f, f.linear(), BreakType.BULLET_HIT);
     }
 
     @Override
