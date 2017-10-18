@@ -39,6 +39,7 @@ import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.predictor.PredictedPoint;
 
 import java.awt.*;
+import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,15 +55,15 @@ public class WaveManager extends Component implements EnemyFireListener, EnemyWa
 
     @Override
     public void onEnemyFire(EnemyFireEvent e) {
-        EnemyRobot enemy = e.getEnemy();
-        EnemyRobot pastEnemy = EnemyTracker.getInstance().getLog(enemy).before(enemy);
+        RobotSnapshot enemy = e.getEnemy();
 
-        long diff = enemy.getTime() - pastEnemy.getTime();
-        Point source = pastEnemy.getPoint().weighted(enemy.getPoint(), (double) (e.getTime() - pastEnemy.getTime()) / diff);
+        if(!(enemy instanceof InterpolatedSnapshot) && !(enemy instanceof EnemyRobot))
+            return;
 
         BattleTime battleTime = new BattleTime(e.getTime(), getMediator().getRoundNum());
 
-        EnemyWave wave = new EnemyWave(enemy, source, battleTime, e.getSpeed());
+        EnemyWave wave = new EnemyWave(enemy instanceof InterpolatedSnapshot ? (EnemyRobot) ((InterpolatedSnapshot) enemy).getBase()
+                                            : (EnemyRobot) enemy, enemy.getPoint(), battleTime, e.getSpeed());
         waves.add(wave);
 
         onEnemyWaveFired(wave);

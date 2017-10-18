@@ -29,13 +29,15 @@ import robocode.Rules;
  * Created by Roberto Sales on 11/09/17.
  */
 public class EnemyFireEvent {
-    private final EnemyRobot enemy;
+    private final RobotSnapshot enemy;
     private final long time;
+    private final int deviation;
     private final double power;
 
-    public EnemyFireEvent(EnemyRobot enemy, long time, double power) {
+    public EnemyFireEvent(RobotSnapshot enemy, long time, int deviation, double power) {
         this.enemy = enemy;
         this.time = time;
+        this.deviation = deviation;
         this.power = power;
     }
 
@@ -43,7 +45,7 @@ public class EnemyFireEvent {
         return time;
     }
 
-    public EnemyRobot getEnemy() {
+    public RobotSnapshot getEnemy() {
         return enemy;
     }
 
@@ -53,5 +55,9 @@ public class EnemyFireEvent {
 
     public double getSpeed() {
         return Rules.getBulletSpeed(power);
+    }
+
+    public int getDeviation() {
+        return deviation;
     }
 }

@@ -120,6 +120,10 @@ public class InterpolatedSnapshot implements RobotSnapshot {
         return false;
     }
 
+    public RobotSnapshot getBase() {
+        return base;
+    }
+
     public boolean isMe() {
         return base instanceof MyRobot;
     }

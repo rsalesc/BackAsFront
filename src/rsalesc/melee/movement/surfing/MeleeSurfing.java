@@ -41,12 +41,12 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
-import rsalesc.baf2.predictor.FastPredictor;
-import rsalesc.baf2.predictor.PrecisePredictor;
-import rsalesc.baf2.predictor.PredictedPoint;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.*;
 import rsalesc.mega.movement.DangerPoint;
+import rsalesc.baf2.predictor.FastPredictor;
+import rsalesc.baf2.predictor.PrecisePredictor;
+import rsalesc.baf2.predictor.PredictedPoint;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
@@ -67,16 +67,9 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
 
     private static final double WALL_STICK = 160;
 
-    private static final int WAVE_GEN = 5;
-    private static final int CHORD_GEN = 2;
-
-    private static final int MAX_PATH_SIZE = 30;
     private static final int POINT_GEN = 24;
     private static final int STICK_LENGTH = 160;
     private static final int BRANCH_DEPTH = 1; // TODO: improve this
-    private static final int BRANCH_THRESHOLD = 24;
-
-    private static final int SEEN_THRESHOLD = 10;
     private static final int MAX_TARGETS = 4;
 
     private static final double NOISE = 1.7;
@@ -130,7 +123,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             return;
         }
 
-        latestEnemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - SEEN_THRESHOLD);
+        latestEnemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - TargetingLog.SEEN_THRESHOLD);
         SurfingOption option = branchAndBound(PredictedPoint.from(me));
 
         lastChoice = new SurfingChoice(option.dest, option.maxVel, nextWave);
@@ -289,7 +282,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double distance = wave.getSource().distance(point);
         double angle = Physics.absoluteBearing(wave.getSource(), point);
 
-        double bandwidth = (36 / distance) * 1.1; // imprecise to make it faster
+        double bandwidth = 36 / distance; // imprecise to make it faster
         AngularRange range = new AngularRange(angle, -bandwidth, +bandwidth);
 
         return getPreciseDanger(wave, range, point);
@@ -371,7 +364,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             if(Math.abs(diff) > 2.4 * classicMea)
                 continue;
 
-            stats[i] = getSurfer(logs[i].first).getStats(shooterLog, f, f.linear(), getCacheIndex(wave));
+            stats[i] = getSurfer(logs[i].first).getStats(shooterLog, f, f.imprecise(), getCacheIndex(wave));
             weights[i] = 1.0 / (f.distance * f.distance);
         }
 
@@ -455,6 +448,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         return Objects.hash(wave, wave.getTime()) * (long) 1e9 + hits;
     }
 
+    // TODO: somehow interpolate hit position as well
     // TODO: log whenever a hit happens, not only when it hits a specific enemy
     public void logHit(EnemyWave wave, RobotSnapshot hitRobot, Bullet hint) {
         Pair<String, TargetingLog>[] pairs = (Pair[]) wave.getData(MELEE_HINT);
@@ -479,7 +473,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double bandwidth = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -bandwidth, +bandwidth);
 
-        getSurfer(hitRobot.getName()).log(enemyLog, f, f.linear(), BreakType.BULLET_HIT);
+        getSurfer(hitRobot.getName()).log(enemyLog, f, f.imprecise(), BreakType.BULLET_HIT);
     }
 
     @Override
@@ -499,7 +493,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             return;
         }
 
-        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - SEEN_THRESHOLD);
+        EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - TargetingLog.SEEN_THRESHOLD);
         Pair<String, TargetingLog>[] data = new Pair[enemies.length + 1];
 
         InterpolatedSnapshot mySnap = MyLog.getInstance().interpolate(wave.getTime() - 1);
@@ -583,9 +577,8 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
                     if (log == null)
                         continue;
 
-                    double classicMea = Physics.maxEscapeAngle(wave.getVelocity());
-
                     double myAngle = wave.getAngle(MyLog.getInstance().interpolate(wave.getTime()).getPoint());
+                    double classicMea = Physics.maxEscapeAngle(wave.getVelocity());
 
                     CircularGuessFactorStats stats = getCombinedStats(wave);
 

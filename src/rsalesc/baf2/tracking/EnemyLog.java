@@ -46,6 +46,7 @@ public class EnemyLog extends RobotLog {
     private final String name;
     private long approaching = 0;
     private long everLength = 0;
+
     private double distanceSum = 0;
 
     private EnemyRobot[] log;

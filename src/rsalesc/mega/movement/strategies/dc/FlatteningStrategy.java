@@ -40,7 +40,7 @@ public class FlatteningStrategy extends Strategy {
                 (f.accel + 1) * 0.5,
                 R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.25),
                 R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.25),
-                1.0 / (1.0 + 2 * f.timeDecel),
+                1.0 / (1.0 + 2 * f.timeDecel), // TODO: bft?
                 1.0 / (1.0 + 2 * f.timeRevert),
                 Math.max(f.displaceLast10 / 80, 1),
                 Math.max(f.displaceLast20 / 160, 1),
