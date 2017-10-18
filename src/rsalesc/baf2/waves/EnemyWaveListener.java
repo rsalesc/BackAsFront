@@ -29,7 +29,6 @@ import rsalesc.baf2.tracking.MyRobot;
 
 /**
  * Created by Roberto Sales on 12/09/17.
- * TODO: precise intersection
  */
 public interface EnemyWaveListener {
     void onEnemyWaveFired(EnemyWave wave);

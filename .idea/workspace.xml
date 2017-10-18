@@ -5,312 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/jk/math/FastTrig.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/Benchmark.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/BenchmarkAccumulator.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/BenchmarkNode.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/FastPredictor.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/Interpolation.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/PredictedSnapshot.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MultiModeSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/ZLIB.xml" afterPath="$PROJECT_DIR$/.idea/copyright/ZLIB.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/rsalesc.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/rsalesc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/codesize_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/codesize_1_1.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/scopes/Baf2.xml" afterPath="$PROJECT_DIR$/.idea/scopes/Baf2.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/scopes/Robocode.xml" afterPath="$PROJECT_DIR$/.idea/scopes/Robocode.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="$PROJECT_DIR$/BackAsFront.iml" afterPath="$PROJECT_DIR$/BackAsFront.iml" />
-      <change beforePath="$PROJECT_DIR$/MANIFEST.MF" afterPath="$PROJECT_DIR$/MANIFEST.MF" />
-      <change beforePath="$PROJECT_DIR$/MANIFEST.MF.erb" afterPath="$PROJECT_DIR$/MANIFEST.MF.erb" />
-      <change beforePath="$PROJECT_DIR$/build.rb" afterPath="$PROJECT_DIR$/build.rb" />
-      <change beforePath="$PROJECT_DIR$/config/robocode.properties" afterPath="$PROJECT_DIR$/config/robocode.properties" />
-      <change beforePath="$PROJECT_DIR$/config/window.properties" afterPath="$PROJECT_DIR$/config/window.properties" />
-      <change beforePath="$PROJECT_DIR$/erba.rb" afterPath="$PROJECT_DIR$/erba.rb" />
-      <change beforePath="$PROJECT_DIR$/robot.properties.erb" afterPath="$PROJECT_DIR$/robot.properties.erb" />
-      <change beforePath="$PROJECT_DIR$/rumble.rb" afterPath="$PROJECT_DIR$/rumble.rb" />
-      <change beforePath="$PROJECT_DIR$/src/jk/tree/KDTree.java" afterPath="$PROJECT_DIR$/src/jk/tree/KDTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/OldBackAsFrontRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/OldBackAsFrontRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/Component.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/Component.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/ControlManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/ControlManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/IStore.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/IStore.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/KeyHandler.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/KeyHandler.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/RobotMediator.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/RobotMediator.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/StorageNamespace.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/StorageNamespace.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/StoreComponent.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/StoreComponent.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/AimController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/AimController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/BodyController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/BodyController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/Controller.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/Controller.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/DummyController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/DummyController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/GunController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/GunController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/IController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/IController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/RadarController.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/RadarController.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BatchScannedRobotListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BatchScannedRobotListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BattleEndedListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BattleEndedListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BattleStartedListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BattleStartedListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BulletListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/BulletListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/FireEvent.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/FireEvent.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/FireListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/FireListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/HitListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/HitListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/KeyPressedListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/KeyPressedListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/PaintListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/PaintListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/RobotDeathListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/RobotDeathListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/RoundEndedListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/LastBreathListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/RoundStartedListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/RoundStartedListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/ScannedRobotListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/ScannedRobotListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/StatusListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/StatusListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/TickListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/TickListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/WinListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/listeners/WinListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/BattleTime.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/BattleTime.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/ComparablePair.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/ComparablePair.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/FastMath.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/FastMath.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Pair.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Pair.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/PredictedHashMap.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/PredictedHashMap.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/RTest.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/RTest.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Timer.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Timer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/AngularRange.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/AngularRange.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/AxisRectangle.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/AxisRectangle.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Circle.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Circle.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/LineSegment.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/LineSegment.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Point.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Point.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Range.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Range.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/G.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/G.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/PaintManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/PaintManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/Painting.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/Painting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/colors/ColorUtils.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/colors/ColorUtils.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/colors/Gradient.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/colors/Gradient.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/BaseEnemyRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/BaseEnemyRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/CrossFireListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/CrossFireListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyFireEvent.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyFireEvent.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyFireListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyFireListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/HeatLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/HeatLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/HeatTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/HeatTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/InterpolatedSnapshot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/InterpolatedSnapshot.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotSnapshot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotSnapshot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/Tracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/Tracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BreakType.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BreakType.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWave.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWaveListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWaveListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWavePreciseListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWavePreciseListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWave.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveCondition.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveCondition.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWavePreciseListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWavePreciseListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/RobotWave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/RobotWave.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Shadow.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Shadow.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/ShadowManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/ShadowManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/TickBulletListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/TickBulletListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/TickWave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/TickWave.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/WaveManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/WaveManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/Allele.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/Allele.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/Chromosome.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/Chromosome.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeLayout.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeLayout.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomePerformance.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomePerformance.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeSequence.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeSequence.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeSource.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeSource.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeTest.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ChromosomeTest.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/CompoundGene.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/CompoundGene.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/ConcreteGene.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/ConcreteGene.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/CrossoverStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/CrossoverStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/EvolutionStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/EvolutionStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/FitnessFunction.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/FitnessFunction.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/Gene.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/Gene.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/Generation.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/Generation.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/GeneticUtils.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/GeneticUtils.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/LongDecimalGene.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/LongDecimalGene.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/LongGene.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/LongGene.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/Population.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/Population.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/SinglePointCrossoverStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/SinglePointCrossoverStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/TwoPointCrossoverStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/TwoPointCrossoverStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/UniformCrossoverStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/crossover/UniformCrossoverStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/genetic/evolution/MutateAndSurviveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/genetic/evolution/MutateAndSurviveStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/Baf.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/Baf.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/RecorderBot.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/RecorderBot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/RaikoGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/RaikoGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GFTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GFTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GeneratedAngle.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GeneratedAngle.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/HeadOnGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/HeadOnGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnPlayer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnPlayer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/PlayItForwardGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/PlayItForwardGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/Player.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/Player.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MeleePowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MeleePowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorPowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorPowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorSwarmSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorSwarmSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MonkPowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MonkPowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/PowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/PowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/SimplePowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/SimplePowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/TCPowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/TCPowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiSurferStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiSurferStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/GeneralPurposeStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/GeneralPurposeStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedAdaptiveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedAdaptiveStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/HandAdaptiveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/HandAdaptiveStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/TargetingBenchmark.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/TargetingBenchmark.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/BaseAdaptiveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/BaseAdaptiveStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/BaseRandomStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/BaseRandomStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticAdaptiveTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticAdaptiveTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticGunTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticGunTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticRandomTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticRandomTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunHybridStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunHybridStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunHybridStrategyBuilder.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunHybridStrategyBuilder.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunLocalSearchStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunLocalSearchStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunLocalSearchStrategyBuilder.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunLocalSearchStrategyBuilder.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecord.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecord.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordEnsurer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordEnsurer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordFS.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordFS.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecorderRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecorderRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/GunRecorder.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/GunRecorder.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/DangerPoint.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/DangerPoint.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightDCSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightDCSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightVCSSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightVCSSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnnSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnnSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/OldKnightDCSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/OldKnightDCSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/Surfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/Surfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/DefaultSurfingDistancer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/DefaultSurfingDistancer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/FallbackSurfingDistancer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/FallbackSurfingDistancer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/SurfingDistancer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/SurfingDistancer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/FlatteningStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/FlatteningStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/NormalStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/NormalStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/OldFlatteningStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/OldFlatteningStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/OldNormalStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/OldNormalStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/UnsegStrats.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/UnsegStrats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/Slices.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/Slices.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingPatternMatcherStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingPatternMatcherStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/predictor/MovementPredictor.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/predictor/PredictedPoint.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PredictedPoint.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/predictor/WallSmoothing.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/radar/PerfectLockRadar.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/radar/PerfectLockRadar.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/tracking/EnemyMovie.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/tracking/EnemyMovie.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/tracking/MovieListener.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/tracking/MovieListener.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/tracking/MovieTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/tracking/MovieTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/BatchIterable.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/BatchIterable.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/BatchIterator.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/BatchIterator.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/Ensurer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/Ensurer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/IMea.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/IMea.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/MultipleSlicingStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/MultipleSlicingStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/SlicingStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/SlicingStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/Strategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/Strategy.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/Timestamped.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/Timestamped.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/TimestampedGFRange.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/TimestampedGFRange.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/WinDance.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/WinDance.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/GFSegmentationSet.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/GFSegmentationSet.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/GFSegmentationView.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/GFSegmentationView.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentTrie.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentTrie.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/Segmentation.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/Segmentation.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationView.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationView.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedSegmentedData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedSegmentedData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/BinKernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/BinKernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/CubicKernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/CubicKernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GaussianKernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GaussianKernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/KernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/KernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/PowerKernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/PowerKernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/UncutGaussianKernelDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/UncutGaussianKernelDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/EuclideanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/EuclideanKdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/FloatingHeap.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/FloatingHeap.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/FloatingHeapTest.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/FloatingHeapTest.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/JkTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/JkTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KdTreeTest.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KdTreeTest.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/Knn.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/Knn.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnProvider.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnProvider.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnView.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/KnnView.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/WeightedEuclideanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/WeightedEuclideanKdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/WeightedManhattanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/structures/WeightedManhattanKdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/Medina.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/Medina.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/Monk.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/Monk.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/Roborito.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/Roborito.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/gunning/AutomaticMeleeGunArray.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/gunning/AutomaticMeleeGunArray.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/gunning/MeleeGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/gunning/MeleeGun.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/gunning/MonkGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/gunning/MonkGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/gunning/SegmentedSwarmGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/gunning/SegmentedSwarmGun.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/GotoMinimumRisk.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/GotoMinimumRisk.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MinimumRisk.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MinimumRisk.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk1stGenMR.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk1stGenMR.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk2ndGenMR.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk2ndGenMR.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk3rdGenMR.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/Monk3rdGenMR.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MonkFeet.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MonkFeet.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation1st.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation1st.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation2nd.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation2nd.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation3rd.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation3rd.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/TrueMinimumRisk.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/TrueMinimumRisk.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/KnnMeleeSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/KnnMeleeSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleePowerDensity.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleePowerDensity.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfer.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SurferProvider.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SurferProvider.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/radar/MultiModeRadar.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/radar/MultiModeRadar.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/utils/stats/CircularGuessFactorStats.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/utils/stats/CircularGuessFactorStats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/utils/stats/CircularStats.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/utils/stats/CircularStats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/nano/Piquititico.java" afterPath="$PROJECT_DIR$/src/rsalesc/nano/Piquititico.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelObserver.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelObserver.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelResults.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelResults.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/Codesizer.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/Codesizer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/ConsoleProgress.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/ConsoleProgress.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/DuelBattleRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/DuelBattleRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/DuelResult.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/DuelResult.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/DuelResultBuilder.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/DuelResultBuilder.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/FileUtils.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/FileUtils.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/IDuelResult.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/IDuelResult.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/QuickBattleRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/QuickBattleRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/RobocodeEngineProvider.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/RobocodeEngineProvider.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/SerializeHelper.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/SerializeHelper.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -334,18 +37,68 @@
       <file leaf-file-name="Medina.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/Medina.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
+            <state relative-caret-position="450">
               <caret line="82" column="15" lean-forward="false" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MeleeSurfing.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MeleeSurfing.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="586" column="83" lean-forward="false" selection-start-line="586" selection-start-column="83" selection-end-line="586" selection-end-column="83" />
+            <state relative-caret-position="-630">
+              <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MeleeTracker.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-182">
+              <caret line="35" column="40" lean-forward="false" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BulletWaveListener.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWaveListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="30" column="40" lean-forward="false" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnemyWaveListener.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="30" column="40" lean-forward="false" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MonkGun.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/gunning/MonkGun.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="53" column="40" lean-forward="false" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SwarmGun.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="54" column="40" lean-forward="false" selection-start-line="54" selection-start-column="40" selection-end-line="54" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -354,8 +107,8 @@
       <file leaf-file-name="TargetingLog.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-153">
-              <caret line="386" column="50" lean-forward="false" selection-start-line="386" selection-start-column="50" selection-end-line="386" selection-end-column="50" />
+            <state relative-caret-position="664">
+              <caret line="427" column="93" lean-forward="false" selection-start-line="427" selection-start-column="93" selection-end-line="427" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -375,7 +128,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pushFastMat</find>
       <find>tracepath</find>
       <find>smartColl</find>
       <find>getquick</find>
@@ -405,6 +157,7 @@
       <find>exactlyAt</find>
       <find>kill</find>
       <find>.imprecise</find>
+      <find>lateralVelocity</find>
     </findStrings>
     <replaceStrings>
       <replace>FLATTENING_CONDITION</replace>
@@ -447,17 +200,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/Component.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/Benchmark.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/TrueMinimumRisk.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/predictor/MovementPredictor.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/predictor/PredictedPoint.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/WaveManager.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/predictor/PrecisePredictor.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/predictor/GotoFastPredictor.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/FastMath.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" />
@@ -477,7 +225,6 @@
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnPlayer.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/nano/Piquititico.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation2nd.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/RaikoGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/RiskEvaluation3rd.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/predictor/Interpolation.java" />
@@ -497,7 +244,13 @@
         <option value="$PROJECT_DIR$/src/rsalesc/melee/Medina.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MultiModeSurfing.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWaveListener.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveListener.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/melee/gunning/MonkGun.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java" />
       </list>
     </option>
   </component>
@@ -515,9 +268,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-2" />
-    <option name="y" value="42" />
+    <option name="y" value="18" />
     <option name="width" value="1924" />
-    <option name="height" value="997" />
+    <option name="height" value="1021" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -535,6 +288,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -567,6 +322,14 @@
               <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
               <item name="baf2" type="462c0819:PsiDirectoryNode" />
               <item name="painting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="tracking" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
@@ -629,8 +392,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -1406,6 +1167,8 @@
       <workItem from="1508247007414" duration="153000" />
       <workItem from="1508247991278" duration="1959000" />
       <workItem from="1508273735609" duration="2426000" />
+      <workItem from="1508293354264" duration="356000" />
+      <workItem from="1508322114750" duration="507000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1505318578286</created>
@@ -1506,7 +1269,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="763616000" />
+    <option name="totallyTimeSpent" value="764479000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1518,11 +1281,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="42" width="1924" height="997" extended-state="0" />
+    <frame x="-2" y="18" width="1924" height="1021" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32840723" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49096707" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32824427" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1535,6 +1298,7 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19583334" sideWeight="0.48440066" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5716946" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1547,10 +1311,10 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49096707" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976827" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5716946" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1620,41 +1384,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-384">
-          <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-144">
-          <caret line="39" column="22" lean-forward="false" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="51" column="22" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/utils/stats/CircularGuessFactorStats.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="140" column="51" lean-forward="false" selection-start-line="140" selection-start-column="51" selection-end-line="140" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/jk/math/FastTrig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2734">
@@ -1754,13 +1483,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/Interpolation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="105" column="22" lean-forward="false" selection-start-line="105" selection-start-column="22" selection-end-line="105" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
@@ -1786,13 +1508,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
           <caret line="54" column="26" lean-forward="false" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="63" column="66" lean-forward="false" selection-start-line="63" selection-start-column="66" selection-end-line="63" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -1919,7 +1634,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="28" column="17" lean-forward="false" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1927,7 +1641,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-54">
           <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1955,7 +1668,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1969,24 +1681,80 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153">
-          <caret line="386" column="50" lean-forward="false" selection-start-line="386" selection-start-column="50" selection-end-line="386" selection-end-column="50" />
+        <state relative-caret-position="664">
+          <caret line="427" column="93" lean-forward="false" selection-start-line="427" selection-start-column="93" selection-end-line="427" selection-end-column="93" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/Medina.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWaveListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="82" column="15" lean-forward="false" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="15" />
+        <state relative-caret-position="126">
+          <caret line="30" column="40" lean-forward="false" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWaveListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="30" column="40" lean-forward="false" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/gunning/MonkGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="53" column="40" lean-forward="false" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/gunning/SwarmGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="54" column="40" lean-forward="false" selection-start-line="54" selection-start-column="40" selection-end-line="54" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/radar/MeleeRadar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="35" column="40" lean-forward="false" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/Interpolation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="73" column="11" lean-forward="false" selection-start-line="73" selection-start-column="11" selection-end-line="73" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="586" column="83" lean-forward="false" selection-start-line="586" selection-start-column="83" selection-end-line="586" selection-end-column="83" />
+        <state relative-caret-position="-630">
+          <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/Medina.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="82" column="15" lean-forward="false" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-182">
+          <caret line="35" column="40" lean-forward="false" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
           <folding />
         </state>
       </provider>

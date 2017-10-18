@@ -24,7 +24,6 @@
 package rsalesc.melee.gunning;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.controllers.Controller;
@@ -42,8 +41,8 @@ import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.mega.utils.structures.KnnView;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,9 +52,6 @@ import java.util.List;
 
 /**
  * Created by Roberto Sales on 11/09/17.
- * TODO: use inverse distanceToEdges to weight?
- * TODO: use enemy energy
- * TODO: use virtual gunning (DC-PIF + PM with interpolation) [future]
  */
 public class MonkGun extends StoreComponent implements MovieListener, PaintListener {
     private static final int MAX_K = 100;

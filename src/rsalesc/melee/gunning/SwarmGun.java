@@ -24,7 +24,6 @@
 package rsalesc.melee.gunning;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
@@ -33,7 +32,7 @@ import rsalesc.baf2.core.listeners.FireEvent;
 import rsalesc.baf2.core.listeners.FireListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.*;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
@@ -54,7 +53,6 @@ import java.util.Comparator;
 
 /**
  * Created by Roberto Sales on 20/09/17.
- * TODO: let go of enemies i dont see for a long time
  */
 public class SwarmGun extends AutomaticGun implements FireListener {
     private static final int THRESHOLD = 10;

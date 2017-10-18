@@ -23,20 +23,17 @@
 
 package rsalesc.melee.radar;
 
-import robocode.util.Utils;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
-import rsalesc.baf2.tracking.MyLog;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
 /**
  * Created by Roberto Sales on 12/09/17.
- * TODO: improve radar, maybe kill by inactivity
  */
 public class MeleeRadar extends Component {
     private EnemyRobot lastEnemy;

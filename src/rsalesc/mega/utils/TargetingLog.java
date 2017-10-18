@@ -425,7 +425,7 @@ public class TargetingLog implements Serializable, IMea {
     private class Linear extends Imprecise {
         @Override
         public Range getMea() {
-            double radius = TargetingLog.this.getTraditionalMea() * lateralVelocity / Rules.MAX_VELOCITY;
+            double radius = TargetingLog.this.getTraditionalMea() * Math.abs(lateralVelocity) / Rules.MAX_VELOCITY;
             return new Range(-radius, +radius);
         }
     }

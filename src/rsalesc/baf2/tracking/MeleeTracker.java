@@ -24,7 +24,6 @@
 package rsalesc.baf2.tracking;
 
 import robocode.ScannedRobotEvent;
-import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.BatchScannedRobotListener;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.waves.EnemyWave;
@@ -32,12 +31,9 @@ import rsalesc.baf2.waves.WaveManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * Created by Roberto Sales on 10/10/17.
- * TODO: heuristics are very simple right now. improve that.
- * TODO: handle onDeath event
  */
 public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
     private final WaveManager waves;

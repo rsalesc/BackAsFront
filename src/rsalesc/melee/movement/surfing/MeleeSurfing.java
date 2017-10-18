@@ -455,7 +455,6 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         return Objects.hash(wave, wave.getTime()) * (long) 1e9 + hits;
     }
 
-    // TODO: somehow interpolate hit position as well
     // TODO: log whenever a hit happens, not only when it hits a specific enemy
     public void logHit(EnemyWave wave, RobotSnapshot hitRobot, Bullet hint) {
         Pair<String, TargetingLog>[] pairs = (Pair[]) wave.getData(MELEE_HINT);

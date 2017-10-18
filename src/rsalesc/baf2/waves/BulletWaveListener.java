@@ -26,11 +26,9 @@ package rsalesc.baf2.waves;
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
 import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.baf2.tracking.MyRobot;
 
 /**
  * Created by Roberto Sales on 11/09/17.
- * TODO: add pass event + precise intersection
  */
 public interface BulletWaveListener {
     void onBulletWaveFired(BulletWave wave);
