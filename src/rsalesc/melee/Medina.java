@@ -160,7 +160,7 @@ public class Medina extends BackAsFrontRobot2 {
             @Override
             public double[] getQuery(TargetingLog f) {
                 return new double[]{
-                        1.0 / (1.0 + 2 * f.timeDecel),
+                        1.0 / (1.0 + 2 * f.timeDecel), // TODO: bft?
                         1.0 / (1.0 + 2 * f.timeRevert),
                         Math.min(f.others - 1, 1),
                         Math.min(f.closestDistance / 400, 1),

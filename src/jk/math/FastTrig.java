@@ -203,6 +203,12 @@ public class FastTrig {
       return Math.sqrt(x);
    //return x * (1.5d - 0.5*x* (x = Double.longBitsToDouble(0x5fe6ec85e7de30daL - (Double.doubleToLongBits(x)>>1) )) *x) * x;
    }
+
+   public static double exp(double val) {
+      final long tmp = (long) (1512775 * val + (1072693248 - 60801));
+      return Double.longBitsToDouble(tmp << 32);
+   }
+
    public static final double normalRelativeAngle(double d){
       d += Math.PI;
       double i = Math.floor(d*(1./(2.*Math.PI)));

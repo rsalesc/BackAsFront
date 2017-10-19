@@ -32,7 +32,6 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.benchmark.BenchmarkNode;
 import rsalesc.baf2.core.controllers.Controller;
-import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -41,12 +40,12 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
-import rsalesc.baf2.tracking.*;
-import rsalesc.baf2.waves.*;
-import rsalesc.mega.movement.DangerPoint;
 import rsalesc.baf2.predictor.FastPredictor;
 import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.tracking.*;
+import rsalesc.baf2.waves.*;
+import rsalesc.mega.movement.DangerPoint;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
@@ -64,6 +63,7 @@ import java.util.List;
 public class MeleeSurfing extends Component implements CrossFireListener, EnemyWaveListener {
     // how many ticks to branchAndBound at least
     private static final boolean GOTO_STYLE = false;
+    private static final double PROBABILITY_THRESHOLD = 0.02; // TODO: improve this
 
     private static final double WALL_STICK = 160;
 
@@ -78,6 +78,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
 
     private final SurferProvider provider;
     private final WaveManager waves;
+    private final TargetGuesser guesser;
 
     private Hashtable<String, MeleeSurfer> surfers = new Hashtable<>();
     private SurfingChoice lastChoice;
@@ -95,9 +96,10 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         }
     };
 
-    public MeleeSurfing(SurferProvider provider, WaveManager waves) {
+    public MeleeSurfing(SurferProvider provider, WaveManager waves, TargetGuesser guesser) {
         this.provider = provider;
         this.waves = waves;
+        this.guesser = guesser;
     }
 
     public MeleeSurfer getSurfer(String name) {
@@ -338,13 +340,12 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         return res;
     }
 
-    // TODO: cache this
     public CircularGuessFactorStats getCombinedStats(EnemyWave wave) {
         long cacheIndex = getCacheIndex(wave);
         if(cacheIndex != -1 && cache.containsKey(cacheIndex))
             return cache.get(cacheIndex);
 
-        Pair<String, TargetingLog>[] logs = (Pair[]) wave.getData(MELEE_HINT);
+        MeleeSituation[] logs = (MeleeSituation[]) wave.getData(MELEE_HINT);
 
         if(logs == null)
             throw new IllegalStateException();
@@ -358,14 +359,14 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double classicMea = Physics.maxEscapeAngle(wave.getVelocity());
 
         for(int i = 0; i < logs.length; i++) {
-            TargetingLog f = logs[i].second;
+            TargetingLog f = logs[i].log;
             double diff = R.normalRelativeAngle(f.absBearing - myAngle);
 
             if(Math.abs(diff) > 2.4 * classicMea)
                 continue;
 
-            stats[i] = getSurfer(logs[i].first).getStats(shooterLog, f, f.linear(), getCacheIndex(wave));
-            weights[i] = 1.0 / (f.distance * f.distance);
+            stats[i] = getSurfer(logs[i].name).getStats(shooterLog, f, f.linear(), getCacheIndex(wave));
+            weights[i] = logs[i].probability;
         }
 
         CircularGuessFactorStats res =
@@ -448,32 +449,44 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         return Objects.hash(wave, wave.getTime()) * (long) 1e9 + hits;
     }
 
-    // TODO: somehow interpolate hit position as well
     // TODO: log whenever a hit happens, not only when it hits a specific enemy
     public void logHit(EnemyWave wave, RobotSnapshot hitRobot, Bullet hint) {
-        Pair<String, TargetingLog>[] pairs = (Pair[]) wave.getData(MELEE_HINT);
-        if(pairs == null)
+        if(hitRobot == null && hint == null)
             return;
 
-        TargetingLog f = null;
-        for(Pair<String, TargetingLog> entry : pairs) {
-            if(entry.first.equals(hitRobot.getName()))
-                f = entry.second;
-        }
-
-        if(f == null)
+        MeleeSituation[] sits = (MeleeSituation[]) wave.getData(MELEE_HINT);
+        if(sits == null)
             return;
+
+        EnemyLog enemyLog = EnemyTracker.getInstance().getLog(wave.getEnemy());
 
         hits++;
 
-        EnemyLog enemyLog = EnemyTracker.getInstance().getLog(wave.getEnemy());
-        f.hitDistance = wave.getSource().distance(hitRobot.getPoint());
-        f.hitAngle = hint != null ? hint.getHeadingRadians() : wave.getAngle(hitRobot.getPoint());
+        long hitTime = hint != null ? getMediator().getTime() : hitRobot.getTime();
+        double hitDistance = wave.getSource().distance(hint != null ? new Point(hint.getX(), hint.getY()) : hitRobot.getPoint());
+        double hitAngle = hint != null ? hint.getHeadingRadians() : wave.getAngle(hitRobot.getPoint());
 
-        double bandwidth = Physics.hitAngle(f.hitDistance) / 2;
-        f.preciseIntersection = new AngularRange(f.hitAngle, -bandwidth, +bandwidth);
+        guesser.evaluateHit(sits, hitAngle, hitDistance, hitTime);
 
-        getSurfer(hitRobot.getName()).log(enemyLog, f, f.linear(), BreakType.BULLET_HIT);
+        // TODO: preciseIntersection is probably not a good thing right?
+        double bandwidth = Physics.hitAngle(hitDistance) / 2;
+        AngularRange hitRange = new AngularRange(hitAngle, -bandwidth, +bandwidth);
+
+        for(MeleeSituation sit : sits) {
+            if(sit.probability < PROBABILITY_THRESHOLD) {
+                continue;
+            }
+
+            TargetingLog f = sit.log;
+            if(f == null)
+                continue;
+
+            f.hitDistance = hitDistance;
+            f.hitAngle = hitAngle;
+            f.preciseIntersection = hitRange;
+
+            getSurfer(sit.name).log(enemyLog, f, f.linear(), BreakType.BULLET_HIT, sit.probability);
+        }
     }
 
     @Override
@@ -494,14 +507,14 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         }
 
         EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest(getMediator().getTime() - TargetingLog.SEEN_THRESHOLD);
-        Pair<String, TargetingLog>[] data = new Pair[enemies.length + 1];
+        MeleeSituation[] data = new MeleeSituation[enemies.length + 1];
 
         InterpolatedSnapshot mySnap = MyLog.getInstance().interpolate(wave.getTime() - 1);
         int cnt = 0;
 
         if(mySnap != null) {
             TargetingLog f = TargetingLog.getEnemyMeleeLog(mySnap, wave.getSource(), getMediator(), wave.getPower());
-            data[cnt++] = new Pair<>(mySnap.getName(), f);
+            data[cnt++] = new MeleeSituation(mySnap.getName(), f);
         }
 
         for(EnemyRobot enemy : enemies) {
@@ -516,16 +529,18 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
 
             TargetingLog f =
                     TargetingLog.getCrossLog(pastMe, interpolatedSnapshot, interpolatedFirer.getPoint(), getMediator(), wave.getPower());
-            data[cnt++] = new Pair<>(interpolatedSnapshot.getName(), f);
+            data[cnt++] = new MeleeSituation(interpolatedSnapshot.getName(), f);
         }
 
         if(cnt > 0) {
-            Pair<String, TargetingLog>[] actualData = new Pair[cnt];
+            MeleeSituation[] actualData = new MeleeSituation[cnt];
 
             for (int i = 0, j = 0; i < data.length; i++) {
                 if (data[i] != null)
                     actualData[j++] = data[i];
             }
+
+            guesser.evaluateShot(actualData, wave.getTime());
 
             // avoid surfing a wave with no data
             wave.setData(MELEE_HINT, actualData);
@@ -545,7 +560,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
     // TODO: handle bullet-hit-bullet
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
-
+        logHit(wave, null, e.getHitBullet());
     }
 
     @Override

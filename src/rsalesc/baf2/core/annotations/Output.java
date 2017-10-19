@@ -21,25 +21,7 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement.surfing;
+package rsalesc.baf2.core.annotations;
 
-import rsalesc.baf2.tracking.EnemyLog;
-import rsalesc.baf2.waves.BreakType;
-import rsalesc.mega.utils.IMea;
-import rsalesc.mega.utils.TargetingLog;
-import rsalesc.melee.utils.stats.CircularGuessFactorStats;
-
-/**
- * Created by Roberto Sales on 12/09/17.
- */
-public interface MeleeSurfer {
-    boolean hasData(EnemyLog enemyLog);
-
-    default void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
-        log(enemyLog, log, mea, type, 1.0);
-    }
-
-    void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type, double weight);
-
-    CircularGuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex);
+public @interface Output {
 }

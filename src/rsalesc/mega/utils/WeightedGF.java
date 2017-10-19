@@ -21,25 +21,21 @@
  *    distribution.
  */
 
-package rsalesc.melee.movement.surfing;
+package rsalesc.mega.utils;
 
-import rsalesc.baf2.tracking.EnemyLog;
-import rsalesc.baf2.waves.BreakType;
-import rsalesc.mega.utils.IMea;
-import rsalesc.mega.utils.TargetingLog;
-import rsalesc.melee.utils.stats.CircularGuessFactorStats;
+import rsalesc.baf2.core.utils.BattleTime;
 
-/**
- * Created by Roberto Sales on 12/09/17.
- */
-public interface MeleeSurfer {
-    boolean hasData(EnemyLog enemyLog);
+public class WeightedGF extends Timestamped {
+    public final double gf;
+    public final double weight;
 
-    default void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
-        log(enemyLog, log, mea, type, 1.0);
+    public WeightedGF(BattleTime battleTime, double gf, double weight) {
+        super(battleTime);
+        this.gf = gf;
+        this.weight = weight;
     }
 
-    void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type, double weight);
-
-    CircularGuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex);
+    public WeightedGF(BattleTime battleTime, double gf) {
+        this(battleTime, gf, 1.0);
+    }
 }

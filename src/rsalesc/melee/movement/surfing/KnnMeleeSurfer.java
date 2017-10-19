@@ -32,7 +32,7 @@ import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.WeightedGF;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
 import rsalesc.mega.utils.structures.KnnView;
@@ -44,17 +44,17 @@ import java.util.List;
 /**
  * Created by Roberto Sales on 11/10/17.
  */
-public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurfer, KnnProvider<TimestampedGFRange> {
+public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurfer, KnnProvider<WeightedGF> {
     private Hashtable<Pair<String, Long>, CircularGuessFactorStats> cache = new Hashtable<>();
 
-    public KnnView<TimestampedGFRange> getKnnSet(String name) {
+    public KnnView<WeightedGF> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
 
         Object res = ns.get("knn");
         if(res != null)
             return (KnnView) res;
 
-        KnnView<TimestampedGFRange> knn = getNewKnnSet();
+        KnnView<WeightedGF> knn = getNewKnnSet();
         ns.put("knn", knn);
         return knn;
     }
@@ -64,28 +64,20 @@ public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurf
         return getKnnSet(enemyLog.getName()).availableData() > 0;
     }
 
-    public static TimestampedGFRange getGfRange(TargetingLog log, IMea mea) {
+    public static WeightedGF getGfRange(TargetingLog log, IMea mea, double weight) {
         AngularRange intersection = log.preciseIntersection;
 
         if (intersection == null)
             throw new NullPointerException();
 
         double gfMean = mea.getGfFromAngle(intersection.getAngle(intersection.getCenter()));
-        double gfLow = mea.getGfFromAngle(intersection.getStartingAngle());
-        double gfHigh = mea.getGfFromAngle(intersection.getEndingAngle());
-        if (gfLow > gfHigh) {
-            double tmp = gfLow;
-            gfLow = gfHigh;
-            gfHigh = tmp;
-        }
 
-        return new TimestampedGFRange(log.battleTime, gfLow, gfHigh, gfMean);
+        return new WeightedGF(log.battleTime, gfMean, weight);
     }
 
-
     @Override
-    public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
-        getKnnSet(enemyLog.getName()).add(log, getGfRange(log, mea), type);
+    public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type, double weight) {
+        getKnnSet(enemyLog.getName()).add(log, getGfRange(log, mea, weight), type);
     }
 
     @Override
@@ -101,25 +93,26 @@ public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurf
                 return res;
         }
 
-        KnnView<TimestampedGFRange> set = getKnnSet(enemyLog.getName());
+        KnnView<WeightedGF> set = getKnnSet(enemyLog.getName());
 
         // TODO: add fallback stats
 //        if (set.availableData() == 0) {
 //            return BaseSurfing.getFallbackStats(f.distance, Rules.getBulletSpeed(f.velocity));
 //        }
 
-        List<Knn.Entry<TimestampedGFRange>> found = set.query(f);
+        List<Knn.Entry<WeightedGF>> found = set.query(f);
 
         double width = mea.getMea().getRadius() / R.DOUBLE_PI * CircularGuessFactorStats.BUCKET_COUNT;
 
         CircularGuessFactorStats stats = new CircularGuessFactorStats(new MeleePowerDensity(0.2, width));
         double totalWeight = Knn.getTotalWeight(found);
 
-        for (Knn.Entry<TimestampedGFRange> entry : found) {
-            double gf = entry.payload.mean;
+        // TODO: think better about the weight of scans
+        for (Knn.Entry<WeightedGF> entry : found) {
+            double gf = entry.payload.gf;
             double angle = mea.getAngle(gf);
 
-            stats.add(stats.getBucket(angle), entry.weight / totalWeight, 1);
+            stats.add(stats.getBucket(angle), entry.payload.weight * entry.weight / totalWeight, 1);
         }
 
         if(cacheIndex != -1)

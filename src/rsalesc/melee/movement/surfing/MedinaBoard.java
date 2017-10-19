@@ -30,7 +30,7 @@ import rsalesc.mega.movement.KnightDCSurfer;
 import rsalesc.mega.movement.TrueSurfing;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.WeightedGF;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnTree;
 import rsalesc.mega.utils.structures.KnnView;
@@ -63,13 +63,13 @@ public class MedinaBoard extends MultiModeSurfing {
                     }
 
                     @Override
-                    public KnnView<TimestampedGFRange> getNewKnnSet() {
-                        return new KnnView<TimestampedGFRange>()
+                    public KnnView<WeightedGF> getNewKnnSet() {
+                        return new KnnView<WeightedGF>()
                                 .setDistanceWeighter(new Knn.InverseDistanceWeighter<>(1.0))
-                                .add(new KnnTree<TimestampedGFRange>()
+                                .add(new KnnTree<WeightedGF>()
                                         .setMode(KnnTree.Mode.MANHATTAN)
                                         .setRatio(0.5)
-                                        .setK(3)
+                                        .setK(4)
                                         .setStrategy(new MedinaSurfingStrategy())
                                         .logsHit());
                     }
@@ -77,7 +77,7 @@ public class MedinaBoard extends MultiModeSurfing {
             }
         };
 
-        return new MeleeSurfing(provider, waves);
+        return new MeleeSurfing(provider, waves, new SimpleTargetGuesser());
     }
 
     private static class MedinaSurfingStrategy extends Strategy {

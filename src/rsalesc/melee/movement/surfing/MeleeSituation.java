@@ -23,23 +23,20 @@
 
 package rsalesc.melee.movement.surfing;
 
-import rsalesc.baf2.tracking.EnemyLog;
-import rsalesc.baf2.waves.BreakType;
-import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
-/**
- * Created by Roberto Sales on 12/09/17.
- */
-public interface MeleeSurfer {
-    boolean hasData(EnemyLog enemyLog);
+public class MeleeSituation {
+    public final String name;
+    public final TargetingLog log;
+    public double probability;
 
-    default void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
-        log(enemyLog, log, mea, type, 1.0);
+    public MeleeSituation(String name, TargetingLog log) {
+        this(name, log, 0.0);
     }
 
-    void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type, double weight);
-
-    CircularGuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex);
+    public MeleeSituation(String name, TargetingLog log, double probability) {
+        this.name = name;
+        this.log = log;
+        this.probability = probability;
+    }
 }

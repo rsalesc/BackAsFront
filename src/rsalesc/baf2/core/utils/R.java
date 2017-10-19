@@ -25,6 +25,7 @@ package rsalesc.baf2.core.utils;
 
 import jk.math.FastTrig;
 import robocode.util.Utils;
+import rsalesc.baf2.core.annotations.Modified;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 
@@ -207,6 +208,15 @@ public class R {
 
     public static double basicSurferRounding(double x) {
         return Math.max(Math.min(x, 0.15), Math.floor(x / 0.05) * 0.05 - (x < 0.05 ? 0.05 : 0));
+    }
+
+    public static void probabilityDistribution(@Modified double[] h) {
+        double sum = 1e-21;
+        for(double x : h)
+            sum += x;
+
+        for(int i = 0; i < h.length; i++)
+            h[i] /= sum;
     }
 
     public static <T> T[] concat(T[] first, T[]... rest) {
