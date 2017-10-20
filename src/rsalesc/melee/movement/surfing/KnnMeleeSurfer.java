@@ -105,7 +105,11 @@ public abstract class KnnMeleeSurfer extends StoreComponent implements MeleeSurf
         double width = mea.getMea().getRadius() / R.DOUBLE_PI * CircularGuessFactorStats.BUCKET_COUNT;
 
         CircularGuessFactorStats stats = new CircularGuessFactorStats(new MeleePowerDensity(0.2, width));
-        double totalWeight = Knn.getTotalWeight(found);
+
+        double totalWeight = 0;
+        for (Knn.Entry<WeightedGF> entry : found) {
+            totalWeight += entry.payload.weight * entry.weight;
+        }
 
         // TODO: think better about the weight of scans
         for (Knn.Entry<WeightedGF> entry : found) {

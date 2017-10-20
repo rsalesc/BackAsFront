@@ -28,15 +28,15 @@ import rsalesc.mega.utils.TargetingLog;
 public class MeleeSituation {
     public final String name;
     public final TargetingLog log;
-    public double probability;
+    public double weight;
 
     public MeleeSituation(String name, TargetingLog log) {
         this(name, log, 0.0);
     }
 
-    public MeleeSituation(String name, TargetingLog log, double probability) {
+    public MeleeSituation(String name, TargetingLog log, double weight) {
         this.name = name;
         this.log = log;
-        this.probability = probability;
+        this.weight = weight;
     }
 }

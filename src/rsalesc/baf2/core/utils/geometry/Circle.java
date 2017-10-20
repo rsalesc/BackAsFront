@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.core.utils.geometry;
 
-import javafx.scene.chart.Axis;
 import rsalesc.baf2.core.utils.R;
 
 import java.util.ArrayList;

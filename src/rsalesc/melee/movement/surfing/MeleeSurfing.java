@@ -63,7 +63,7 @@ import java.util.List;
 public class MeleeSurfing extends Component implements CrossFireListener, EnemyWaveListener {
     // how many ticks to branchAndBound at least
     private static final boolean GOTO_STYLE = false;
-    private static final double PROBABILITY_THRESHOLD = 0.02; // TODO: improve this
+    private static final double PROBABILITY_THRESHOLD = 0.1; // TODO: improve this
 
     private static final double WALL_STICK = 160;
 
@@ -365,8 +365,8 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             if(Math.abs(diff) > 2.4 * classicMea)
                 continue;
 
-            stats[i] = getSurfer(logs[i].name).getStats(shooterLog, f, f.linear(), getCacheIndex(wave));
-            weights[i] = logs[i].probability;
+            stats[i] = getSurfer(logs[i].name).getStats(shooterLog, f, f.imprecise(), getCacheIndex(wave));
+            weights[i] = logs[i].weight;
         }
 
         CircularGuessFactorStats res =
@@ -449,7 +449,6 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         return Objects.hash(wave, wave.getTime()) * (long) 1e9 + hits;
     }
 
-    // TODO: log whenever a hit happens, not only when it hits a specific enemy
     public void logHit(EnemyWave wave, RobotSnapshot hitRobot, Bullet hint) {
         if(hitRobot == null && hint == null)
             return;
@@ -473,7 +472,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         AngularRange hitRange = new AngularRange(hitAngle, -bandwidth, +bandwidth);
 
         for(MeleeSituation sit : sits) {
-            if(sit.probability < PROBABILITY_THRESHOLD) {
+            if(sit.weight < PROBABILITY_THRESHOLD) {
                 continue;
             }
 
@@ -485,7 +484,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             f.hitAngle = hitAngle;
             f.preciseIntersection = hitRange;
 
-            getSurfer(sit.name).log(enemyLog, f, f.linear(), BreakType.BULLET_HIT, sit.probability);
+            getSurfer(sit.name).log(enemyLog, f, f.imprecise(), BreakType.BULLET_HIT, sit.weight);
         }
     }
 

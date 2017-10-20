@@ -68,8 +68,8 @@ public class MedinaBoard extends MultiModeSurfing {
                                 .setDistanceWeighter(new Knn.InverseDistanceWeighter<>(1.0))
                                 .add(new KnnTree<WeightedGF>()
                                         .setMode(KnnTree.Mode.MANHATTAN)
-                                        .setRatio(0.5)
-                                        .setK(4)
+                                        .setRatio(1.0)
+                                        .setK(10)
                                         .setStrategy(new MedinaSurfingStrategy())
                                         .logsHit());
                     }
@@ -84,15 +84,19 @@ public class MedinaBoard extends MultiModeSurfing {
         @Override
         public double[] getQuery(TargetingLog f) {
             return new double[]{
-                    f.distance / 800,
+                    f.bft() / 80,
                     Math.abs(f.lateralVelocity) / 8,
-                    (f.accel + 1) / 2
+                    (f.advancingVelocity + 8) / 16,
+                    Math.min(f.distanceToWall / 400, 1),
+                    (f.accel + 1) / 2,
+                    (1.0 / (2.0 + f.timeDecel / f.bft())),
+                    f.displaceLast10 / 80,
             };
         }
 
         @Override
         public double[] getWeights() {
-            return new double[]{1, 1, 1};
+            return new double[]{3, 2, 2, 2, 4, 2, 1.5};
         }
     }
 }

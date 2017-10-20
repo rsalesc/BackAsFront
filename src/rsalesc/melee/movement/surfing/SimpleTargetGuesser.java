@@ -42,10 +42,10 @@ public class SimpleTargetGuesser implements TargetGuesser {
             p[i] = 1.0 / R.sqr(sits[i].log.distance);
         }
 
-        R.probabilityDistribution(p);
+        // R.probabilityDistribution(p);
 
         for(int i = 0; i < sits.length; i++) {
-            sits[i].probability = p[i];
+            sits[i].weight = p[i];
         }
     }
 
@@ -74,10 +74,10 @@ public class SimpleTargetGuesser implements TargetGuesser {
                 enemyLog = MyLog.getInstance();
             }
 
-            InterpolatedSnapshot snap = enemyLog.interpolate(time);
+            InterpolatedSnapshot snap = enemyLog.interpolate(f.time);
 
             if(snap == null)
-                throw new IllegalStateException();
+                continue;
 
             double absBearing = Physics.absoluteBearing(f.source, snap.getPoint());
             double offset = R.normalRelativeAngle(absBearing - hitAngle);
@@ -89,12 +89,12 @@ public class SimpleTargetGuesser implements TargetGuesser {
                 continue;
             }
 
-            p[i] = R.gaussKernel(gf) * R.gaussKernel(3 * d);
+            p[i] = /* R.gaussKernel(gf) */ R.gaussKernel(2 * d); // TODO: rethink
         }
 
         R.probabilityDistribution(p);
 
         for(int i = 0; i < p.length; i++)
-            sits[i].probability = p[i];
+            sits[i].weight = p[i];
     }
 }

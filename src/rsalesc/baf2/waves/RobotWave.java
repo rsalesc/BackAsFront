@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.waves;
 
-import javafx.scene.effect.Shadow;
 import robocode.Bullet;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.geometry.Point;
