@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/KnnMeleeSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/KnnMeleeSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -1117,7 +1113,7 @@
       <workItem from="1508431447396" duration="8074000" />
       <workItem from="1508529378253" duration="3429000" />
       <workItem from="1508540045490" duration="1624000" />
-      <workItem from="1508592032881" duration="4079000" />
+      <workItem from="1508592032881" duration="4091000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1505318578286</created>
@@ -1196,7 +1192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508323170815</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="medina argh">
+      <created>1508624344017</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1508624344017</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1232,7 +1235,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="782393000" />
+    <option name="totallyTimeSpent" value="782405000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1336,7 +1339,8 @@
     <MESSAGE value="first medina release (0.1b)" />
     <MESSAGE value="medina 0.2.3c" />
     <MESSAGE value="medina 0.2.3d" />
-    <option name="LAST_COMMIT_MESSAGE" value="medina 0.2.3d" />
+    <MESSAGE value="medina argh" />
+    <option name="LAST_COMMIT_MESSAGE" value="medina argh" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
