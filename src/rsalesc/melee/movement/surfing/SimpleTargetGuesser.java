@@ -89,7 +89,7 @@ public class SimpleTargetGuesser implements TargetGuesser {
                 continue;
             }
 
-            p[i] = /* R.gaussKernel(gf) */ R.gaussKernel(2 * d); // TODO: rethink
+            p[i] = /* R.gaussKernel(gf) */ R.gaussKernel(d); // TODO: rethink
         }
 
         R.probabilityDistribution(p);

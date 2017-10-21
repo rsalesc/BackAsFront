@@ -517,7 +517,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         }
 
         for(EnemyRobot enemy : enemies) {
-            if(enemy.getName().equals(enemyLog.getName()) || cnt >= MAX_TARGETS)
+            if(enemy.getName().equals(enemyLog.getName()))
                 continue;
 
             EnemyLog otherLog = EnemyTracker.getInstance().getLog(enemy);

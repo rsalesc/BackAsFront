@@ -84,6 +84,22 @@ public class MedinaBoard extends MultiModeSurfing {
         @Override
         public double[] getQuery(TargetingLog f) {
             return new double[]{
+                    f.distance / 800,
+                    Math.abs(f.lateralVelocity) / 8,
+                    (f.accel + 1) / 2
+            };
+        }
+
+        @Override
+        public double[] getWeights() {
+            return new double[]{1, 1, 1};
+        }
+    }
+
+    private static class FutureSurfingStrategy extends Strategy {
+        @Override
+        public double[] getQuery(TargetingLog f) {
+            return new double[]{
                     f.bft() / 80,
                     Math.abs(f.lateralVelocity) / 8,
                     (f.advancingVelocity + 8) / 16,
