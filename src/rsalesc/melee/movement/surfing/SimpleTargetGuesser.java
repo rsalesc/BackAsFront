@@ -65,7 +65,7 @@ public class SimpleTargetGuesser implements TargetGuesser {
             TargetingLog f = sit.log;
             double d = f.distance / closest;
 
-            if(d > 1.25) {
+            if(d > 1.2) {
                 continue;
             }
 

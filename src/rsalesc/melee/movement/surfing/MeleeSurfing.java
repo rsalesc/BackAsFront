@@ -472,7 +472,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         AngularRange hitRange = new AngularRange(hitAngle, -bandwidth, +bandwidth);
 
         for(MeleeSituation sit : sits) {
-            if(sit.weight < PROBABILITY_THRESHOLD) {
+            if(sit.weight == 0) {
                 continue;
             }
 
@@ -517,7 +517,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         }
 
         for(EnemyRobot enemy : enemies) {
-            if(enemy.getName().equals(enemyLog.getName()) || cnt >= MAX_TARGETS)
+            if(enemy.getName().equals(enemyLog.getName()))
                 continue;
 
             EnemyLog otherLog = EnemyTracker.getInstance().getLog(enemy);
@@ -559,7 +559,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
     // TODO: handle bullet-hit-bullet
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
-        logHit(wave, null, e.getHitBullet());
+//        logHit(wave, null, e.getHitBullet());
     }
 
     @Override

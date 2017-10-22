@@ -70,7 +70,7 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
             EnemyWave bestBothWave = null;
 
             for(EnemyWave enemyWave : waves) {
-                if(enemyWave.hasAnyHit() && enemy.getName().equals(enemyWave.getEnemy().getName()))
+                if(enemyWave.hasAnyHit() || enemy.getName().equals(enemyWave.getEnemy().getName()))
                     continue;
 
                 double waveDamage = enemyWave.getDamage();
