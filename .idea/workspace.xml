@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MeleeTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -1368,7 +1363,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508323170815</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="medina 3x">
+      <created>1508712961190</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1508712961190</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1404,7 +1406,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="783779000" />
+    <option name="totallyTimeSpent" value="783791000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1528,7 +1530,8 @@
     <MESSAGE value="first medina release (0.1b)" />
     <MESSAGE value="medina 0.2.3c" />
     <MESSAGE value="medina 0.2.3d" />
-    <option name="LAST_COMMIT_MESSAGE" value="medina 0.2.3d" />
+    <MESSAGE value="medina 3x" />
+    <option name="LAST_COMMIT_MESSAGE" value="medina 3x" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
