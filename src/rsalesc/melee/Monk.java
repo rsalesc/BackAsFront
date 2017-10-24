@@ -63,7 +63,7 @@ public class Monk extends BackAsFrontRobot2 {
         add(new Colorizer());
 
         Tracker tracker = new Tracker();
-        MovieTracker movieTracker = new MovieTracker(105, 8);
+        MovieTracker movieTracker = new MovieTracker(105, 20, 8);
 
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
@@ -88,7 +88,7 @@ public class Monk extends BackAsFrontRobot2 {
         duelArray.addGun(randomGun);
         duelArray.addGun(adaptiveGun);
 
-        SegmentedSwarmGun swarm = new SegmentedSwarmGun(100);
+        SegmentedSwarmGun swarm = new SegmentedSwarmGun(100, 20);
         swarm.setPowerSelector(new MonkPowerSelector());
         swarm.addGun(meleeArray, 2);
         swarm.addGun(duelArray, 0);

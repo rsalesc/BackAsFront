@@ -60,7 +60,7 @@ public class Roborito extends BackAsFrontRobot2 {
     public void initialize() {
         add(new Colorizer());
 
-        MovieTracker tracker = new MovieTracker(105, 8);
+        MovieTracker tracker = new MovieTracker(105, 20,8);
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
         StatTracker statTracker = StatTracker.getInstance();

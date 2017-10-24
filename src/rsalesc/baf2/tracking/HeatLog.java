@@ -102,10 +102,17 @@ public class HeatLog {
         double energyDelta = getDifferential(enemy);
         if ((lastEnemy == null || lastEnemy.getTime() >= enemy.getTime() - 10) && ticksSinceCool() > 0
                 && R.nearOrBetween(-Physics.MAX_POWER, energyDelta, -Physics.MIN_POWER)) {
-            long lastCool = currentTime - ticksSinceCool();
+            long lastCool = enemy.getTime() - ticksSinceCool();
             long shotTime = Math.max(lastCool, lastEnemy.getTime());
+
+            EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
+            RobotSnapshot source = enemyLog.interpolate(shotTime);
+
+            if(source == null)
+                source = enemy;
+
             EnemyFireEvent fireEvent =
-                    new EnemyFireEvent(enemy, shotTime, (int) (enemy.getTime() - shotTime - 1), -energyDelta);
+                    new EnemyFireEvent(enemy, source.getPoint(), shotTime, (int) (enemy.getTime() - shotTime - 1), -energyDelta);
 
             lastPower = -energyDelta;
             lastShot = new BattleTime(fireEvent.getTime(), enemy.getBattleTime().getRound());

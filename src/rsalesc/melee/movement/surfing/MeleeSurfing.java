@@ -365,8 +365,13 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             if(Math.abs(diff) > 2.4 * classicMea)
                 continue;
 
+            double ods = f.hitChance;
+            f.hitChance = 1.0;
+
             stats[i] = getSurfer(logs[i].name).getStats(shooterLog, f, f.imprecise(), getCacheIndex(wave));
             weights[i] = logs[i].weight;
+
+            f.hitChance = ods;
         }
 
         CircularGuessFactorStats res =
@@ -465,14 +470,14 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double hitDistance = wave.getSource().distance(hint != null ? new Point(hint.getX(), hint.getY()) : hitRobot.getPoint());
         double hitAngle = hint != null ? hint.getHeadingRadians() : wave.getAngle(hitRobot.getPoint());
 
-        guesser.evaluateHit(sits, hitAngle, hitDistance, hitTime);
+        guesser.evaluateHit(sits, hitAngle, hitDistance, hitTime, hitRobot);
 
         // TODO: preciseIntersection is probably not a good thing right?
         double bandwidth = Physics.hitAngle(hitDistance) / 2;
         AngularRange hitRange = new AngularRange(hitAngle, -bandwidth, +bandwidth);
 
         for(MeleeSituation sit : sits) {
-            if(sit.weight == 0) {
+            if(R.isNear(sit.weight, 0)) {
                 continue;
             }
 
@@ -483,13 +488,14 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             f.hitDistance = hitDistance;
             f.hitAngle = hitAngle;
             f.preciseIntersection = hitRange;
+            f.hitChance = sit.weight;
 
-            getSurfer(sit.name).log(enemyLog, f, f.imprecise(), BreakType.BULLET_HIT, sit.weight);
+            getSurfer(sit.name).log(enemyLog, f, f.imprecise(), BreakType.BULLET_HIT, 1.0);
         }
     }
 
     @Override
-    public void onCrossHit(EnemyWave wave, EnemyRobot hitEnemy) {
+    public void onCrossHit(EnemyWave wave, RobotSnapshot hitEnemy) {
         logHit(wave, hitEnemy, null);
     }
 

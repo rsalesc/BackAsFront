@@ -60,7 +60,8 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
 
         for(EnemyRobot enemy : enemies) {
             // check if last enemy wasn't inside of this wave and if so, check hit
-            EnemyRobot lastEnemy = EnemyTracker.getInstance().getLog(enemy).atMostAt(getMediator().getTime() - 1);
+            EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
+            EnemyRobot lastEnemy = enemyLog.atMostAt(getMediator().getTime() - 1);
             if(lastEnemy != null && lastEnemy.getTime() < getMediator().getTime() - Tracker.SEEN_THRESHOLD)
                 lastEnemy = null;
 
@@ -75,6 +76,7 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
 
                 double waveDamage = enemyWave.getDamage();
 
+                // TODO: enumerate all enemies that could've been hit by this wave and select the one with max interpolated overlap
                 if ((lastEnemy == null || !enemyWave.getCircle(lastEnemy.getTime()).isInside(lastEnemy.getHitBox()))
                         && enemyWave.getCircle(getMediator().getTime()).countInside(enemy.getHitBox().getCorners()) > 0) {
 
@@ -85,7 +87,7 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
                         break;
                     }
 
-                    if ((isCool && waveDamage > 3.001 && waveDamage < -enemyDifferential - 0.01 && -enemyDifferential < waveDamage + 3)) {
+                    if ((isCool && waveDamage > 3.001 && waveDamage + 0.01 < -enemyDifferential && -enemyDifferential < waveDamage + 3)) {
                         bestBothWave = enemyWave;
                     }
                 }
@@ -95,12 +97,21 @@ public class MeleeTracker extends Tracker implements BatchScannedRobotListener {
                 bestWave = bestBothWave;
 
             if(bestWave != null) {
-                bestWave.setCrossHit(enemy);
+                // TODO: optimize this interpolation process
+                RobotSnapshot cur = lastEnemy == null ? enemy : enemyLog.interpolate(lastEnemy.getTime() + 1);
+
+                if(lastEnemy != null) {
+                    while(cur.getTime() < enemy.getTime() && !bestWave.hasPassed(cur.getPoint(), cur.getTime())) {
+                        cur = enemyLog.interpolate(cur.getTime() + 1);
+                    }
+                }
+
+                bestWave.setCrossHit(cur);
 
                 for(Object listener : getListeners()) {
                     if(listener instanceof CrossFireListener) {
                         CrossFireListener lis = (CrossFireListener) listener;
-                        lis.onCrossHit(bestWave, enemy);
+                        lis.onCrossHit(bestWave, cur);
                     }
                 }
             }

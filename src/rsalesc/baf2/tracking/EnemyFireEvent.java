@@ -24,18 +24,21 @@
 package rsalesc.baf2.tracking;
 
 import robocode.Rules;
+import rsalesc.baf2.core.utils.geometry.Point;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
 public class EnemyFireEvent {
-    private final RobotSnapshot enemy;
+    private final EnemyRobot enemy;
+    private final Point source;
     private final long time;
     private final int deviation;
     private final double power;
 
-    public EnemyFireEvent(RobotSnapshot enemy, long time, int deviation, double power) {
+    public EnemyFireEvent(EnemyRobot enemy, Point source, long time, int deviation, double power) {
         this.enemy = enemy;
+        this.source = source;
         this.time = time;
         this.deviation = deviation;
         this.power = power;
@@ -45,8 +48,12 @@ public class EnemyFireEvent {
         return time;
     }
 
-    public RobotSnapshot getEnemy() {
+    public EnemyRobot getEnemy() {
         return enemy;
+    }
+
+    public Point getSource() {
+        return source;
     }
 
     public double getPower() {

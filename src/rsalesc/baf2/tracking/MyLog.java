@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.tracking;
 
-import robocode.util.Utils;
 import rsalesc.baf2.core.GlobalStorage;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.utils.BattleTime;

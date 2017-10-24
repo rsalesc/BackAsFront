@@ -24,8 +24,9 @@
 package rsalesc.melee.movement.surfing;
 
 import rsalesc.baf2.core.annotations.Modified;
+import rsalesc.baf2.tracking.RobotSnapshot;
 
 public interface TargetGuesser {
     void evaluateShot(@Modified MeleeSituation[] sits, long time);
-    void evaluateHit(@Modified MeleeSituation[] sits, double hitAngle, double hitDistance, long time);
+    void evaluateHit(@Modified MeleeSituation[] sits, double hitAngle, double hitDistance, long time, RobotSnapshot hitRobot);
 }

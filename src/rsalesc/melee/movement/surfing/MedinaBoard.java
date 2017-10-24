@@ -106,13 +106,14 @@ public class MedinaBoard extends MultiModeSurfing {
             return new double[]{
                     f.distance / 800,
                     Math.abs(f.lateralVelocity) / 8,
-                    (f.accel + 1) / 2
+                    (f.accel + 1) / 2,
+                    f.hitChance
             };
         }
 
         @Override
         public double[] getWeights() {
-            return new double[]{1, 1, 1};
+            return new double[]{1, 1, 1, 3};
         }
     }
 

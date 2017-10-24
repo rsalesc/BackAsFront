@@ -24,20 +24,19 @@
 package rsalesc.baf2.tracking;
 
 import robocode.Rules;
-import rsalesc.baf2.core.utils.BattleTime;
-import rsalesc.baf2.core.utils.Physics;
-import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.Pair;
 import rsalesc.baf2.predictor.FastPredictor;
 import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
 public abstract class RobotLog {
+    private Hashtable<Pair<RobotSnapshot, RobotSnapshot>, PredictedPoint[]> cache = new Hashtable<>();
+
     public abstract RobotSnapshot exactlyAt(long time);
 
     public abstract RobotSnapshot atLeastAt(long time);
@@ -57,6 +56,7 @@ public abstract class RobotLog {
     public abstract int size();
 
     // TODO: optimize this function in general
+    // TODO: return null if interpolation is to harsh
     public InterpolatedSnapshot interpolate(long time) {
         RobotSnapshot atMost = atMostAt(time);
 
@@ -88,9 +88,15 @@ public abstract class RobotLog {
 
             res = new PredictedSnapshot(atMost, cur);
         } else {
-            // TODO: use smarter interpolation here
-            cur = FastPredictor.interpolate(cur, PredictedPoint.from(after), time);
-            res = new InterpolatedSnapshot(atMost, cur);
+            Pair<RobotSnapshot, RobotSnapshot> pair = new Pair<>(atMost, after);
+            int steps = (int) (time - atMost.getTime());
+
+            PredictedPoint[] cached = cache.get(pair);
+            if(cached == null) {
+                cache.put(pair, cached = FastPredictor.interpolate(cur, PredictedPoint.from(after)));
+            }
+
+            res = new InterpolatedSnapshot(atMost, cached[steps]);
         }
 
         return res;

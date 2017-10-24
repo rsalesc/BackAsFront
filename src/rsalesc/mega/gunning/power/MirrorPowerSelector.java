@@ -160,8 +160,7 @@ public class MirrorPowerSelector extends StoreComponent implements PowerSelector
 
     @Override
     public void onEnemyFire(EnemyFireEvent e) {
-        EnemyRobot robot = e.getEnemy() instanceof InterpolatedSnapshot ?
-        (EnemyRobot) ((InterpolatedSnapshot) e.getEnemy()).getBase() : (EnemyRobot) e.getEnemy();
+        EnemyRobot robot = e.getEnemy();
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(robot);
         log(getMediator(), enemyLog, null, e.getPower());

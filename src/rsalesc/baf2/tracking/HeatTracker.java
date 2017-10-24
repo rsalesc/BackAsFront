@@ -97,8 +97,8 @@ public class HeatTracker implements CrossFireListener {
     }
 
     @Override
-    public void onCrossHit(EnemyWave wave, EnemyRobot hitEnemy) {
-        ensure(hitEnemy).lostEnergy(wave.getDamage());
+    public void onCrossHit(EnemyWave wave, RobotSnapshot hitEnemy) {
+        ensure(hitEnemy.getName()).lostEnergy(wave.getDamage());
         ensure(wave.getEnemy()).gainedEnergy(wave.getBonus());
     }
 }

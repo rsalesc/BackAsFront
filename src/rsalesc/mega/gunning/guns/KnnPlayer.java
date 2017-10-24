@@ -24,7 +24,6 @@
 package rsalesc.mega.gunning.guns;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
@@ -32,8 +31,8 @@ import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.tracking.EnemyMovie;
+import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.structures.Knn;
 import rsalesc.mega.utils.structures.KnnProvider;
 import rsalesc.mega.utils.structures.KnnView;
@@ -71,6 +70,8 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
 
     @Override
     public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, Integer K) {
+        // TODO: implement iterator in Kd-Tree and get until I have enough elements
+
         double power = f.bulletPower;
         double bulletSpeed = Rules.getBulletSpeed(power);
 
@@ -93,30 +94,53 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
         for (Knn.Entry<EnemyMovie> entry : entries) {
             boolean ok = true;
             EnemyMovie movie = entry.payload;
-            int ptr = 0;
+
+            int ptr = -1;
+            int movieSize = movie.size();
+
+            if(movieSize == 0)
+                continue;
+
+            int movieSizeLog = 31 - Integer.numberOfLeadingZeros(movieSize);
+
             long firstTime = movie.get(0).getTime();
 
             double rotation = R.normalRelativeAngle(movie.get(0).getBafHeading() - enemy.getBafHeading());
             Point translation = movie.get(0).getPoint().subtract(enemy.getPoint());
 
             Point transformedMe = nextPosition.add(translation).rotate(rotation, movie.get(0).getPoint());
-            while (ptr < movie.size() && movie.get(ptr).getPoint().distance(transformedMe)
-                    > (movie.get(ptr).getTime() - firstTime - extraTime) * bulletSpeed) {
-                if (ptr + 1 < movie.size()) {
-                    long diff = movie.get(ptr + 1).getTime() - movie.get(ptr).getTime();
-                    if (diff > 10) {
-                        ok = false;
-                        break;
+
+            // safely assume that there are not big gaps between enemy frames
+            for(int i = movieSizeLog + 1; i >= 0; i--) {
+                if(ptr + (1 << i) < movieSize) {
+                    int c = ptr + (1 << i);
+                    if(movie.get(c).getPoint().distance(transformedMe)
+                            > (movie.get(c).getTime() - firstTime - extraTime) * bulletSpeed) {
+                        ptr = c;
                     }
                 }
-
-                ptr++;
             }
 
-            ok = ok && ptr < movie.size();
-            if (!ok) {
+            if(++ptr == movieSize)
                 continue;
-            }
+
+//            while (ptr < movie.size() && movie.get(ptr).getPoint().distance(transformedMe)
+//                    > (movie.get(ptr).getTime() - firstTime - extraTime) * bulletSpeed) {
+//                if (ptr + 1 < movie.size()) {
+//                    long diff = movie.get(ptr + 1).getTime() - movie.get(ptr).getTime();
+//                    if (diff > 10) {
+//                        ok = false;
+//                        break;
+//                    }
+//                }
+//
+//                ptr++;
+//            }
+//
+//            ok = ok && ptr < movie.size();
+//            if (!ok) {
+//                continue;
+//            }
 
             EnemyRobot current = movie.get(ptr);
             EnemyRobot last = movie.get(Math.max(0, ptr - 1));
