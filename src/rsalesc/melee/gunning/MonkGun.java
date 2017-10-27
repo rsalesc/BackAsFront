@@ -40,9 +40,9 @@ import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 import java.awt.*;
 import java.util.ArrayList;

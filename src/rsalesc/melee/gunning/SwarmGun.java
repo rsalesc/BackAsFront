@@ -166,13 +166,6 @@ public class SwarmGun extends AutomaticGun implements FireListener {
                 if(!(getGun() instanceof MeleeGun))
                     return;
 
-                if (lastFired != null) {
-                    for (GeneratedAngle angle : lastFired) {
-                        g.drawPoint(lastFireSource.project(angle.angle, angle.distance),
-                                Physics.BOT_WIDTH * 2, new Color(29, 29, 29, 150));
-                    }
-                }
-
                 if(lastFirePicked != null) {
                     g.drawPoint(lastFireSource.project(lastFirePicked.angle, lastFirePicked.distance),
                             Physics.BOT_WIDTH * 2, new Color(118, 119, 119, 200));

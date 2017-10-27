@@ -29,8 +29,8 @@ import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.*;
 import rsalesc.mega.utils.*;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
 
 import java.util.List;
 

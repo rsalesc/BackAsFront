@@ -31,9 +31,9 @@ import rsalesc.mega.movement.TrueSurfing;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.WeightedGF;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 11/10/17.

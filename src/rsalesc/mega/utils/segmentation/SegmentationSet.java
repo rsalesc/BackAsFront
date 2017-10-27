@@ -23,11 +23,10 @@
 
 package rsalesc.mega.utils.segmentation;
 
-import rsalesc.baf2.painting.G;
 import rsalesc.mega.utils.Ensurer;
 import rsalesc.mega.utils.MultipleSlicingStrategy;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.structures.Knn;
+import rsalesc.structures.Knn;
 
 import java.util.ArrayList;
 

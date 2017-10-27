@@ -33,9 +33,9 @@ import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.WeightedGF;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnProvider;
+import rsalesc.structures.KnnView;
 import rsalesc.melee.utils.stats.CircularGuessFactorStats;
 
 import java.util.Hashtable;

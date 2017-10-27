@@ -30,9 +30,9 @@ import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.gunning.strategies.dc.AntiSurferStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnView;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnView;
+import rsalesc.structures.KnnTree;
 
 /**
  * Created by Roberto Sales on 15/09/17.

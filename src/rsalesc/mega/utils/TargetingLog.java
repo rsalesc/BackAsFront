@@ -156,6 +156,7 @@ public class TargetingLog implements Serializable, IMea {
         f.others = mediator.getOthers();
         f.gunHeat = mediator.getGunHeat();
         f.aiming = aiming;
+        f.bulletsFired = mediator.getBulletsFired();
 
         computeDuelLog(f, f, EnemyTracker.getInstance().getLog(enemy), enemy);
         f.escapeDirection = f.direction;

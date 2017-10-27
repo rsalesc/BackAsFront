@@ -47,6 +47,10 @@ public class RobotMediator {
         controlManager = new ControlManager(robot);
     }
 
+    public int getBulletsFired() {
+        return robot.getBulletsFired();
+    }
+
     public PaintManager getPaintManager() {
         return paintManager;
     }

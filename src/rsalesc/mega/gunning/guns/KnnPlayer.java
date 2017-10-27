@@ -24,6 +24,7 @@
 package rsalesc.mega.gunning.guns;
 
 import robocode.Rules;
+import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
@@ -33,11 +34,12 @@ import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnProvider;
+import rsalesc.structures.KnnView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,6 +47,7 @@ import java.util.List;
  */
 public abstract class KnnPlayer extends StoreComponent implements Player, KnnProvider<EnemyMovie> {
     public abstract KnnView<EnemyMovie> getNewKnnSet();
+    public abstract Knn.DistanceWeighter<EnemyMovie> getLazyWeighter();
 
     public KnnView<EnemyMovie> getKnnSet(String name) {
         StorageNamespace ns = getStorageNamespace().namespace("knn");
@@ -70,8 +73,6 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
 
     @Override
     public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, Integer K) {
-        // TODO: implement iterator in Kd-Tree and get until I have enough elements
-
         double power = f.bulletPower;
         double bulletSpeed = Rules.getBulletSpeed(power);
 
@@ -89,10 +90,18 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
         if(knn.availableData() == 0)
             return new GeneratedAngle[0];
 
-        List<Knn.Entry<EnemyMovie>> entries = K != null ? knn.query(f, K) : knn.query(f);
+        if(K == null)
+            K = knn.getTotalK();
 
-        for (Knn.Entry<EnemyMovie> entry : entries) {
-            boolean ok = true;
+        K = Math.min(K, knn.queryableData());
+
+        Knn.DistanceWeighter<EnemyMovie> lazyWeighter = getLazyWeighter();
+        List<Knn.Entry<EnemyMovie>> entries = new ArrayList<>();
+        Iterator<Knn.Entry<EnemyMovie>> it = knn.iterator(f);
+
+        while(it.hasNext() && angles.size() < K) {
+            Knn.Entry<EnemyMovie> entry = it.next();
+
             EnemyMovie movie = entry.payload;
 
             int ptr = -1;
@@ -148,6 +157,8 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
             long diff = current.getTime() - last.getTime();
             Point impactPoint = current.getPoint();
 
+            long impactTime = last.getTime();
+
             // interpolate
             if (diff > 0) {
                 long l = 0;
@@ -166,15 +177,32 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
 
                 double percent = (double) l / diff;
                 impactPoint = last.getPoint().weighted(current.getPoint(), percent);
+                impactTime += l;
             }
 
             Point lastPosition = impactPoint.rotate(-rotation, movie.get(0).getPoint()).subtract(translation);
             if (!f.field.contains(lastPosition))
                 continue;
 
-            angles.add(new CandidateAngle(Physics.absoluteBearing(nextPosition, lastPosition),
+            double angle = Physics.absoluteBearing(nextPosition, lastPosition);
+            double offset = Utils.normalRelativeAngle(angle - Physics.absoluteBearing(nextPosition, enemy.getPoint()));
+
+            if(Math.abs(offset) > Rules.MAX_VELOCITY * impactTime / nextPosition.distance(enemy.getPoint()))
+                continue;
+
+            angles.add(new CandidateAngle(angle,
                     entry.weight,
                     lastPosition));
+
+            entries.add(entry);
+        }
+
+        // apply weighter
+        if(lazyWeighter != null) {
+            entries = lazyWeighter.getWeightedEntries(entries);
+            for (int i = 0; i < entries.size(); i++) {
+                angles.get(i).weight = entries.get(i).weight;
+            }
         }
 
         ArrayList<GeneratedAngle> res = new ArrayList<>();

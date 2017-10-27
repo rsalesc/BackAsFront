@@ -23,13 +23,11 @@
 
 package rsalesc.mega.gunning.guns;
 
-import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.listeners.FireEvent;
 import rsalesc.baf2.core.listeners.FireListener;
-import rsalesc.baf2.core.listeners.TickListener;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
@@ -41,7 +39,6 @@ import rsalesc.mega.tracking.MovieListener;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.melee.gunning.MeleeGun;
-import rsalesc.melee.gunning.MonkGun;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -53,11 +50,16 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
     private Player player;
     private Integer K;
     private GeneratedAngle[] lastGenerated;
-    private GeneratedAngle[] lastFired;
+    private GeneratedAngle[] lastFireGenerated;
+    private GeneratedAngle lastFirePicked;
+    private GeneratedAngle lastPicked;
+    private Point lastFireSource;
 
     @Override
     public void onFire(FireEvent e) {
-        lastFired = lastGenerated;
+        lastFireSource = e.getSource();
+        lastFireGenerated = lastGenerated;
+        lastFirePicked = lastPicked;
     }
 
     @Override
@@ -89,25 +91,28 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
             throw new IllegalStateException();
 
         double bestDensity = Double.NEGATIVE_INFINITY;
-        double bestAngle = 0;
+        GeneratedAngle bestAngle = null;
 
         for(GeneratedAngle shootAngle : angles) {
             double density = 0;
             for(GeneratedAngle angle : angles) {
                 double diff = R.normalRelativeAngle(angle.angle - shootAngle.angle);
-                double bandwidth = Physics.hitAngle(angle.distance) * 0.9;
-                double x = diff / bandwidth;
-                if(Math.abs(x) < 1)
-                    density += angle.weight * R.cubicKernel(x);
+                double x = diff / (36 / angle.distance);
+                density += angle.weight * R.gaussKernel(x);
             }
 
             if(density > bestDensity) {
                 bestDensity = density;
-                bestAngle = shootAngle.angle;
+                bestAngle = shootAngle;
             }
         }
 
-        return bestAngle;
+        if(bestAngle == null)
+            return 0;
+
+        lastPicked = bestAngle;
+
+        return bestAngle.angle;
     }
 
     @Override
@@ -129,6 +134,26 @@ public abstract class PlayItForwardGun extends AutomaticGun implements MovieList
         double power = getPowerSelector().selectPower(getMediator(), StatTracker.getInstance().getCurrentStatData());
         TargetingLog f = TargetingLog.getLog(movie.getLeadActor(), getMediator(), power, false);
         getPlayer().log(f, movie);
+    }
+
+    @Override
+    public void setupPaintings(PaintManager manager) {
+        manager.add(KeyEvent.VK_P, "swarm", new Painting() {
+            @Override
+            public void paint(G g) {
+
+                if(lastFireGenerated != null)
+                for(GeneratedAngle angle : lastFireGenerated) {
+                    Point p = lastFireSource.project(angle.angle, angle.distance);
+                    g.drawPoint(p,Physics.BOT_WIDTH * 2, new Color(29, 29, 29, 200));
+                }
+
+                if(lastFirePicked != null) {
+                    Point p = lastFireSource.project(lastFirePicked.angle, lastFirePicked.distance);
+                    g.drawPoint(p,Physics.BOT_WIDTH * 2, new Color(119, 119, 119, 190));
+                }
+            }
+        }, true);
     }
 
     public void setK(Integer k) {

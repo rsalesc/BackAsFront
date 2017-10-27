@@ -26,8 +26,6 @@ package rsalesc.mega.movement;
 import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
-import rsalesc.baf2.core.utils.Physics;
-import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
@@ -36,15 +34,12 @@ import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.stats.BinKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.stats.PowerKernelDensity;
-import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnProvider;
+import rsalesc.structures.KnnView;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 

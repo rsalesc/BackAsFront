@@ -25,14 +25,13 @@ package rsalesc.mega.gunning;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.waves.BulletManager;
-import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
+import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
+import rsalesc.mega.gunning.strategies.dc.AntiRandomStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnView;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 15/09/17.
@@ -43,12 +42,12 @@ public class AntiRandomGun extends GuessFactorGun {
             @Override
             public KnnView<TimestampedGFRange> getNewKnnSet() {
                 KnnView<TimestampedGFRange> set = new KnnView<>();
-                set.setDistanceWeighter(new Knn.InverseDistanceWeighter<TimestampedGFRange>(1.0))
-                .add(new KnnTree<TimestampedGFRange>()
+//                set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
+                set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
-                        .setK(125)
-                        .setRatio(0.1)
-                        .setStrategy(new GeneralPurposeStrategy())
+                        .setK(100)
+                        .setRatio(0.25)
+                        .setStrategy(new AntiRandomStrategy())
                         .logsEverything());
 
                 return set;

@@ -89,7 +89,7 @@ public abstract class RobotLog {
             res = new PredictedSnapshot(atMost, cur);
         } else {
             Pair<RobotSnapshot, RobotSnapshot> pair = new Pair<>(atMost, after);
-            int steps = (int) (time - atMost.getTime());
+            int steps = (int) (time - cur.time);
 
             PredictedPoint[] cached = cache.get(pair);
             if(cached == null) {

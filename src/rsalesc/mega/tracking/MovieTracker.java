@@ -91,10 +91,13 @@ public class MovieTracker extends Component {
             if (!bad) {
                 lastLeadActor.put(enemy.getName(), sequence[0]);
 
+                EnemyMovie newMovie = new EnemyMovie(sequence);
+                list.add(newMovie);
+
                 for (Object obj : getListeners()) {
                     if (obj instanceof MovieListener) {
                         MovieListener listener = (MovieListener) obj;
-                        listener.onNewMovie(new EnemyMovie(sequence));
+                        listener.onNewMovie(newMovie);
                     }
                 }
             }
