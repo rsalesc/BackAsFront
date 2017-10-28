@@ -362,7 +362,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             TargetingLog f = logs[i].log;
             double diff = R.normalRelativeAngle(f.absBearing - myAngle);
 
-            if(Math.abs(diff) > 2.4 * classicMea)
+            if(Math.abs(diff) > 2.01 * classicMea)
                 continue;
 
             double ods = f.hitChance;
@@ -549,6 +549,8 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
 
             // avoid surfing a wave with no data
             wave.setData(MELEE_HINT, actualData);
+
+            getCombinedStats(wave); // Make sure the stats were computed before
         }
     }
 
