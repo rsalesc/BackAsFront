@@ -53,8 +53,21 @@
       <file leaf-file-name="MeleeSurfing.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="552" column="79" lean-forward="false" selection-start-line="552" selection-start-column="79" selection-end-line="552" selection-end-column="79" />
+            <state relative-caret-position="509">
+              <caret line="563" column="22" lean-forward="true" selection-start-line="563" selection-start-column="22" selection-end-line="563" selection-end-column="22" />
+              <folding>
+                <element signature="e#20046#20047#0" expanded="true" />
+                <element signature="e#20098#20099#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleTargetGuesser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-270">
+              <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -1394,7 +1407,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509203313521</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="make sure melee stats are computed when enemy fires">
+      <created>1509206465198</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1509206465198</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1430,7 +1450,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="857926000" />
+    <option name="totallyTimeSpent" value="858210000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1557,7 +1577,8 @@
     <MESSAGE value="medina 3x" />
     <MESSAGE value="Medina 0.4.2" />
     <MESSAGE value="add challenge to battle runner" />
-    <option name="LAST_COMMIT_MESSAGE" value="add challenge to battle runner" />
+    <MESSAGE value="make sure melee stats are computed when enemy fires" />
+    <option name="LAST_COMMIT_MESSAGE" value="make sure melee stats are computed when enemy fires" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1570,27 +1591,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/Tracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-566">
-          <caret line="36" column="13" lean-forward="false" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyTracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="874">
-          <caret line="129" column="9" lean-forward="true" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/tracking/EnemyMovie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="48" column="28" lean-forward="false" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyLog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
@@ -1927,11 +1927,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/HitTargetGuesser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-270">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="552" column="79" lean-forward="false" selection-start-line="552" selection-start-column="79" selection-end-line="552" selection-end-column="79" />
-          <folding />
+        <state relative-caret-position="509">
+          <caret line="563" column="22" lean-forward="true" selection-start-line="563" selection-start-column="22" selection-end-line="563" selection-end-column="22" />
+          <folding>
+            <element signature="e#20046#20047#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

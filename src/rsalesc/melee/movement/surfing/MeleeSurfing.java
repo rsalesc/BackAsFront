@@ -564,10 +564,9 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         logHit(wave, MyLog.getInstance().getLatest(), e.getBullet());
     }
 
-    // TODO: handle bullet-hit-bullet
     @Override
     public void onEnemyWaveHitBullet(EnemyWave wave, BulletHitBulletEvent e) {
-//        logHit(wave, null, e.getHitBullet());
+        logHit(wave, null, e.getHitBullet());
     }
 
     @Override
