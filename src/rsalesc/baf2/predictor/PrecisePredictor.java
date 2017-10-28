@@ -240,6 +240,8 @@ public abstract class PrecisePredictor {
         return R.normalAbsoluteAngle(heading + R.constrain(-turnRate, turn, +turnRate));
     }
 
+    // getNewVelocity(velocity * ahead, maxVelocity, distance) * ahead
+
     public static double getNewVelocity(double velocity, double maxVelocity, double distance) {
         if (distance < 0) {
             // If the distanceToEdges is negative, then change it to be positive

@@ -26,8 +26,9 @@ package rsalesc.runner;
 import rsalesc.baf2.core.utils.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Roberto Sales on 05/10/17.
@@ -35,73 +36,126 @@ import java.util.List;
 public class BatchDuelRunner {
     private final String myself;
     private final RobocodeEngineProvider provider;
-    private final List<Pair<String, Integer>> matches;
-    private boolean layered;
-    private int seasons;
+    private final List<Match> matches;
+    private int seasons = 1;
 
     private int rounds = 35;
-
-    public BatchDuelRunner(RobocodeEngineProvider provider, String myself, Pair<String, Integer> ...matches) {
-        this.myself = myself;
-        this.provider = provider;
-        this.matches = Arrays.asList(matches);
-        this.layered = false;
-        this.seasons = 0;
-    }
 
     public BatchDuelRunner(RobocodeEngineProvider provider, String myself, int seasons, String ...matches) {
         this.myself = myself;
         this.provider = provider;
         this.matches = new ArrayList<>();
-        this.layered = true;
         this.seasons = seasons;
 
         for(String match : matches) {
-            this.matches.add(new Pair<>(match, seasons));
+            this.matches.add(new Match(match, null));
+        }
+    }
+
+    public BatchDuelRunner(RobocodeEngineProvider provider, String myself, int seasons, DuelChallenge challenge) {
+        this.rounds = challenge.rounds;
+        this.matches = new ArrayList<>();
+        this.seasons = seasons;
+        this.myself = myself;
+        this.provider = provider;
+
+        for(DuelChallenge.BotListGroup group : challenge.referenceBotGroups) {
+            String groupName = group.name;
+            if(group.isDefaultGroup()) {
+                groupName = null;
+            }
+
+            for(String bot : group.referenceBots) {
+                this.matches.add(new Match(bot, groupName));
+            }
         }
     }
 
     public BatchDuelResults run() {
         BatchDuelResults results = new BatchDuelResults();
+        BatchDuelResults groupResults = new BatchDuelResults();
+        HashMap<String, BatchDuelResults> groupedResults = new HashMap<>();
 
-        if(layered) {
-            for(int cnt = 0; cnt < seasons; cnt++) {
-                for (Pair<String, Integer> match : matches) {
-                    if (match.second > cnt) {
-                        System.out.print("\rRunning " + (cnt+1) + "-th match against " + match.first + "...");
-
-                        DuelBattleRunner runner = new DuelBattleRunner(myself, match.first, rounds);
-                        BatchDuelObserver observer = new BatchDuelObserver(myself);
-                        runner.run(provider, observer);
-
-                        if (observer.getDuelResult() == null)
-                            throw new IllegalStateException();
-
-                        results.add(observer.getDuelResult());
-                        System.out.println("\r" + observer.getDuelResult());
-                        BatchDuelResults filteredResults = new BatchDuelResults();
-                        filteredResults.add(results.filterByEnemy(match.first));
-                        System.out.println("\t\t" + filteredResults);
-                    }
-                }
-
-                System.out.println("\nSeason #" + (cnt+1) + ": " + results + "\n");
+        for(Match match : matches) {
+            if(!groupedResults.containsKey(match.group)) {
+                BatchDuelResults nresult = new BatchDuelResults();
+                groupedResults.put(match.group, nresult);
+                groupResults.add(nresult);
             }
-
-            System.out.println("\nDumping final results...");
-            for(Pair<String, Integer> match : matches) {
-                BatchDuelResults filteredResults = new BatchDuelResults();
-                filteredResults.add(results.filterByEnemy(match.first));
-
-                System.out.println(match.first + ": " + filteredResults);
-            }
-
-            System.out.println("General results: " + results);
-        } else {
-            throw new IllegalStateException();
         }
 
+        for(int cnt = 0; cnt < seasons; cnt++) {
+            for (Match match : matches) {
+                System.out.print("\rRunning " + (cnt+1) + "-th match against " + match.bot + "...");
+
+                DuelBattleRunner runner = new DuelBattleRunner(myself, match.bot, rounds);
+                BatchDuelObserver observer = new BatchDuelObserver(myself);
+                runner.run(provider, observer);
+
+                if (observer.getDuelResult() == null)
+                    throw new IllegalStateException();
+
+                DuelResult result = observer.getDuelResult();
+                results.add(result);
+                groupedResults.get(match.group).add(result);
+
+                // current battle result
+                System.out.println("\r" + match.bot + ": " + result);
+
+                // current bot result
+                BatchDuelResults filteredResults = new BatchDuelResults();
+                filteredResults.add(results.filterByEnemy(match.bot));
+                System.out.println("\t\t" + filteredResults);
+
+                // current group result, if not null
+                if(match.group != null) {
+                    BatchDuelResults currentGroupResults = groupedResults.get(match.group);
+                    System.out.println(match.group + ": " + currentGroupResults);
+                }
+
+                System.out.println();
+            }
+
+            System.out.println("\nSeason #" + (cnt+1) + ": " + results + "\n");
+        }
+
+        System.out.println("\nDumping final results...");
+        dumpResults(results, groupedResults, true);
+
         return results;
+    }
+
+    public void dumpResults(BatchDuelResults results, HashMap<String, BatchDuelResults> groupedResults, boolean dumpIndividual) {
+        HashMap<String, List<Pair<String, BatchDuelResults>>> partialResults = new HashMap<>();
+
+        for(Match match : matches) {
+            BatchDuelResults filteredResults = new BatchDuelResults();
+            filteredResults.add(results.filterByEnemy(match.bot));
+
+            if(!partialResults.containsKey(match.group))
+                partialResults.put(match.group, new ArrayList<>());
+
+            partialResults.get(match.group).add(new Pair<>(match.bot, filteredResults));
+        }
+
+        for(Map.Entry<String, List<Pair<String, BatchDuelResults>>> entry : partialResults.entrySet()) {
+            if(groupedResults.size() > 1)
+                System.out.println(getGroupName(entry.getKey()) + ": "  + groupedResults.get(entry.getKey()));
+
+            if(dumpIndividual) {
+                for (Pair<String, BatchDuelResults> pair : entry.getValue()) {
+                    System.out.println("\t" + pair.first + ": " + pair.second);
+                }
+            }
+        }
+
+        System.out.println("General results: " + results);
+    }
+
+    public String getGroupName(String name) {
+        if(name == null)
+            return "Ungrouped";
+        return name;
     }
 
     public void setRounds(int rounds) {
@@ -109,7 +163,16 @@ public class BatchDuelRunner {
     }
 
     public void setSeasons(int seasons) {
-        this.layered = seasons > 0;
         this.seasons = seasons;
+    }
+
+    private class Match {
+        public final String bot;
+        public final String group;
+
+        private Match(String bot, String group) {
+            this.bot = bot;
+            this.group = group;
+        }
     }
 }

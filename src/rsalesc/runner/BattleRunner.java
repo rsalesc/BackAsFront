@@ -23,26 +23,6 @@
 
 package rsalesc.runner;
 
-import net.sf.robocode.battle.Battle;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.markers.SeriesMarkers;
-import robocode.BattleResults;
-import robocode.control.BattleSpecification;
-import robocode.control.BattlefieldSpecification;
-import robocode.control.RobocodeEngine;
-import robocode.control.RobotSpecification;
-import robocode.control.events.*;
-import robocode.control.snapshot.IDebugProperty;
-import robocode.control.snapshot.IRobotSnapshot;
-import robocode.control.snapshot.ITurnSnapshot;
-import robocode.control.snapshot.RobotState;
-import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.StatData;
-
-import java.util.*;
-
 /**
  * Created by Roberto Sales on 14/09/17.
  */
@@ -72,7 +52,7 @@ public class BattleRunner {
 //                "florent.test.Toad 0.14t",
 //                "jk.mega.DrussGT 3.1.4");
 
-        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 3,
+        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight 0.4.4b", 3,
                 "jam.micro.RaikoMicro 1.44",
                 "cjm.Charo 1.1",
                 "apv.LauLectrik 1.2"

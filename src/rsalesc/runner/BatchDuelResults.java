@@ -28,38 +28,57 @@ import rsalesc.baf2.core.utils.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Roberto Sales on 05/10/17.
  */
-public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
-    private ArrayList<DuelResult> results = new ArrayList<>();
+public class BatchDuelResults implements Iterable<IDuelResult>, IDuelResult {
+    private ArrayList<IDuelResult> results = new ArrayList<>();
+    private final String groupName;
 
-    public void add(DuelResult ...result) {
+    public BatchDuelResults(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public BatchDuelResults() {
+        this(null);
+    }
+
+    public boolean isGroup() {
+        return groupName != null;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void add(IDuelResult ...result) {
         results.addAll(Arrays.asList(result));
     }
 
-    public DuelResult[] getResults() {
-        return results.toArray(new DuelResult[0]);
+    public IDuelResult[] getResults() {
+        return results.toArray(new IDuelResult[0]);
     }
 
-    public DuelResult[] filterByEnemy(String name) {
-        ArrayList<DuelResult> res = new ArrayList<>();
-        for(DuelResult result : results) {
-            if(result.getEnemy().equals(name))
-                res.add(result);
+    public IDuelResult[] filterByEnemy(String name) {
+        ArrayList<IDuelResult> res = new ArrayList<>();
+        for(IDuelResult result : results) {
+            if(result instanceof DuelResult) {
+                if (((DuelResult) result).getEnemy().equals(name))
+                    res.add(result);
+            } else if(result instanceof BatchDuelResults)
+                res.addAll(Arrays.asList(((BatchDuelResults) result).filterByEnemy(name)));
         }
 
-        return res.toArray(new DuelResult[0]);
+        return res.toArray(new IDuelResult[0]);
     }
 
     @Override
-    public Iterator<DuelResult> iterator() {
+    public Iterator<IDuelResult> iterator() {
         return results.iterator();
     }
 
-    public static BatchDuelResults merge(BatchDuelResults ...results) {
+    public static BatchDuelResults merge(BatchDuelResults...results) {
         BatchDuelResults res = new BatchDuelResults();
 
         for(BatchDuelResults result : results) {
@@ -72,7 +91,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getAPS() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getAPS();
         }
 
@@ -82,7 +101,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getAvgPercentageBulletDamage() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getAvgPercentageBulletDamage();
         }
 
@@ -92,7 +111,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getAvgPercentageSurvival() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getAvgPercentageSurvival();
         }
 
@@ -102,7 +121,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getEnemyWeightedHitRate() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getEnemyWeightedHitRate();
         }
 
@@ -112,7 +131,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getWeightedHitRate() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getWeightedHitRate();
         }
 
@@ -122,7 +141,7 @@ public class BatchDuelResults implements Iterable<DuelResult>, IDuelResult {
     @Override
     public double getTCScore() {
         double sum = 0;
-        for(DuelResult result : getResults()) {
+        for(IDuelResult result : getResults()) {
             sum += result.getTCScore();
         }
 
