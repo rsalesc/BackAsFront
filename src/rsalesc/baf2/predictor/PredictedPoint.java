@@ -28,7 +28,7 @@ import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.tracking.RobotSnapshot;
-import rsalesc.baf2.waves.Wave;
+import rsalesc.baf2.waves.RobotWave;
 
 import java.util.Comparator;
 import java.util.List;
@@ -71,14 +71,14 @@ public class PredictedPoint extends Point {
         return new PredictedPoint(robot.getPoint(), robot.getHeading(), robot.getVelocity(), robot.getTime());
     }
 
-    public static <T extends Wave> void filterBreakable(List<PredictedPoint> path, List<T> waves) {
+    public static <T extends RobotWave> void filterBreakable(List<PredictedPoint> path, List<T> waves) {
         long timeDelta = path.size() - 1;
         waves.removeIf(new Predicate<T>() {
             @Override
             public boolean test(T t) {
                 double breakTime = t.getBreakTime(path.get(0));
                 return breakTime < path.get(0).time || breakTime > path.get(0).time + 2 * timeDelta
-                        || t.hasPassed(path.get(0), path.get(0).time);
+                        || t.hasPassed(path.get(0), path.get(0).time) || t.hasAnyHit();
             }
         });
 

@@ -25,18 +25,13 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
-import rsalesc.baf2.core.utils.ComparablePair;
-import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.stats.BinKernelDensity;
-import rsalesc.mega.utils.stats.GuessFactorStats;
-import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnProvider;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnProvider;
+import rsalesc.structures.KnnView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +90,7 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
 //            }
 //        }
 
-        double bestGf = maxOverlap(found);
+        double bestGf = maxOverlapCenter(found);
 
         return new GeneratedAngle[]{new GeneratedAngle(1.0, f.getAngle(bestGf), f.distance)};
     }
@@ -133,12 +128,43 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
                 acc += event.weight;
             else if(event.type == SweepEvent.EventType.END)
                 acc -= event.weight;
-            else {
+
+            {
                 if(acc > bestAcc) {
                     bestAcc = acc;
                     bestGf = event.axis;
                 }
             }
+        }
+
+        return bestGf;
+    }
+
+    public static double maxOverlapCenter(List<Knn.Entry<TimestampedGFRange>> list) {
+        List<SweepEvent> eventList = new ArrayList<>();
+        for(Knn.Entry<TimestampedGFRange> entry : list) {
+            eventList.add(new SweepEvent(SweepEvent.EventType.START, entry.weight, entry.payload.min));
+            eventList.add(new SweepEvent(SweepEvent.EventType.END, entry.weight, entry.payload.max));
+        }
+
+        SweepEvent[] events = eventList.toArray(new SweepEvent[0]);
+        Arrays.sort(events);
+
+        double bestGf = 0;
+        double bestAcc = 0;
+        double acc = 0;
+
+        for(int i = 0; i < events.length; i++) {
+            SweepEvent event = events[i];
+
+            if(event.type == SweepEvent.EventType.START) {
+                acc += event.weight;
+                if(acc > bestAcc) {
+                    bestAcc = acc;
+                    bestGf = i+1 < events.length ? (events[i+1].axis + events[i].axis) / 2 : event.axis;
+                }
+            } else if(event.type == SweepEvent.EventType.END)
+                acc -= event.weight;
         }
 
         return bestGf;

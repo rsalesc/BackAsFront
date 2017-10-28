@@ -43,6 +43,7 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     private RobotMediator mediator;
     private PaintManager paintManager;
     private int skippedTurns = 0;
+    private int bulletsFired = 0;
     private boolean hasEnded = false;
 
     @Override
@@ -416,6 +417,7 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     }
 
     public void _onFire(FireEvent e) {
+        bulletsFired++;
         for (Component component : components) {
             if (component instanceof FireListener) {
                 FireListener listener = (FireListener) component;
@@ -426,5 +428,9 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
 
     public static <T> void warn(T anything) {
         System.out.println("WARNING: " + anything);
+    }
+
+    public int getBulletsFired() {
+        return bulletsFired;
     }
 }

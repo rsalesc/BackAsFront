@@ -23,6 +23,7 @@
 
 package rsalesc.mega.utils;
 
+import jk.math.FastTrig;
 import robocode.Rules;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.benchmark.Benchmark;
@@ -30,14 +31,11 @@ import rsalesc.baf2.core.benchmark.BenchmarkNode;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.AngularRange;
-import rsalesc.baf2.core.utils.geometry.AxisRectangle;
-import rsalesc.baf2.core.utils.geometry.Point;
-import rsalesc.baf2.core.utils.geometry.Range;
-import rsalesc.baf2.tracking.*;
-import rsalesc.baf2.waves.Wave;
+import rsalesc.baf2.core.utils.geometry.*;
 import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.tracking.*;
+import rsalesc.baf2.waves.Wave;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,9 +46,20 @@ import java.util.ArrayList;
 public class TargetingLog implements Serializable, IMea {
     private static final long serialVersionUID = 4242424242L;
 
+    private static double[] dx = new double[]{0, 1, 0, -1};
+    private static double[] dy = new double[]{1, 0, -1, 0};
+    private static Point[] dir = new Point[dx.length + 1];
+
+    static {
+        dir[0] = new Point(0, 0);
+        for(int i = 0; i < dx.length; i++)
+            dir[i + 1] = new Point(dx[i], dy[i]);
+    }
+
     public static final int SEEN_THRESHOLD = 10;
     public static final int BACK_IN_TIME = 80;
     private static final int MEA_STICK = 105;
+    private static final int MELEE_STICK = 140;
 
     public Point source;
     public AxisRectangle field;
@@ -81,9 +90,11 @@ public class TargetingLog implements Serializable, IMea {
     public double displaceLast80;
 
     public double distanceToWall;
+    public double distanceToCorner;
+    public double distanceToCenter;
+    public double advancingVelocityToWall;
 
     public long revertLast20;
-    public double coveredLast20;
     public double gunHeat;
 
     public long lastRun;
@@ -93,7 +104,14 @@ public class TargetingLog implements Serializable, IMea {
 
     // melee
     public double closestDistance;
-    public double distanceSum;
+    public double closestLateralVelocity;
+    public double closestAdvancingVelocity;
+    public double closestEnergyRatio;
+    public double hitChance;
+
+    // risk
+    public double[] distanceAvg;
+    public double[] distanceEnergyAvg;
 
     // for miss
     public double hitAngle;
@@ -105,8 +123,6 @@ public class TargetingLog implements Serializable, IMea {
 
     public Range preciseMea;
     public AngularRange preciseIntersection;
-
-//    public double wallDistance;
 
     /****** COMPUTING ***/
 
@@ -140,6 +156,7 @@ public class TargetingLog implements Serializable, IMea {
         f.others = mediator.getOthers();
         f.gunHeat = mediator.getGunHeat();
         f.aiming = aiming;
+        f.bulletsFired = mediator.getBulletsFired();
 
         computeDuelLog(f, f, EnemyTracker.getInstance().getLog(enemy), enemy);
         f.escapeDirection = f.direction;
@@ -174,7 +191,7 @@ public class TargetingLog implements Serializable, IMea {
     }
 
     private static void computeLog(TargetingLog f, IMea mea, RobotLog log, RobotSnapshot robot, int backInTime) {
-        RobotSnapshot pastRobot = log.before(robot); // not using interpolate here, too much behavior change
+        RobotSnapshot pastRobot = log.before(robot); // TODO: maybe interpolate here
 
         f.accel = 1;
         if (pastRobot != null)
@@ -194,7 +211,38 @@ public class TargetingLog implements Serializable, IMea {
         f.negativeEscape = R.getWallEscape(f.field, robot.getPoint(),
                 R.normalAbsoluteAngle(f.bafHeading + R.PI));
 
+        f.distanceToCenter = f.field.getCenter().distance(robot.getPoint());
         f.distanceToWall = f.field.distanceToEdges(robot.getPoint());
+        f.distanceToCorner = Double.POSITIVE_INFINITY;
+        for(Point corner : f.field.getCorners())
+            f.distanceToCorner = Math.min(f.distanceToCorner, corner.distance(robot.getPoint()));
+
+        double velX = f.velocity * FastTrig.sin(robot.getHeading());
+        double velY = f.velocity * FastTrig.cos(robot.getHeading());
+
+        Point point = robot.getPoint();
+        double best = Double.POSITIVE_INFINITY;
+
+        f.advancingVelocityToWall = 0;
+
+        if(f.field.getWidth() - point.x < best) {
+            best = f.field.getWidth() - point.x;
+            f.advancingVelocityToWall = velX;
+        }
+
+        if(point.x < best) {
+            best = point.x;
+            f.advancingVelocityToWall = -velX;
+        }
+
+        if(f.field.getHeight() - point.y < best) {
+            best = f.field.getHeight() - point.y;
+            f.advancingVelocityToWall = velY;
+        }
+
+        if(point.y < best) {
+            f.advancingVelocityToWall = -velY;
+        }
 
         if (f.accel < 0)
             f.accelDirection = -f.direction;
@@ -207,8 +255,6 @@ public class TargetingLog implements Serializable, IMea {
         f.revertLast20 = f.timeRevert ^ 1;
         f.run = pastRobot != null && robot.getVelocity() != pastRobot.getVelocity() ? 0 : backInTime;
         f.lastRun = backInTime;
-
-        Range coveredLast20 = new Range();
 
         for (int i = 1; i < backInTime; i++) {
             // biggest interpolate change
@@ -231,10 +277,6 @@ public class TargetingLog implements Serializable, IMea {
                 f.lastRun = i - f.run;
 
             if (i <= 20) {
-                double curBearing = Physics.absoluteBearing(f.source, curRobot.getPoint());
-                double curOffset = curBearing - f.absBearing;
-                coveredLast20.push(mea.getGf(curOffset));
-
                 if (curRobot.getDirection(f.source) * lastRobot.getDirection(f.source) < 0)
                     f.revertLast20++;
             }
@@ -259,21 +301,54 @@ public class TargetingLog implements Serializable, IMea {
             f.displaceLast80 = log.interpolate(f.time - 80).getPoint()
                     .distance(robot.getPoint());
         } catch(Exception ex){}
-
-        f.coveredLast20 = coveredLast20.maxAbsolute();
-
-        f.distanceSum = 0;
-        f.closestDistance = 1e9;
-        RobotSnapshot[] others = getOthersAlive(robot, f.time);
-        for (RobotSnapshot other : others) {
-            f.closestDistance = Math.min(f.closestDistance, other.getPoint().distance(robot.getPoint()));
-            f.distanceSum += other.getPoint().distance(robot.getPoint());
-        }
     }
 
     private static void computeMeleeLog(TargetingLog f, IMea mea, RobotLog log, RobotSnapshot robot) {
+        final int backInTime = 40;
+
         computeBasics(f, log, robot);
-        computeLog(f, mea, log, robot, 5);
+        computeLog(f, mea, log, robot, backInTime);
+
+        // TODO: does it make sense to interpolate here?
+        f.distanceAvg = new double[dir.length];
+        f.distanceEnergyAvg = new double[dir.length];
+
+        f.closestDistance = Double.POSITIVE_INFINITY;
+        RobotSnapshot[] others = getOthersAlive(robot, f.time);
+        RobotSnapshot closest = null;
+        for(RobotSnapshot other : others) {
+            double dist = other.getPoint().distance(robot.getPoint());
+            if (dist < f.closestDistance) {
+                f.closestDistance = dist;
+                closest = other;
+            }
+        }
+
+        double stickLength = Math.min(MELEE_STICK, f.closestDistance * 0.8);
+
+        for(int i = 0; i < dir.length; i++) {
+            Point dest = robot.getPoint().add(dir[i].rotate(robot.getBafHeading()).resized(stickLength));
+
+            double energyRatioSum = 1e-20;
+            for (RobotSnapshot other : others) {
+                double energyRatio = other.getEnergy() / (robot.getEnergy() + 1e-12);
+                double dist = other.getPoint().distance(dest);
+
+                energyRatioSum += energyRatio;
+
+                f.distanceAvg[i] += dist;
+                f.distanceEnergyAvg[i] += energyRatio * dist;
+            }
+
+            f.distanceAvg[i] /= others.length;
+            f.distanceEnergyAvg[i] /= energyRatioSum;
+        }
+
+        if(closest != null) {
+            f.closestLateralVelocity = robot.getLateralVelocity(closest.getPoint());
+            f.closestAdvancingVelocity = robot.getAdvancingVelocity(closest.getPoint());
+            f.closestEnergyRatio = closest.getEnergy() / (robot.getEnergy() + 1e-8);
+        }
     }
 
     private static void computeDuelLog(TargetingLog f, IMea mea, RobotLog log, RobotSnapshot robot) {
@@ -335,6 +410,10 @@ public class TargetingLog implements Serializable, IMea {
 
     public double bft() {
         return distance / (Rules.getBulletSpeed(bulletPower) + 1e-8);
+    }
+
+    public double closestBft() {
+        return closestDistance / (Rules.getBulletSpeed(bulletPower) + 1e-8);
     }
 
     public double getUnconstrainedGfFromAngle(double angle) {

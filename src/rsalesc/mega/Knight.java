@@ -32,14 +32,23 @@ import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.gunning.*;
+import rsalesc.mega.gunning.AntiAdaptiveGun;
+import rsalesc.mega.gunning.AntiRandomGun;
+import rsalesc.mega.gunning.RaikoGun;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
+import rsalesc.mega.gunning.guns.KnnPlayer;
+import rsalesc.mega.gunning.guns.PlayItForwardGun;
 import rsalesc.mega.gunning.power.MirrorPowerSelector;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.gunning.power.TCPowerSelector;
+import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
 import rsalesc.mega.movement.KnightStance;
 import rsalesc.mega.radar.PerfectLockRadar;
+import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.StatTracker;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 import java.awt.*;
 
@@ -49,7 +58,7 @@ import java.awt.*;
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
     private boolean MC = false || MC2k6;
-    private boolean TC = false;
+    private boolean TC = true;
 
     public void checkChallenges() {
         MC = MC || getName().endsWith("mc");
@@ -62,6 +71,8 @@ public class Knight extends BackAsFrontRobot2 {
 
         add(new Colorizer());
 
+//	    MovieTracker movieTracker = new MovieTracker(105, 20, 8);
+        
         Tracker tracker = new Tracker();
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
@@ -74,6 +85,7 @@ public class Knight extends BackAsFrontRobot2 {
 
         KnightStance move = new KnightStance(waveManager);
 
+//        ExperimentalPifRandomGun randomGun = new ExperimentalPifRandomGun();
         AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
         AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
         AutomaticGunArray array = new AutomaticGunArray() {
@@ -87,7 +99,7 @@ public class Knight extends BackAsFrontRobot2 {
             array.setPowerSelector(selector);
 
             array.addGun(randomGun);
-            array.addGun(adaptiveGun);
+//            array.addGun(adaptiveGun);
             array.log();
         }
 
@@ -102,11 +114,12 @@ public class Knight extends BackAsFrontRobot2 {
 
         if(!MC) {
             bulletManager.addListener(randomGun);
-            bulletManager.addListener(adaptiveGun);
+//            bulletManager.addListener(adaptiveGun);
             bulletManager.addListener(array);
         }
 
         add(tracker);
+//        add(movieTracker);
 
         if(selector instanceof MirrorPowerSelector)
             addListener((MirrorPowerSelector) selector);
@@ -114,9 +127,13 @@ public class Knight extends BackAsFrontRobot2 {
         add(bulletManager);
         add(waveManager);
         add(shadowManager);
+        
+//        movieTracker.addListener(randomGun);
 
         add(statTracker);
         if(!TC) add(move);
+
+//        addListener(randomGun);
 
         if(!MC) {
             add(array);
@@ -135,6 +152,39 @@ public class Knight extends BackAsFrontRobot2 {
             mediator.setGunColor(new Color(0, 0, 0));
             mediator.setRadarColor(new Color(46, 9, 2));
             mediator.setScanColor(new Color(98, 99, 99));
+        }
+    }
+
+    class ExperimentalPifRandomGun extends PlayItForwardGun {
+
+        public ExperimentalPifRandomGun() {
+            super(new KnnPlayer() {
+                @Override
+                public KnnView<EnemyMovie> getNewKnnSet() {
+                    return new KnnView<EnemyMovie>()
+                            .add(new KnnTree<EnemyMovie>()
+                                .setMode(KnnTree.Mode.MANHATTAN)
+                                .setK(48)
+                                .setStrategy(new GeneralPurposeStrategy())
+                                .setRatio(0.1)
+                                .logsEverything());
+                }
+
+                @Override
+                public Knn.DistanceWeighter<EnemyMovie> getLazyWeighter() {
+                    return new Knn.InverseDistanceWeighter<>(1.0);
+                }
+
+                @Override
+                public StorageNamespace getStorageNamespace() {
+                    return this.getGlobalStorage().namespace("knn-rz");
+                }
+            });
+        }
+
+        @Override
+        public StorageNamespace getStorageNamespace() {
+            return this.getGlobalStorage().namespace("knn-rr");
         }
     }
 }

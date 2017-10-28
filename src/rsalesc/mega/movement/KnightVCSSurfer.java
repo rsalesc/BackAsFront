@@ -24,22 +24,14 @@
 package rsalesc.mega.movement;
 
 import rsalesc.baf2.core.utils.geometry.Range;
-import rsalesc.mega.movement.strategies.dc.FlatteningStrategy;
-import rsalesc.mega.movement.strategies.dc.NormalStrategy;
-import rsalesc.mega.movement.strategies.dc.UnsegStrats;
 import rsalesc.mega.movement.strategies.vcs.SlicingAdaptiveStrategy;
 import rsalesc.mega.movement.strategies.vcs.SlicingFlattenerStrategy;
-import rsalesc.mega.movement.strategies.vcs.SlicingSimpleStrategy;
 import rsalesc.mega.utils.NamedStatData;
-import rsalesc.mega.utils.Timestamped;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.segmentation.GFSegmentationSet;
 import rsalesc.mega.utils.segmentation.GFSegmentationView;
-import rsalesc.mega.utils.segmentation.SegmentationSet;
 import rsalesc.mega.utils.segmentation.SegmentationView;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
-import rsalesc.mega.utils.structures.KnnView;
+import rsalesc.structures.Knn;
 
 /**
  * Created by Roberto Sales on 13/09/17.

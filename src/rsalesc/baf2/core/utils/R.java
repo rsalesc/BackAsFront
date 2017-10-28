@@ -219,6 +219,15 @@ public class R {
             h[i] /= sum;
     }
 
+    public static void fuzzyDistribution(@Modified double[] h) {
+        double sum = 1e-21;
+        for(double x : h)
+            sum = Math.max(sum, x);
+
+        for(int i = 0; i < h.length; i++)
+            h[i] /= sum;
+    }
+
     public static <T> T[] concat(T[] first, T[]... rest) {
         int totalLength = first.length;
         for (T[] array : rest) {

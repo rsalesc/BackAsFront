@@ -24,7 +24,6 @@
 package rsalesc.baf2.tracking;
 
 import robocode.ScannedRobotEvent;
-import robocode.util.Utils;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;

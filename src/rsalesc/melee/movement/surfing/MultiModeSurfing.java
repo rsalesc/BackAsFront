@@ -29,8 +29,8 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.CrossFireListener;
-import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.MyRobot;
+import rsalesc.baf2.tracking.RobotSnapshot;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
@@ -61,7 +61,7 @@ public class MultiModeSurfing extends Component implements EnemyWaveListener, En
             duel.run();
     }
 
-    public void onCrossHit(EnemyWave wave, EnemyRobot hitEnemy) {
+    public void onCrossHit(EnemyWave wave, RobotSnapshot hitEnemy) {
         melee.onCrossHit(wave, hitEnemy);
     }
 

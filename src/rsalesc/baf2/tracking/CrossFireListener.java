@@ -29,5 +29,5 @@ import rsalesc.baf2.waves.EnemyWave;
  * Created by Roberto Sales on 10/10/17.
  */
 public interface CrossFireListener {
-    void onCrossHit(EnemyWave wave, EnemyRobot hitEnemy);
+    void onCrossHit(EnemyWave wave, RobotSnapshot hitEnemy);
 }

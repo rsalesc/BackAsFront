@@ -26,21 +26,31 @@ package rsalesc.mega.tracking;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.mega.utils.Timestamped;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by Roberto Sales on 12/09/17.
  */
 public class EnemyMovie extends Timestamped {
-    private final EnemyRobot[] sequence;
+    private final ArrayList<EnemyRobot> sequence;
 
     EnemyMovie(EnemyRobot[] sequence) {
         super(sequence[0].getBattleTime());
-        this.sequence = sequence;
+        this.sequence = new ArrayList<>(50);
+        this.sequence.addAll(Arrays.asList(sequence));
     }
 
     public EnemyRobot get(int i) {
-        if (i >= size())
-            throw new ArrayIndexOutOfBoundsException();
-        return sequence[i];
+        return sequence.get(i);
+    }
+
+    public void append(EnemyRobot enemy) {
+        sequence.add(enemy);
+    }
+
+    public EnemyRobot getLatest() {
+        return get(size() - 1);
     }
 
     public EnemyRobot getLeadActor() {
@@ -48,6 +58,6 @@ public class EnemyMovie extends Timestamped {
     }
 
     public int size() {
-        return sequence.length;
+        return sequence.size();
     }
 }

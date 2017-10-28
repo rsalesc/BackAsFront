@@ -27,22 +27,26 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
-import rsalesc.baf2.tracking.Tracker;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
 public class MovieTracker extends Component {
     private long sequenceSize;
+    private long minimumSize;
     private long allowedGap;
 
+    private HashMap<String, LinkedList<EnemyMovie>> pending = new PredictedHashMap<>(15);
     private HashMap<String, EnemyRobot> lastLeadActor = new PredictedHashMap<>(15);
 
-    public MovieTracker(long sequenceSize, long allowedGap) {
+    public MovieTracker(long sequenceSize, long minimumSize, long allowedGap) {
         this.sequenceSize = sequenceSize;
         this.allowedGap = allowedGap;
+        this.minimumSize = minimumSize;
     }
 
     private EnemyRobot getLastLeadActor(EnemyRobot enemy) {
@@ -57,7 +61,26 @@ public class MovieTracker extends Component {
         EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
 
         for (EnemyRobot enemy : enemies) {
-            EnemyRobot[] sequence = EnemyTracker.getInstance().getLog(enemy).getSequence(time - sequenceSize);
+            // remove sequences such that new scan breaks gap OR sequence size is exceeded
+            LinkedList<EnemyMovie> list = pending.get(enemy.getName());
+
+            if(list == null)
+                pending.put(enemy.getName(), list = new LinkedList<>());
+
+            Iterator<EnemyMovie> it = list.iterator();
+
+            while(it.hasNext()) {
+                EnemyMovie movie = it.next();
+                EnemyRobot latest = movie.getLatest();
+
+                if(enemy.getTime() - latest.getTime() > allowedGap || enemy.getTime() - movie.getLeadActor().getTime() > sequenceSize)
+                    it.remove();
+                else if(enemy.getTime() != latest.getTime())
+                    movie.append(enemy);
+            }
+
+            // try to create a new minimum size sequence from scratch if it is enough to get a different lead actor
+            EnemyRobot[] sequence = EnemyTracker.getInstance().getLog(enemy).getSequence(time - minimumSize);
             boolean bad = sequence.length == 0 || time - sequence[sequence.length - 1].getTime() > allowedGap
                     || getLastLeadActor(enemy) != null && getLastLeadActor(enemy).getTime() == sequence[0].getTime();
 
@@ -68,10 +91,13 @@ public class MovieTracker extends Component {
             if (!bad) {
                 lastLeadActor.put(enemy.getName(), sequence[0]);
 
+                EnemyMovie newMovie = new EnemyMovie(sequence);
+                list.add(newMovie);
+
                 for (Object obj : getListeners()) {
                     if (obj instanceof MovieListener) {
                         MovieListener listener = (MovieListener) obj;
-                        listener.onNewMovie(new EnemyMovie(sequence));
+                        listener.onNewMovie(newMovie);
                     }
                 }
             }

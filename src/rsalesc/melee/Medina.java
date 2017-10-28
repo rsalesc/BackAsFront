@@ -41,13 +41,13 @@ import rsalesc.mega.tracking.MovieTracker;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
-import rsalesc.mega.utils.structures.KnnView;
 import rsalesc.melee.gunning.AutomaticMeleeGunArray;
 import rsalesc.melee.gunning.SwarmGun;
 import rsalesc.melee.movement.surfing.MedinaBoard;
 import rsalesc.melee.radar.MultiModeRadar;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 import java.awt.*;
 
@@ -65,7 +65,7 @@ public class Medina extends BackAsFrontRobot2 {
         WaveManager waveManager = new WaveManager();
 
         MeleeTracker tracker = new MeleeTracker(waveManager);
-        MovieTracker movieTracker = new MovieTracker(105, 8);
+        MovieTracker movieTracker = new MovieTracker(105, 20, 8);
 
 //        ShadowManager shadowManager = new ShadowManager(bulletManager, waveManager);
 
@@ -79,7 +79,7 @@ public class Medina extends BackAsFrontRobot2 {
 
         PlayItForwardGun pifGun = new PifGun(null);
 
-        SwarmGun swarm = new SwarmGun(pifGun, 100);
+        SwarmGun swarm = new SwarmGun(pifGun, 100, 32);
         swarm.setPowerSelector(new MonkPowerSelector());
 
         movieTracker.addListener(pifGun);
@@ -97,6 +97,7 @@ public class Medina extends BackAsFrontRobot2 {
 
         if(!TC) add(move);
 
+        addListener(pifGun);
         add(swarm);
         add(new MultiModeRadar());
     }
@@ -133,13 +134,18 @@ public class Medina extends BackAsFrontRobot2 {
                 @Override
                 public KnnView<EnemyMovie> getNewKnnSet() {
                     return new KnnView<EnemyMovie>()
-                            .setDistanceWeighter(new Knn.GaussDistanceWeighter<EnemyMovie>(1.0))
+//                            .setDistanceWeighter(new Knn.InverseDistanceWeighter<>(0.5))
                             .add(new KnnTree<EnemyMovie>()
                                     .setMode(KnnTree.Mode.MANHATTAN)
                                     .setRatio(0.5)
                                     .setK(24)
-                                    .setStrategy(new AntiRandomStrategy())
+                                    .setStrategy(new ExperimentalMeleeStrategy())
                                     .logsEverything());
+                }
+
+                @Override
+                public Knn.DistanceWeighter<EnemyMovie> getLazyWeighter() {
+                    return new Knn.GaussDistanceWeighter<>(1.0);
                 }
 
                 @Override
@@ -165,7 +171,7 @@ public class Medina extends BackAsFrontRobot2 {
                         Math.min(f.others - 1, 1),
                         Math.min(f.closestDistance / 400, 1),
                         (f.accel + 1) * .5,
-                        f.heat() / 16,
+                        f.heat(),
                         Math.abs(f.velocity) / 8.,
                 };
             }
@@ -173,6 +179,30 @@ public class Medina extends BackAsFrontRobot2 {
             @Override
             public double[] getWeights() {
                 return new double[]{2, 1, 2, 6, 2, 2, 4};
+            }
+        }
+
+        private static class ExperimentalMeleeStrategy extends Strategy {
+            @Override
+            public double[] getQuery(TargetingLog f) {
+                return new double[]{
+                        1.0 / (1.0 + 2 * f.timeDecel / f.bft()),
+                        1.0 / (1.0 + 2 * f.timeRevert / f.bft()),
+                        Math.min(f.displaceLast10 / 80, 1),
+                        2.0 / (1.0 + f.others),
+                        Math.min(f.closestDistance / 1500, 1),
+                        (Math.abs(f.closestLateralVelocity)) / 8,
+                        (f.closestAdvancingVelocity + 8) / 16,
+                        Math.min(f.distanceToWall / 500, 1),
+                        (f.advancingVelocityToWall + 8) / 16,
+                        (f.accel + 1) * .5,
+                        Math.min(f.virtuality(), 1)
+                };
+            }
+
+            @Override
+            public double[] getWeights() {
+                return new double[]{2, 2.5, 2, 6, 5, 6, 3, 5.25, 4, 1.5, 3};
             }
         }
     }

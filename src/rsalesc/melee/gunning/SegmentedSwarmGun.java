@@ -38,8 +38,8 @@ import java.util.ArrayList;
 public class SegmentedSwarmGun extends SwarmGun implements TickListener {
     private ArrayList<GunEntry> guns = new ArrayList<>();
 
-    public SegmentedSwarmGun(int maxSumK) {
-        super(null, maxSumK);
+    public SegmentedSwarmGun(int maxSumK, int maxK) {
+        super(null, maxSumK, maxK);
     }
 
     @Override

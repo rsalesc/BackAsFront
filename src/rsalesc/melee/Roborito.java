@@ -41,9 +41,9 @@ import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.StatTracker;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnView;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnView;
+import rsalesc.structures.KnnTree;
 import rsalesc.mega.tracking.MovieTracker;
 import rsalesc.melee.movement.risk.MonkFeet;
 import rsalesc.melee.radar.MultiModeRadar;
@@ -60,7 +60,7 @@ public class Roborito extends BackAsFrontRobot2 {
     public void initialize() {
         add(new Colorizer());
 
-        MovieTracker tracker = new MovieTracker(105, 8);
+        MovieTracker tracker = new MovieTracker(105, 20,8);
         BulletManager bulletManager = new BulletManager();
         WaveManager waveManager = new WaveManager();
         StatTracker statTracker = StatTracker.getInstance();
@@ -134,6 +134,11 @@ public class Roborito extends BackAsFrontRobot2 {
                                 .setRatio(0.4)
                                 .setK(20)
                                 .setStrategy(new AntiRandomStrategy()));
+                }
+
+                @Override
+                public Knn.DistanceWeighter<EnemyMovie> getLazyWeighter() {
+                    return null;
                 }
 
                 @Override

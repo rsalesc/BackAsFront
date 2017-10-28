@@ -25,7 +25,7 @@ package rsalesc.mega.utils;
 
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Range;
-import rsalesc.mega.utils.structures.Knn;
+import rsalesc.structures.Knn;
 
 /**
  * Created by Roberto Sales on 13/09/17.

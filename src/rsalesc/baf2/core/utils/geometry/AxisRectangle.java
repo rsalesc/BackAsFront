@@ -123,6 +123,15 @@ public class AxisRectangle implements Serializable {
         return corners;
     }
 
+    public LineSegment[] getEdges() {
+        Point[] corners = getCorners();
+        LineSegment[] edges = new LineSegment[4];
+        for(int i = 0; i < edges.length; i++)
+            edges[i] = new LineSegment(corners[i], corners[(i+1) % edges.length]);
+
+        return edges;
+    }
+
     public AxisRectangle transposed() {
         return new AxisRectangle(miny, maxy, minx, maxx);
     }

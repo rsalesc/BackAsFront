@@ -60,6 +60,7 @@ public class SwarmGun extends AutomaticGun implements FireListener {
     private AutomaticGun gun;
     private boolean normalize = false;
     private int maxSumK;
+    private int maxK;
 
     private GeneratedAngle[] lastGenerated;
     private GeneratedAngle[] lastFired;
@@ -69,12 +70,13 @@ public class SwarmGun extends AutomaticGun implements FireListener {
 
     private Point lastFireSource;
 
-    public SwarmGun(AutomaticGun gun, int maxSumK) {
+    public SwarmGun(AutomaticGun gun, int maxSumK, int maxK) {
         if(gun != null && !(gun instanceof MeleeGun))
             throw new IllegalStateException();
 
         this.gun = gun;
         this.maxSumK = maxSumK;
+        this.maxK = maxK;
     }
 
     public EnemyRobot[] getLatestSeen() {
@@ -89,7 +91,7 @@ public class SwarmGun extends AutomaticGun implements FireListener {
             res = Math.min(res, ((MeleeGun) getGun()).queryableData(EnemyTracker.getInstance().getLog(enemy)));
         }
 
-        return Math.max(res, 1);
+        return Math.max(Math.min(res, maxK), 1);
     }
 
 
@@ -164,13 +166,6 @@ public class SwarmGun extends AutomaticGun implements FireListener {
                 if(!(getGun() instanceof MeleeGun))
                     return;
 
-                if (lastFired != null) {
-                    for (GeneratedAngle angle : lastFired) {
-                        g.drawPoint(lastFireSource.project(angle.angle, angle.distance),
-                                Physics.BOT_WIDTH * 2, new Color(29, 29, 29, 150));
-                    }
-                }
-
                 if(lastFirePicked != null) {
                     g.drawPoint(lastFireSource.project(lastFirePicked.angle, lastFirePicked.distance),
                             Physics.BOT_WIDTH * 2, new Color(118, 119, 119, 200));
@@ -216,6 +211,10 @@ public class SwarmGun extends AutomaticGun implements FireListener {
     public double pickBestAngle(EnemyLog enemyLog, GeneratedAngle[] angles, double power) {
         int remaining = getMediator().getTicksToCool();
 
+        // TODO: conditionally thrash if its better to thrash
+        // TODO: focus enemies that i have high hit rate against (somehow virtualize shots to account that?)
+        // TODO: maybe i'll have to develop a whole separate logic for PifGun
+
         double delta = Math.min(R.PI, Rules.GUN_TURN_RATE_RADIANS * Math.max(remaining * 1.1, 1));
         AngularRange range = new AngularRange(getMediator().getGunHeadingRadians(), -delta, +delta);
 
@@ -233,7 +232,7 @@ public class SwarmGun extends AutomaticGun implements FireListener {
                     double angle = candidate.angle;
                     double off = R.normalRelativeAngle(shootAngle.angle - angle);
 
-                    double x = off / (Physics.hitAngle(distance) * 0.9);
+                    double x = off / (40 / distance);
                     if (Math.abs(x) < 1) {
                         density += R.cubicKernel(x) * candidate.weight / R.sqrt(distance);
                     }

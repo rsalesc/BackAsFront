@@ -29,8 +29,8 @@ import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.*;
 import rsalesc.mega.utils.*;
-import rsalesc.mega.utils.structures.Knn;
-import rsalesc.mega.utils.structures.KnnTree;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
 
 import java.util.List;
 
@@ -160,8 +160,7 @@ public class MirrorPowerSelector extends StoreComponent implements PowerSelector
 
     @Override
     public void onEnemyFire(EnemyFireEvent e) {
-        EnemyRobot robot = e.getEnemy() instanceof InterpolatedSnapshot ?
-        (EnemyRobot) ((InterpolatedSnapshot) e.getEnemy()).getBase() : (EnemyRobot) e.getEnemy();
+        EnemyRobot robot = e.getEnemy();
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(robot);
         log(getMediator(), enemyLog, null, e.getPower());
