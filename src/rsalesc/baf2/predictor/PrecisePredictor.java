@@ -125,7 +125,7 @@ public abstract class PrecisePredictor {
         lastEscape = new ArrayList<>();
         for (PredictedPoint pos : posList) {
             if(!shrinkedField.contains(pos))
-                continue;
+                break;
 
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
             lastEscape.add(pos);
@@ -133,7 +133,7 @@ public abstract class PrecisePredictor {
 
         for (PredictedPoint neg : negList) {
             if(!shrinkedField.contains(neg))
-                continue;
+                break;
 
             lastEscape.add(neg);
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);

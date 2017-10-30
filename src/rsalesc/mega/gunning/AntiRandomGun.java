@@ -43,7 +43,7 @@ public class AntiRandomGun extends GuessFactorGun {
             @Override
             public KnnView<TimestampedGFRange> getNewKnnSet() {
                 KnnView<TimestampedGFRange> set = new KnnView<>();
-                set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
+                set.setDistanceWeighter(new Knn.InverseDistanceWeighter<>(1.0));
                 set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)
