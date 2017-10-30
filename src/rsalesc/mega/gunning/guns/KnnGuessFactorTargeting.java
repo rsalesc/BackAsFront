@@ -25,14 +25,11 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
-import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.stats.GaussianKernelDensity;
-import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.structures.Knn;
 import rsalesc.structures.KnnProvider;
 import rsalesc.structures.KnnView;
@@ -74,31 +71,31 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
 
         List<Knn.Entry<TimestampedGFRange>> found = view.query(f);
 
-        double bandwidth = Physics.hitAngle(f.distance) / 2 /
-                Math.min(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
+//        double bandwidth = Physics.hitAngle(f.distance) / 2 /
+//                Math.min(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
+//
+//        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
+//
+//        GuessFactorStats stats = new GuessFactorStats(new GaussianKernelDensity());
+//
+//        for(Knn.Entry<TimestampedGFRange> entry : found) {
+//            stats.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
+//        }
+//
+//        double bestGf = 0;
+//        double bestDensity = 0;
+//
+//        for(Knn.Entry<TimestampedGFRange> entry : found) {
+//            double gf = entry.payload.mean;
+//            double density = stats.getValue(gf);
+//
+//            if(density > bestDensity) {
+//                bestDensity = density;
+//                bestGf = gf;
+//            }
+//        }
 
-        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
-
-        GuessFactorStats stats = new GuessFactorStats(new GaussianKernelDensity());
-
-        for(Knn.Entry<TimestampedGFRange> entry : found) {
-            stats.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
-        }
-
-        double bestGf = 0;
-        double bestDensity = 0;
-
-        for(Knn.Entry<TimestampedGFRange> entry : found) {
-            double gf = entry.payload.mean;
-            double density = stats.getValue(gf);
-
-            if(density > bestDensity) {
-                bestDensity = density;
-                bestGf = gf;
-            }
-        }
-
-//        double bestGf = maxOverlapCenter(found, mea);
+        double bestGf = maxOverlapCenter(found, mea);
         lastFound = found;
 
         return new GeneratedAngle[]{new GeneratedAngle(1.0, mea.getAngle(bestGf), f.distance)};

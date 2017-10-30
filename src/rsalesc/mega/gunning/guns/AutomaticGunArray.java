@@ -26,7 +26,6 @@ package rsalesc.mega.gunning.guns;
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
 import robocode.Condition;
-import robocode.RoundEndedEvent;
 import robocode.util.Utils;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
@@ -35,18 +34,24 @@ import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.tracking.EnemyRobot;
 import rsalesc.baf2.tracking.EnemyTracker;
 import rsalesc.baf2.waves.BulletWave;
 import rsalesc.baf2.waves.BulletWaveListener;
+import rsalesc.baf2.waves.BulletWavePreciseListener;
+import rsalesc.baf2.waves.TickWave;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Created by Roberto Sales on 20/09/17.
  */
-public abstract class AutomaticGunArray extends AutomaticGun implements BulletWaveListener, LastBreathListener {
+public abstract class AutomaticGunArray extends AutomaticGun implements BulletWaveListener, BulletWavePreciseListener, LastBreathListener {
     private ArrayList<AutomaticGun> guns = new ArrayList<>();
     private boolean log = false;
     private boolean scoring = true;
@@ -236,20 +241,39 @@ public abstract class AutomaticGunArray extends AutomaticGun implements BulletWa
 
     @Override
     public void onBulletWaveBreak(BulletWave wave, EnemyRobot enemy) {
+
+    }
+
+    @Override
+    public void onTickWavePreciselyIntersects(TickWave wave, EnemyRobot enemy, AngularRange intersection) {
+
+    }
+
+    @Override
+    public void onBulletWavePreciselyIntersects(BulletWave wave, EnemyRobot enemy, AngularRange intersection) {
         if(isScoring()) {
-            double bandwidth = Physics.hitAngle(enemy.getDistance()) / 2;
-            double angle = Physics.absoluteBearing(wave.getSource(), enemy.getPoint());
             EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
 
             for (AutomaticGun gun : guns) {
                 Double best = (Double) wave.getData(getGunWaveHint(gun, enemyLog));
+
                 if (best == null)
                     continue;
 
-                double x = R.normalRelativeAngle(angle - best) / bandwidth;
-                if (Math.abs(x) < 1) {
-                    getGunScoreKeeper(gun).log(enemyLog, R.gaussKernel(x));
+                if(intersection == null) {
+
+                    double width = Physics.hitAngle(enemy.getPoint().distance(wave.getSource())) / 2;
+                    intersection = new AngularRange(Physics.absoluteBearing(wave.getSource(), enemy.getPoint()),
+                            -width, +width);
                 }
+
+                double mean = intersection.getAngle(intersection.getCenter());
+
+                double offset = Utils.normalRelativeAngle(best - mean);
+                double x = offset / intersection.getRadius();
+
+                if(Math.abs(x) < 1)
+                    getGunScoreKeeper(gun).log(enemyLog, R.gaussKernel(x));
             }
         }
     }

@@ -33,6 +33,7 @@ import rsalesc.mega.learning.sgd.GunGeneticSgd;
 import rsalesc.mega.learning.sgd.SgdGunRandomStrategy;
 import rsalesc.mega.learning.sgd.SgdGunRandomTargeting;
 import rsalesc.mega.utils.Strategy;
+import rsalesc.runner.DuelChallenge;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,11 +60,11 @@ public class Tuning {
 
 //        System.out.println(evolveAdaptive(adaptivePack, iteration));
 
-        List<Strategy> strategies = evolveRm(rmPack, iteration);
-
-        for(Strategy strategy : strategies) {
-            System.out.println(strategy);
-        }
+//        List<Strategy> strategies = evolveRm(rmPack, iteration);
+//
+//        for(Strategy strategy : strategies) {
+//            System.out.println(strategy);
+//        }
 
         runner.getEngineProvider().close();
 
@@ -156,25 +157,38 @@ public class Tuning {
         }
     }
 
-    public static DuelRecordSuperPack ensureRm(DuelRecorderRunner runner) {
+    public static DuelRecordSuperPack ensureRm(DuelRecorderRunner runner) throws IOException {
+        DuelChallenge challenge = DuelChallenge.load("/home/rsalesc/robocode/robots/tc/rm.rrc");
+
         DuelRecordFS fs = new DuelRecordFS("records/tc", "rsalesc.mega.TickRecorderBot*");
         DuelRecordEnsurer ensurer = new DuelRecordEnsurer(runner, fs);
 
         ensurer.log();
 
         try {
-            return ensurer.ensure(Arrays.asList(TCRM_PAIRINGS), 35, true);
+            return ensurer.ensure(Arrays.asList(challengeToPairings(challenge, 15)), 35, true);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    public static Pair<String, Integer>[] challengeToPairings(DuelChallenge challenge, int seasons) {
+        Pair<String, Integer>[] res = new Pair[challenge.allReferenceBots.size()];
+
+        int ptr = 0;
+        for(String name : challenge.allReferenceBots) {
+            res[ptr++] = new Pair<>(name, seasons);
+        }
+
+        return res;
+    }
+
     public static final Pair<String, Integer>[] TCRM_PAIRINGS = new Pair[]{
             new Pair<>("wiki.etc.HTTC 1.0", 15),
-//            new Pair<>("simonton.micro.WeeklongObsession 1.5TC", 15),
-//            new Pair<>("jam.micro.RaikoMicro 1.44TC", 15),
-//            new Pair<>("emp.Yngwie 1.0", 15)
+            new Pair<>("simonton.micro.WeeklongObsession 1.5TC", 15),
+            new Pair<>("jam.micro.RaikoMicro 1.44TC", 15),
+            new Pair<>("emp.Yngwie 1.0", 15),
     };
 
     public static final Pair<String, Integer>[] TEST_PAIRINGS = new Pair[]{

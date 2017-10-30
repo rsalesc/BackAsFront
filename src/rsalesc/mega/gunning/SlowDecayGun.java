@@ -28,27 +28,34 @@ import rsalesc.baf2.waves.BulletManager;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
+import rsalesc.mega.gunning.strategies.dc.SlowDecayStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.structures.Knn;
 import rsalesc.structures.KnnTree;
 import rsalesc.structures.KnnView;
+
+import java.util.function.Function;
 
 /**
  * Created by Roberto Sales on 15/09/17.
  */
-public class AntiRandomGun extends GuessFactorGun {
-    public AntiRandomGun(BulletManager manager, PowerSelector selector) {
+public class SlowDecayGun extends GuessFactorGun {
+    public SlowDecayGun(BulletManager manager, PowerSelector selector) {
         super(new KnnGuessFactorTargeting() {
             @Override
             public KnnView<TimestampedGFRange> getNewKnnSet() {
                 KnnView<TimestampedGFRange> set = new KnnView<>();
-                set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
+//                set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
                 set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)
-                        .setRatio(0.2)
-                        .setStrategy(new GeneralPurposeStrategy())
+                        .setRatio(new Function<Integer, Double>() {
+                            @Override
+                            public Double apply(Integer integer) {
+//                                return Math.sqrt(integer);
+                                return integer * 0.22;
+                            }
+                        })
+                        .setStrategy(new SlowDecayStrategy())
                         .logsEverything());
 
                 return set;
@@ -56,7 +63,7 @@ public class AntiRandomGun extends GuessFactorGun {
 
             @Override
             public StorageNamespace getStorageNamespace() {
-                return this.getGlobalStorage().namespace("anti-random-targeting");
+                return this.getGlobalStorage().namespace("slow-decay-targeting");
             }
         }, manager);
 
@@ -65,11 +72,11 @@ public class AntiRandomGun extends GuessFactorGun {
 
     @Override
     public String getGunName() {
-        return "Anti-Random Gun";
+        return "Slow Decay Gun";
     }
 
     @Override
     public StorageNamespace getStorageNamespace() {
-        return getGlobalStorage().namespace("anti-random-gun");
+        return getGlobalStorage().namespace("slow-decay-gun");
     }
 }

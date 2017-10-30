@@ -40,12 +40,23 @@ public abstract class WallSmoothing {
     };
 
     public static double smooth(AxisRectangle shrinkedField, double stick, Point source, double angle, int direction) {
-        while(!shrinkedField.strictlyContains(source.project(angle, stick)))
-            angle += 0.05*direction;
+//        while(!shrinkedField.strictlyContains(source.project(angle, stick)))
+//            angle += 0.05*direction;
+//
+//        return angle;
 
-        return angle;
+        return pythagorean(shrinkedField, stick, source, angle, direction);
+    }
 
-//        return pythagorean(shrinkedField, stick, source, angle, direction);
+    public static double weirdSmoothing(AxisRectangle shrinkedField, Point source, Point cur, double angle, double stick) {
+        int iterations = 0;
+        Point dest = cur.project(angle, stick);
+
+        while(!shrinkedField.contains(dest) && ++iterations < 20) {
+            dest = source.weighted(dest, 0.95);
+        }
+
+        return Physics.absoluteBearing(cur, dest);
     }
 
     public static double pythagorean(AxisRectangle shrinkedField, double stick, Point source, double angle, int direction) {

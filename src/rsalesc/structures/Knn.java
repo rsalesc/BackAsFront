@@ -30,6 +30,7 @@ import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.Timestamped;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -439,6 +440,7 @@ public abstract class Knn<T extends Timestamped> {
 
     public static class GaussDistanceWeighter<T extends Timestamped> extends DistanceWeighter<T> {
         private double ratio;
+        private int ignore = 0;
 
         public GaussDistanceWeighter() {
             this(1.0);
@@ -448,13 +450,26 @@ public abstract class Knn<T extends Timestamped> {
             this.ratio = ratio;
         }
 
+        public GaussDistanceWeighter(double ratio, int ignore) {
+            this.ratio = ratio;
+            this.ignore = ignore;
+        }
+
         public List<Entry<T>> getWeightedEntries(List<Entry<T>> entries) {
+            Collections.sort(entries);
+
             double sum = 1e-9;
+            int skipped = 0;
             for (Knn.Entry<T> entry : entries) {
+                if(skipped < ignore && skipped + 1 < entries.size()) {
+                    skipped++;
+                    continue;
+                }
+
                 sum += entry.distance;
             }
 
-            double invAvg = entries.size() / sum;
+            double invAvg = (entries.size() - skipped) / sum;
 
             List<Entry<T>> res = new ArrayList<>();
 

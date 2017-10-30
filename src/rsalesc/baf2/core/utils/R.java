@@ -108,6 +108,7 @@ public class R {
 
     public static double gaussKernel(double x) {
         return R.pow(2, -0.5 * 1.44269504089 * x * x);
+//        return FastTrig.exp(x);
     }
 
     public static double cubicKernel(double x) {

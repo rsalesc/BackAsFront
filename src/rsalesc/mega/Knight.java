@@ -60,7 +60,7 @@ import java.util.Comparator;
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
     private boolean MC = false || MC2k6;
-    private boolean TC = true;
+    private boolean TC = false;
 
     public void checkChallenges() {
         MC = MC || getName().endsWith("mc");
@@ -89,6 +89,7 @@ public class Knight extends BackAsFrontRobot2 {
 
 //        ExperimentalPifRandomGun randomGun = new ExperimentalPifRandomGun();
         AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
+//        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
         AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
         AutomaticGunArray array = new AutomaticGunArray() {
             @Override
@@ -101,7 +102,7 @@ public class Knight extends BackAsFrontRobot2 {
             array.setPowerSelector(selector);
 
             array.addGun(randomGun);
-//            array.addGun(adaptiveGun);
+            array.addGun(adaptiveGun);
             array.log();
         }
 
@@ -116,7 +117,7 @@ public class Knight extends BackAsFrontRobot2 {
 
         if(!MC) {
             bulletManager.addListener(randomGun);
-//            bulletManager.addListener(adaptiveGun);
+            bulletManager.addListener(adaptiveGun);
             bulletManager.addListener(array);
         }
 
@@ -141,7 +142,7 @@ public class Knight extends BackAsFrontRobot2 {
             array.setComparator(new Comparator<AutomaticGunArray.GunScorePair>() {
                 @Override
                 public int compare(AutomaticGunArray.GunScorePair o1, AutomaticGunArray.GunScorePair o2) {
-                    boolean invert = o1.gun == randomGun;
+                    boolean invert = o1.gun != randomGun;
 
                     AutomaticGunArray.GunScorePair ro = !invert ? o1 : o2;
                     AutomaticGunArray.GunScorePair ao = !invert ? o2 : o1;

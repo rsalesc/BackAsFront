@@ -8,46 +8,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchDouble.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchResult.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunRandomStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunRandomTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/codesize_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/codesize_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/EnemyPredictor.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/FastDecayGun.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/FastDecayStrategy.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/SlowDecayStrategy.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/G.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/G.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/painting/PaintManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/painting/PaintManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyRobot.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyRobot.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GFTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GFTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/TargetingBenchmark.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/TargetingBenchmark.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/runner/DuelChallenge.java" afterPath="$PROJECT_DIR$/src/rsalesc/runner/DuelChallenge.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -69,84 +46,101 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/Player.java">
+      <file leaf-file-name="GunGeneticSgd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="32" column="17" lean-forward="false" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+            <state relative-caret-position="776">
+              <caret line="339" column="9" lean-forward="false" selection-start-line="339" selection-start-column="9" selection-end-line="339" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PrecisePredictor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java">
+      <file leaf-file-name="BackAsFrontRobot2.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="65" column="69" lean-forward="false" selection-start-line="65" selection-start-column="69" selection-end-line="65" selection-end-column="69" />
+            <state relative-caret-position="108">
+              <caret line="40" column="22" lean-forward="false" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KnnGuessFactorTargeting.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java">
+      <file leaf-file-name="AntiRandomStrategy.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1187">
-              <caret line="111" column="0" lean-forward="false" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
-              <folding>
-                <element signature="e#7373#7374#0" expanded="true" />
-                <element signature="e#7423#7424#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AntiAdaptiveGun.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+            <state relative-caret-position="324">
+              <caret line="41" column="36" lean-forward="false" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AntiSurferStrategy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiSurferStrategy.java">
+      <file leaf-file-name="OldBackAsFrontRobot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/OldBackAsFrontRobot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+            <state relative-caret-position="-2212">
+              <caret line="39" column="15" lean-forward="false" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TargetingLog.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
+      <file leaf-file-name="GunRecorder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/GunRecorder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="60" column="44" lean-forward="false" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+            <state relative-caret-position="-686">
+              <caret line="42" column="13" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BattleRunner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java">
+      <file leaf-file-name="BulletManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="54" column="84" lean-forward="false" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+            <state relative-caret-position="-3343">
+              <caret line="57" column="37" lean-forward="false" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GaussianKernelDensity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GaussianKernelDensity.java">
+      <file leaf-file-name="GlobalStorage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="33" column="20" lean-forward="false" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+            <state relative-caret-position="252">
+              <caret line="36" column="39" lean-forward="false" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Tuning.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1530">
+              <caret line="53" column="9" lean-forward="false" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DuelRecordEnsurer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordEnsurer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="55">
+              <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DuelChallenge.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/runner/DuelChallenge.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -166,7 +160,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Pair</find>
       <find>exp</find>
       <find>KnnPro</find>
       <find>TimestampedGFRange</find>
@@ -196,6 +189,7 @@
       <find>signum</find>
       <find>setupP</find>
       <find>onPaint</find>
+      <find>og</find>
     </findStrings>
     <replaceStrings>
       <replace>FLATTENING_CONDITION</replace>
@@ -241,28 +235,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnPlayer.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/RobotMediator.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/runner/ChallengeConfig.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/runner/GroupDuelResults.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/runner/GroupedDuelResults.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelResults.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/runner/DuelChallenge.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GFTargeting.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/painting/PaintManager.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/painting/G.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/runner/BatchDuelRunner.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/tracking/MyRobot.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/Physics.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdEvolutionStrategy.java" />
@@ -272,7 +254,6 @@
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunRandomStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchGunFitnessFunction.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunEvolutionStrategy.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunSgd.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java" />
@@ -280,18 +261,31 @@
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchResult.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchDouble.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/FastDecayStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/DrussPredictor.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/EnemyPredictor.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/FastDecayGun.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java" />
       </list>
     </option>
   </component>
@@ -308,10 +302,10 @@
     </order>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="24" />
-    <option name="y" value="20" />
-    <option name="width" value="926" />
-    <option name="height" value="993" />
+    <option name="x" value="-2" />
+    <option name="y" value="18" />
+    <option name="width" value="1924" />
+    <option name="height" value="1021" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -380,7 +374,50 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
               <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="geometry" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
               <item name="predictor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="tracking" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="baf2" type="462c0819:PsiDirectoryNode" />
+              <item name="waves" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
@@ -421,7 +458,34 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
               <item name="mega" type="462c0819:PsiDirectoryNode" />
-              <item name="movement" type="462c0819:PsiDirectoryNode" />
+              <item name="learning" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="mega" type="462c0819:PsiDirectoryNode" />
+              <item name="learning" type="462c0819:PsiDirectoryNode" />
+              <item name="genetic" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="mega" type="462c0819:PsiDirectoryNode" />
+              <item name="learning" type="462c0819:PsiDirectoryNode" />
+              <item name="recording" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
+              <item name="mega" type="462c0819:PsiDirectoryNode" />
+              <item name="learning" type="462c0819:PsiDirectoryNode" />
+              <item name="sgd" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
@@ -497,7 +561,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/robocode/libs/roborumble.jar!/" />
+    <property name="last_opened_file_path" value="$USER_HOME$/rumblecode/dev" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -525,11 +589,11 @@
       <recent name="baf2" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="rsalesc.mega.gunning.strategies.dc" />
+      <recent name="rsalesc.mega.gunning" />
       <recent name="rsalesc.mega.learning.sgd" />
       <recent name="rsalesc.runner" />
-      <recent name="rsalesc.mega.gunning.strategies.dc" />
       <recent name="rsalesc.melee.movement.surfing" />
-      <recent name="rsalesc.melee" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -559,7 +623,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Robocode">
+  <component name="RunManager" selected="Application.Tuning">
     <configuration name="Interpolation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -678,7 +742,7 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="rsalesc.mega.learning.Tuning" />
-      <option name="VM_PARAMETERS" value="-Xmx2048M -Dsun.io.useCanonCaches=false -DNOSECURITY=true" />
+      <option name="VM_PARAMETERS" value="-Xmx512M -Dsun.io.useCanonCaches=false -DNOSECURITY=true" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1275,7 +1339,7 @@
       <workItem from="1509240603898" duration="8323000" />
       <workItem from="1509252586571" duration="17118000" />
       <workItem from="1509297010918" duration="15546000" />
-      <workItem from="1509314337047" duration="13529000" />
+      <workItem from="1509314337047" duration="36221000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1505318578286</created>
@@ -1396,7 +1460,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509236137391</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="a lot of gun tweaks, SGD, preciseMEA now hits wall">
+      <created>1509328491903</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1509328491903</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1432,7 +1503,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="914803000" />
+    <option name="totallyTimeSpent" value="937495000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1444,31 +1515,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="42" width="1924" height="997" extended-state="6" />
+    <frame x="-2" y="18" width="1924" height="1021" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32824427" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4556213" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45464724" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32840723" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33947065" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.80515116" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.71428573" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77535444" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21875" sideWeight="0.48440066" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33645833" sideWeight="0.48440066" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25776756" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25736097" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26500732" sideWeight="0.51559937" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.75883067" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5496183" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1552,11 +1623,20 @@
     <MESSAGE value="add challenge to battle runner" />
     <MESSAGE value="make sure melee stats are computed when enemy fires" />
     <MESSAGE value="add structures" />
-    <option name="LAST_COMMIT_MESSAGE" value="add structures" />
+    <MESSAGE value="a lot of gun tweaks, SGD, preciseMEA now hits wall" />
+    <option name="LAST_COMMIT_MESSAGE" value="a lot of gun tweaks, SGD, preciseMEA now hits wall" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="18" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordEnsurer.java</url>
+          <line>73</line>
+          <properties />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1565,389 +1645,147 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/HandAdaptiveStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/EnemyRobot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="116" column="0" lean-forward="false" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticGunTargeting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="32" column="22" lean-forward="false" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="36" column="41" lean-forward="false" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GeneticRandomTargeting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/BaseRandomStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="46" column="10" lean-forward="true" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/Knight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-54">
-          <caret line="151" column="32" lean-forward="false" selection-start-line="151" selection-start-column="32" selection-end-line="151" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunChromosomeLayoutProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1322">
-          <caret line="58" column="94" lean-forward="false" selection-start-line="58" selection-start-column="94" selection-end-line="58" selection-end-column="94" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunHybridStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2339">
-          <caret line="166" column="4" lean-forward="true" selection-start-line="166" selection-start-column="4" selection-end-line="171" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/genetic/EvolutionStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="31" column="22" lean-forward="false" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunRandomTargeting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="55" column="34" lean-forward="false" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
-          <folding>
-            <element signature="e#1910#1911#0" expanded="false" />
-            <element signature="e#1951#1952#0" expanded="false" />
-            <element signature="e#3309#3310#0" expanded="false" />
-            <element signature="e#3346#3347#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchGunFitnessFunction.java" />
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/genetic/Population.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/genetic/Generation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunEvolutionStrategy.java" />
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordSuperPack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-288">
-          <caret line="38" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#1716#1717#0" expanded="false" />
-            <element signature="e#1749#1750#0" expanded="false" />
-            <element signature="e#1811#1812#0" expanded="false" />
-            <element signature="e#1853#1854#0" expanded="false" />
-            <element signature="e#2793#2794#0" expanded="false" />
-            <element signature="e#2830#2831#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/benchmark/TargetingBenchmark.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="45" column="108" lean-forward="false" selection-start-line="45" selection-start-column="108" selection-end-line="45" selection-end-column="108" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunBattleTrainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="153" column="16" lean-forward="true" selection-start-line="153" selection-start-column="16" selection-end-line="153" selection-end-column="16" />
-          <folding>
-            <element signature="e#2487#2488#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="33" column="13" lean-forward="true" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding>
-            <element signature="e#2048#2049#0" expanded="false" />
-            <element signature="e#2127#2128#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#1205#1206#0" expanded="false" />
-            <element signature="e#1255#1256#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/BatchDouble.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
-          <caret line="49" column="32" lean-forward="false" selection-start-line="49" selection-start-column="32" selection-end-line="49" selection-end-column="32" />
+          <caret line="54" column="84" lean-forward="false" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Point.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="155" column="17" lean-forward="false" selection-start-line="155" selection-start-column="17" selection-end-line="155" selection-end-column="17" />
           <folding>
-            <element signature="e#1892#1893#0" expanded="false" />
-            <element signature="e#1941#1942#0" expanded="false" />
+            <element signature="e#3664#3665#0" expanded="false" />
+            <element signature="e#3738#3739#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sgd/rm_sgd_pairings_1.dat">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/EnemyPredictor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="87" column="27" lean-forward="false" selection-start-line="87" selection-start-column="27" selection-end-line="87" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/SgdGunRandomStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="66" column="10" lean-forward="false" selection-start-line="66" selection-start-column="10" selection-end-line="66" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-136">
-          <caret line="51" column="29" lean-forward="false" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedRandomStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="38" column="15" lean-forward="false" selection-start-line="38" selection-start-column="15" selection-end-line="38" selection-end-column="15" />
-          <folding>
-            <element signature="e#1201#1202#0" expanded="false" />
-            <element signature="e#1294#1295#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4008">
-          <caret line="292" column="9" lean-forward="false" selection-start-line="292" selection-start-column="9" selection-end-line="292" selection-end-column="9" />
+        <state relative-caret-position="162">
+          <caret line="72" column="77" lean-forward="true" selection-start-line="72" selection-start-column="77" selection-end-line="72" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="false" />
-            <element signature="e#2813#2814#0" expanded="false" />
-            <element signature="e#2850#2851#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1196">
-          <caret line="173" column="21" lean-forward="false" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
+        <state relative-caret-position="612">
+          <caret line="65" column="69" lean-forward="false" selection-start-line="65" selection-start-column="69" selection-end-line="65" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/Roborito.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1680">
-          <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+        <state relative-caret-position="144">
+          <caret line="117" column="19" lean-forward="false" selection-start-line="117" selection-start-column="19" selection-end-line="117" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/SimpleTargetGuesser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="284" column="8" lean-forward="false" selection-start-line="284" selection-start-column="8" selection-end-line="352" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="395" column="16" lean-forward="false" selection-start-line="395" selection-start-column="16" selection-end-line="395" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/BinKernelDensity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="57" column="61" lean-forward="false" selection-start-line="57" selection-start-column="61" selection-end-line="57" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnightDCSurfer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-162">
-          <caret line="38" column="22" lean-forward="false" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnnSurfer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-864">
-          <caret line="48" column="22" lean-forward="false" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="57" column="37" lean-forward="true" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="32" column="17" lean-forward="false" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="41" column="119" lean-forward="false" selection-start-line="41" selection-start-column="119" selection-end-line="41" selection-end-column="119" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="137" column="86" lean-forward="false" selection-start-line="137" selection-start-column="86" selection-end-line="137" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/Stats.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-314">
-          <caret line="59" column="29" lean-forward="false" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
+        <state relative-caret-position="-416">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GuessFactorStats.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-212">
+        <state relative-caret-position="178">
           <caret line="42" column="39" lean-forward="false" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
-          <folding>
-            <element signature="e#1444#1445#0" expanded="true" />
-            <element signature="e#1490#1491#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GaussianKernelDensity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="33" column="20" lean-forward="false" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/runner/BattleRunner.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2574">
+          <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/FastDecayGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="54" column="58" lean-forward="false" selection-start-line="54" selection-start-column="58" selection-end-line="54" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2233#2234#0" expanded="false" />
+            <element signature="e#2322#2323#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/TunedAdaptiveStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/FastDecayStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
-          <caret line="54" column="84" lean-forward="false" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+          <caret line="45" column="44" lean-forward="false" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/structures/KdTreeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/structures/Knn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4744">
+          <caret line="464" column="30" lean-forward="false" selection-start-line="464" selection-start-column="30" selection-end-line="464" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/AxisRectangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/LineSegment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-488">
+          <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/geometry/Circle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-884">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/WallSmoothing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="58" column="50" lean-forward="false" selection-start-line="58" selection-start-column="50" selection-end-line="58" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -1960,6 +1798,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/stats/GaussianKernelDensity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="33" column="20" lean-forward="false" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1968,29 +1814,250 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="65" column="69" lean-forward="false" selection-start-line="65" selection-start-column="69" selection-end-line="65" selection-end-column="69" />
+        <state relative-caret-position="1206">
+          <caret line="162" column="23" lean-forward="false" selection-start-line="162" selection-start-column="23" selection-end-line="162" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="110" column="31" lean-forward="false" selection-start-line="110" selection-start-column="31" selection-end-line="110" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1187">
-          <caret line="111" column="0" lean-forward="false" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
-          <folding>
-            <element signature="e#7373#7374#0" expanded="true" />
-            <element signature="e#7423#7424#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="198">
+          <caret line="77" column="2" lean-forward="false" selection-start-line="77" selection-start-column="2" selection-end-line="77" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGunArray.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="60" column="44" lean-forward="false" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
+        <state relative-caret-position="857">
+          <caret line="277" column="9" lean-forward="false" selection-start-line="277" selection-start-column="9" selection-end-line="277" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/Knight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="62" column="30" lean-forward="false" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="664">
+          <caret line="74" column="21" lean-forward="false" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/GeneralPurposeStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-956">
+          <caret line="36" column="13" lean-forward="false" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecorderRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-380">
+          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordPackage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1494">
+          <caret line="45" column="35" lean-forward="false" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/genetic/GunFitnessFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1654">
+          <caret line="173" column="21" lean-forward="false" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="49" column="37" lean-forward="false" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/TickRecorderBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="51" column="29" lean-forward="false" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/DuelRecordEnsurer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Tuning.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1530">
+          <caret line="53" column="9" lean-forward="false" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/runner/DuelChallenge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/GlobalStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="36" column="39" lean-forward="false" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletWave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/Wave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1705">
+          <caret line="77" column="56" lean-forward="false" selection-start-line="77" selection-start-column="56" selection-end-line="77" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/RobotWave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-67">
+          <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BulletManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3343">
+          <caret line="57" column="37" lean-forward="false" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/BreakType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="28" column="12" lean-forward="false" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/Tracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-49">
+          <caret line="36" column="13" lean-forward="false" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/sgd/GunGeneticSgd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="776">
+          <caret line="339" column="9" lean-forward="false" selection-start-line="339" selection-start-column="9" selection-end-line="339" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/GunController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/controllers/AimController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/OldBackAsFrontRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2212">
+          <caret line="39" column="15" lean-forward="false" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/recording/GunRecorder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-686">
+          <caret line="42" column="13" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/SlowDecayStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="33" column="13" lean-forward="true" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="40" column="22" lean-forward="false" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="41" column="36" lean-forward="false" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
           <folding />
         </state>
       </provider>

@@ -28,28 +28,28 @@ import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 
 /**
- * Created by Roberto Sales on 15/09/17.
+ * Created by Roberto Sales on 22/09/17.
  */
-public class AntiRandomStrategy extends Strategy {
+public class SlowDecayStrategy extends Strategy {
     @Override
     public double[] getQuery(TargetingLog f) {
         return new double[]{
-                Math.min(f.bft() / 80, 1),
-                R.constrain(0, f.bulletPower / 3, 1),
-                Math.abs(R.sin(f.relativeHeading)), // was 4
-                (R.cos(f.relativeHeading) + 1) / 2.,
-                Math.abs(f.velocity) / 8.,
+                Math.min(Math.abs(f.lateralVelocity) / 8, 1),
+                R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
+                Math.min(f.distance / 900, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
-                1.0 / (1.0 + 2. * f.timeDecel),
-                f.virtuality()
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.3), // was 1.3
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.3),
+                1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
+                1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
+                R.constrain(0, f.displaceLast10 / 80, 1),
+                Math.pow(f.bulletsFired * 0.2, 0.5),
+                (R.constrain(-1, f.lastGf, +1) + 1) / 2
         };
     }
 
     @Override
     public double[] getWeights() {
-//        return new double[]{5, 0.5, 3.5, 3, 2, 4, 4, 2, 1.75, 1};
-        return new double[]{5, 4, 4, 7, 1, 3, 4, 2, 4, 3};
+        return new double[]{6, 3, 5, 1.5, 5, 2.5, 2, 2.75, 2, 0.8, 3.1};
     }
 }

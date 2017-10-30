@@ -32,6 +32,7 @@ import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.*;
+import rsalesc.baf2.predictor.EnemyPredictor;
 import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
 import rsalesc.baf2.tracking.*;
@@ -393,11 +394,10 @@ public class TargetingLog implements Serializable, IMea {
 
         BattleTime shotBattleTime = new BattleTime(f.time + 1, f.battleTime.getRound());
 
-        f.preciseMea = PrecisePredictor.getBetterPreciseMEA(f.field, MEA_STICK,
-                PredictedPoint.from(robot), new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)),
-                f.direction);
+        f.preciseMea = EnemyPredictor.getPreciseMea(f.field, PredictedPoint.from(robot),
+                new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)), f.direction);
 
-        double halfWidth = 40 / f.distance;
+        double halfWidth = Physics.hitAngle(f.source.distance(robot.getPoint())) / 2; // TODO: change that for me
         f.preciseMea.push(f.preciseMea.max + halfWidth);
         f.preciseMea.push(f.preciseMea.min - halfWidth);
 

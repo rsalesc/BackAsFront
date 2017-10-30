@@ -75,7 +75,7 @@ public class Wave {
         double refAngle = Physics.absoluteBearing(wave.getSource(), R.getLast(predicted));
 
         int ptr = predicted.size() - 1;
-        while (ptr > 0 && wave.hasTouchedRobot(predicted.get(ptr), predicted.get(ptr).time))
+        while (ptr > 0 && wave.hasPreciselyTouchedRobot(predicted.get(ptr), predicted.get(ptr).time))
             ptr--;
 
         AngularRange range = new AngularRange(refAngle, new Range());
@@ -139,6 +139,16 @@ public class Wave {
 
     public boolean hasTouchedRobot(Point point, long time) {
         return point.distance(source) - Physics.BOT_WIDTH <= getDistanceTraveled(time);
+    }
+
+    public boolean hasPreciselyTouchedRobot(Point point, long time) {
+        Point[] corners = new AxisRectangle(point, 36).getCorners();
+
+        for(Point pt : corners)
+            if(hasPassed(pt, time))
+                return true;
+
+        return false;
     }
 
     public boolean hasPassedRobot(MyRobot robot) {
