@@ -21,21 +21,18 @@
  *    distribution.
  */
 
-package rsalesc.mega.gunning.strategies.dc;
+package rsalesc.mega.learning.sgd;
 
-import rsalesc.mega.learning.sgd.SgdGunRandomStrategy;
+public class BatchResult {
+    public final double value;
+    public final int length;
 
-/**
- * Created by Roberto Sales on 15/09/17.
- */
-public class TunedRandomStrategy extends SgdGunRandomStrategy {
-    @Override
-    public double[] getWeights() {
-        return new double[]{2.11, 6.61, 6.61, 10, 7.68, 9.62, 3.05, 3.68, 7.22, 0, 0};
+    public BatchResult(double value, int length) {
+        this.value = value;
+        this.length = length;
     }
 
-    @Override
-    public double[] getParams() {
-        return new double[]{0, 0};
+    public double mean() {
+        return value / Math.max(length, 1);
     }
 }

@@ -29,20 +29,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Created by Roberto Sales on 02/10/17.
  */
 public class DuelRecordSuperPack implements Iterable<DuelRecord>, BatchIterable<DuelRecord> {
     private final ArrayList<DuelRecordPackage> packs = new ArrayList<>();
+    private Long seed;
+
+    public DuelRecordSuperPack(Collection<DuelRecordPackage> packs, Long seed) {
+        this.seed = seed;
+
+        if(seed != null) {
+            for (DuelRecordPackage pack : packs)
+                pack.setSeed(seed);
+        }
+
+        this.packs.addAll(packs);
+    }
 
     public DuelRecordSuperPack(Collection<DuelRecordPackage> packs) {
-        this.packs.addAll(packs);
+        this(packs, null);
     }
 
     public DuelRecordSuperPack(DuelRecordPackage ...packs) {
         this(Arrays.asList(packs));
+    }
+
+    public void setSeed(Long seed) {
+        this.seed = seed;
+        for(DuelRecordPackage pack : packs)
+            pack.setSeed(seed);
     }
 
     public ArrayList<DuelRecordPackage> getPackages() {

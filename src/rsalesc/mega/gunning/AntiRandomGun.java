@@ -33,6 +33,8 @@ import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.structures.KnnTree;
 import rsalesc.structures.KnnView;
 
+import java.util.function.Function;
+
 /**
  * Created by Roberto Sales on 15/09/17.
  */
@@ -46,7 +48,13 @@ public class AntiRandomGun extends GuessFactorGun {
                 set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)
-                        .setRatio(0.25)
+                        .setRatio(new Function<Integer, Double>() {
+                            @Override
+                            public Double apply(Integer integer) {
+//                                return Math.sqrt(integer);
+                                return integer * 0.22;
+                            }
+                        })
                         .setStrategy(new AntiRandomStrategy())
                         .logsEverything());
 

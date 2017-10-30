@@ -43,7 +43,7 @@ public class TargetingBenchmark {
         DuelRecorderRunner runner = new DuelRecorderRunner();
         DuelRecordSuperPack adaptivePack = ensureAdaptive(runner, 0);
 
-        GunChromosomeLayoutProvider provider = new GunChromosomeLayoutProvider(new BaseAdaptiveStrategy());
+        GunChromosomeLayoutProvider provider = new GunChromosomeLayoutProvider(new BaseAdaptiveStrategy(), 1);
         GunFitnessFunction fitnessFn = new GunFitnessFunction(adaptivePack, provider, GeneticAdaptiveTargeting.class, 4);
 
         Chromosome chromosome = provider.createChromosome(new HandAdaptiveStrategy());

@@ -25,10 +25,14 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.stats.GaussianKernelDensity;
+import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.structures.Knn;
 import rsalesc.structures.KnnProvider;
 import rsalesc.structures.KnnView;
@@ -45,6 +49,8 @@ import java.util.List;
  * TC2: had hit-angle bandwidth and gauss distance weighter, besides ratio 0.33
  */
 public abstract class KnnGuessFactorTargeting extends StoreComponent implements GFTargeting, KnnProvider<TimestampedGFRange> {
+    public List<Knn.Entry<TimestampedGFRange>> lastFound;
+
     public abstract KnnView<TimestampedGFRange> getNewKnnSet();
 
     public KnnView<TimestampedGFRange> getKnnSet(String name) {
@@ -63,43 +69,47 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
     }
 
     @Override
-    public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f) {
-        List<Knn.Entry<TimestampedGFRange>> found = getKnnSet(enemyLog.getName()).query(f);
+    public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, IMea mea) {
+        KnnView<TimestampedGFRange> view = getKnnSet(enemyLog.getName());
 
-//        double bandwidth = Physics.hitAngle(f.distance) / 2 /
-//                Math.max(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
-//
-//        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
-//
-//        GuessFactorStats stats = new GuessFactorStats(new BinKernelDensity(new UncutGaussianKernelDensity(), binBandwidth));
-//
-//        for(Knn.Entry<TimestampedGFRange> entry : found) {
-//            stats.logGuessFactor(entry.payload.mean, entry.weight);
-//        }
+        List<Knn.Entry<TimestampedGFRange>> found = view.query(f);
 
-//        double bestGf = 0;
-//        double bestDensity = 0;
-//
-//        for(Knn.Entry<TimestampedGFRange> entry : found) {
-//            double gf = entry.payload.mean;
-//            double density = stats.getValue(gf);
-//
-//            if(density > bestDensity) {
-//                bestDensity = density;
-//                bestGf = gf;
-//            }
-//        }
+        double bandwidth = Physics.hitAngle(f.distance) / 2 /
+                Math.min(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
 
-        double bestGf = maxOverlapCenter(found);
+        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
 
-        return new GeneratedAngle[]{new GeneratedAngle(1.0, f.getAngle(bestGf), f.distance)};
+        GuessFactorStats stats = new GuessFactorStats(new GaussianKernelDensity());
+
+        for(Knn.Entry<TimestampedGFRange> entry : found) {
+            stats.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
+        }
+
+        double bestGf = 0;
+        double bestDensity = 0;
+
+        for(Knn.Entry<TimestampedGFRange> entry : found) {
+            double gf = entry.payload.mean;
+            double density = stats.getValue(gf);
+
+            if(density > bestDensity) {
+                bestDensity = density;
+                bestGf = gf;
+            }
+        }
+
+//        double bestGf = maxOverlapCenter(found, mea);
+        lastFound = found;
+
+        return new GeneratedAngle[]{new GeneratedAngle(1.0, mea.getAngle(bestGf), f.distance)};
     }
 
     @Override
-    public void log(EnemyLog enemyLog, TargetingLog f, BreakType type) {
-        double gfMean = f.getGfFromAngle(f.preciseIntersection.getAngle(f.preciseIntersection.getCenter()));
-        double gfLow = f.getGfFromAngle(f.preciseIntersection.getStartingAngle());
-        double gfHigh = f.getGfFromAngle(f.preciseIntersection.getEndingAngle());
+    public void log(EnemyLog enemyLog, TargetingLog f, IMea mea, BreakType type) {
+        double gfMean = mea.getGfFromAngle(f.preciseIntersection.getAngle(f.preciseIntersection.getCenter()));
+        double gfLow = mea.getGfFromAngle(f.preciseIntersection.getStartingAngle());
+        double gfHigh = mea.getGfFromAngle(f.preciseIntersection.getEndingAngle());
+
         if(gfLow > gfHigh) {
             double tmp = gfLow;
             gfLow = gfHigh;
@@ -140,7 +150,7 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
         return bestGf;
     }
 
-    public static double maxOverlapCenter(List<Knn.Entry<TimestampedGFRange>> list) {
+    public static double maxOverlapCenter(List<Knn.Entry<TimestampedGFRange>> list, IMea mea) {
         List<SweepEvent> eventList = new ArrayList<>();
         for(Knn.Entry<TimestampedGFRange> entry : list) {
             eventList.add(new SweepEvent(SweepEvent.EventType.START, entry.weight, entry.payload.min));

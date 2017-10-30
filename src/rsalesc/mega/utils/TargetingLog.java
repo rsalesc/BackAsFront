@@ -58,7 +58,7 @@ public class TargetingLog implements Serializable, IMea {
 
     public static final int SEEN_THRESHOLD = 10;
     public static final int BACK_IN_TIME = 80;
-    private static final int MEA_STICK = 105;
+    private static final int MEA_STICK = 105; // default 105
     private static final int MELEE_STICK = 140;
 
     public Point source;
@@ -94,6 +94,7 @@ public class TargetingLog implements Serializable, IMea {
     public double distanceToCenter;
     public double advancingVelocityToWall;
 
+    public double lastGf;
     public long revertLast20;
     public double gunHeat;
 
@@ -164,6 +165,30 @@ public class TargetingLog implements Serializable, IMea {
         return f;
     }
 
+    public static TargetingLog getTickLog(EnemyRobot enemy, RobotMediator mediator, double power) {
+        TargetingLog f = new TargetingLog();
+
+        EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
+
+        RobotSnapshot interpolated = enemyLog.interpolate(mediator.getTime() - 1);
+
+        if(interpolated == null)
+            interpolated = enemy;
+
+        f.source = mediator.getPoint();
+        f.bulletPower = power;
+        f.field = mediator.getBattleField();
+        f.others = interpolated.getOthers();
+        f.gunHeat = mediator.getGunHeat();
+        f.aiming = false;
+        f.bulletsFired = mediator.getBulletsFired();
+
+        computeDuelLog(f, f, enemyLog, interpolated); // TODO: duel or enemyduel?
+        f.escapeDirection = f.direction;
+
+        return f;
+    }
+
     public static TargetingLog getEnemyLog(MyRobot me, Point source, RobotMediator mediator, double power) {
         TargetingLog f = new TargetingLog();
         f.source = source;
@@ -198,11 +223,7 @@ public class TargetingLog implements Serializable, IMea {
             f.accel = (robot.getVelocity() - pastRobot.getVelocity())
                     * Math.signum(robot.getVelocity() + 1e-8);
 
-        f.bafHeading = robot.getHeading();
-
-        if (robot.getAhead() < 0) {
-            f.bafHeading = R.normalAbsoluteAngle(f.bafHeading + R.PI);
-        }
+        f.bafHeading = robot.getBafHeading();
 
         f.relativeHeading = Math.abs(R.normalRelativeAngle(f.bafHeading -
                 Physics.absoluteBearing(f.source, robot.getPoint())));
@@ -264,7 +285,7 @@ public class TargetingLog implements Serializable, IMea {
                 break;
 
             double prevAccel = (curRobot.getVelocity() - lastRobot.getVelocity())
-                    * Math.signum(curRobot.getVelocity() + 1e-8);
+                    * Math.signum(curRobot.getVelocity() - 1e-8);
             if (f.timeAccel == i && prevAccel <= 0)
                 f.timeAccel++;
             if (f.timeDecel == i && prevAccel >= 0)
@@ -356,11 +377,27 @@ public class TargetingLog implements Serializable, IMea {
 
         BattleTime shotBattleTime = new BattleTime(f.time + 1, f.battleTime.getRound());
 
-        f.preciseMea = PrecisePredictor.getBetterMaximumEscapeAngle(f.field, MEA_STICK,
+        f.preciseMea = PrecisePredictor.getPreciseMEA(f.field, MEA_STICK, // TODO: change that MEA stick for me
                 PredictedPoint.from(robot), new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)),
                 f.direction);
 
-        double halfWidth = Physics.hitAngle(f.source.distance(robot.getPoint())) / 2;
+        double halfWidth = Physics.hitAngle(f.source.distance(robot.getPoint())) / 2; // TODO: change that for me
+        f.preciseMea.push(f.preciseMea.max + halfWidth);
+        f.preciseMea.push(f.preciseMea.min - halfWidth);
+
+        computeLog(f, mea, log, robot, BACK_IN_TIME);
+    }
+
+    private static void computeEnemyDuelLog(TargetingLog f, IMea mea, RobotLog log, RobotSnapshot robot) {
+        computeBasics(f, log, robot);
+
+        BattleTime shotBattleTime = new BattleTime(f.time + 1, f.battleTime.getRound());
+
+        f.preciseMea = PrecisePredictor.getBetterPreciseMEA(f.field, MEA_STICK,
+                PredictedPoint.from(robot), new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)),
+                f.direction);
+
+        double halfWidth = 40 / f.distance;
         f.preciseMea.push(f.preciseMea.max + halfWidth);
         f.preciseMea.push(f.preciseMea.min - halfWidth);
 
@@ -465,7 +502,7 @@ public class TargetingLog implements Serializable, IMea {
 
     public Linear linear() { return new Linear(); }
 
-    private class Imprecise implements IMea {
+    public class Imprecise implements IMea {
         public double getZeroGf() {
             return absBearing;
         }
@@ -501,7 +538,7 @@ public class TargetingLog implements Serializable, IMea {
         }
     }
 
-    private class Linear extends Imprecise {
+    public class Linear extends Imprecise {
         @Override
         public Range getMea() {
             double radius = TargetingLog.this.getTraditionalMea() * Math.abs(lateralVelocity) / Rules.MAX_VELOCITY;

@@ -27,7 +27,6 @@ import robocode.*;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.listeners.*;
 import rsalesc.baf2.core.utils.BattleTime;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.AxisRectangle;
 import rsalesc.baf2.painting.G;
@@ -49,7 +48,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
     private boolean checked = false;
     private double lastPower = 0;
 
-    private boolean draw = false;
+    private boolean draw = true;
 
     public void draw() {
         draw = true;
@@ -105,6 +104,10 @@ public class BulletManager extends Component implements FireListener, PaintListe
                 g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
                 g.drawRadial(wave.getSource(), wave.getAngle(), 0, wave.getDistanceTraveled(time), Color.DARK_GRAY);
             }
+
+//            for (TickWave wave : tickWaves) {
+//                g.drawCircle(wave.getSource(), wave.getDistanceTraveled(time), Color.DARK_GRAY);
+//            }
         }
     }
 
@@ -196,7 +199,7 @@ public class BulletManager extends Component implements FireListener, PaintListe
                 }
             }
 
-            if (wave.getDistanceTraveled(time) > 2 * longestSide) {
+            if (wave.getDistanceTraveled(time) > 1.2 * longestSide) {
                 if(wave instanceof TickWave)
                     tickWaves.remove(wave);
                 else if(wave instanceof BulletWave)

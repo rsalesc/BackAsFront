@@ -39,10 +39,21 @@ import java.util.function.Predicate;
 public class DuelRecordPackage implements Iterable<DuelRecord>, BatchIterable<DuelRecord> {
     private final FileSystem zipFs;
     private final Predicate<DuelRecord> predicate;
+    private Long shufflingSeed;
 
     public DuelRecordPackage(FileSystem zipFs, Predicate<DuelRecord> predicate) {
         this.zipFs = zipFs;
         this.predicate = predicate;
+    }
+
+    public DuelRecordPackage(FileSystem zipFs, Predicate<DuelRecord> predicate, long seed) {
+        this.zipFs = zipFs;
+        this.predicate = predicate;
+        this.shufflingSeed = seed;
+    }
+
+    public void setSeed(Long seed) {
+        this.shufflingSeed = seed;
     }
 
     public void close() throws IOException {
@@ -85,6 +96,10 @@ public class DuelRecordPackage implements Iterable<DuelRecord>, BatchIterable<Du
             }
         });
 
+        if(shufflingSeed != null) {
+            Collections.shuffle(matches, new Random(shufflingSeed));
+        }
+
         return matches;
     }
 
@@ -95,11 +110,8 @@ public class DuelRecordPackage implements Iterable<DuelRecord>, BatchIterable<Du
     private int count(Predicate<DuelRecord> predicate) {
         int res = 0;
 
-        Iterator iterator = iterator();
-        while(iterator.hasNext()) {
-            DuelRecord record = iterator.next();
-
-            if(predicate.test(record))
+        for (DuelRecord record : this) {
+            if (predicate.test(record))
                 res++;
         }
 

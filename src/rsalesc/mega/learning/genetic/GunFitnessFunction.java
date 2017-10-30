@@ -23,11 +23,9 @@
 
 package rsalesc.mega.learning.genetic;
 
-import robocode.util.Utils;
 import rsalesc.baf2.core.GlobalStorage;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Pair;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
@@ -37,7 +35,9 @@ import rsalesc.genetic.FitnessFunction;
 import rsalesc.mega.gunning.guns.GeneratedAngle;
 import rsalesc.mega.learning.recording.DuelRecord;
 import rsalesc.mega.learning.recording.DuelRecordSuperPack;
-import rsalesc.mega.utils.*;
+import rsalesc.mega.utils.BatchIterator;
+import rsalesc.mega.utils.Strategy;
+import rsalesc.mega.utils.TargetingLog;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class GunFitnessFunction extends FitnessFunction<Double> {
         return res;
     }
 
-    private static double evaluateBattle(GeneticGunTargeting targeting, ArrayList<Pair<TargetingLog, BreakType>> events) {
+    public static double evaluateBattle(GeneticGunTargeting targeting, ArrayList<Pair<TargetingLog, BreakType>> events) {
         EnemyLog fakeLog = new EnemyLog("fake-name");
 
         TreeMap<BattleTime, Double> firedAngles = new TreeMap<>();
@@ -153,7 +153,7 @@ public class GunFitnessFunction extends FitnessFunction<Double> {
             BreakType type = event.second;
 
             if(type == BreakType.FIRED) {
-                GeneratedAngle[] angles = targeting.getFiringAngles(fakeLog, f);
+                GeneratedAngle[] angles = targeting.getFiringAngles(fakeLog, f, f);
                 if(angles.length > 0) {
                     firedAngles.put(f.battleTime, angles[0].angle);
                 }
@@ -167,14 +167,14 @@ public class GunFitnessFunction extends FitnessFunction<Double> {
 //                         + " " + intersection.isAngleNearlyContained(firedAngle, -1e-8));
                         resCnt++;
                         double bandwidth = intersection.getRadius();
-                        res += R.gaussKernel(R.normalRelativeAngle(
-                                firedAngle - intersection.getAngle(intersection.getCenter()))
-                                / bandwidth);
-//                        res += intersection.isAngleNearlyContained(firedAngle, 1e-11) ? 1 : 0;
+//                        res += R.gaussKernel(R.normalRelativeAngle(
+//                                firedAngle - intersection.getAngle(intersection.getCenter()))
+//                                / bandwidth);
+                        res += intersection.isAngleNearlyContained(firedAngle, 1e-11) ? 1 : 0;
                     }
                 }
 
-                targeting.log(fakeLog, f, type);
+                targeting.log(fakeLog, f, f, type);
             }
         }
 

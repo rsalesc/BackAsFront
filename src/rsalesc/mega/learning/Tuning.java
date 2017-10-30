@@ -25,12 +25,19 @@ package rsalesc.mega.learning;
 
 import rsalesc.baf2.core.utils.Pair;
 import rsalesc.mega.learning.genetic.*;
-import rsalesc.mega.learning.recording.*;
+import rsalesc.mega.learning.recording.DuelRecordEnsurer;
+import rsalesc.mega.learning.recording.DuelRecordFS;
+import rsalesc.mega.learning.recording.DuelRecordSuperPack;
+import rsalesc.mega.learning.recording.DuelRecorderRunner;
+import rsalesc.mega.learning.sgd.GunGeneticSgd;
+import rsalesc.mega.learning.sgd.SgdGunRandomStrategy;
+import rsalesc.mega.learning.sgd.SgdGunRandomTargeting;
 import rsalesc.mega.utils.Strategy;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Roberto Sales on 01/10/17.
@@ -43,17 +50,42 @@ public class Tuning {
         final int iteration = 1;
 
         DuelRecorderRunner runner = new DuelRecorderRunner();
-        DuelRecordSuperPack adaptivePack = ensureAdaptive(runner, iteration);
+        DuelRecordSuperPack rmPack = ensureRm(runner);
+//        DuelRecordSuperPack adaptivePack = ensureAdaptive(runner, iteration);
 //        DuelRecordSuperPack randomPack = ensureRandom(runner);
 //        DuelRecordSuperPack sampledPack = ensureSampled(runner);
 
 //        System.out.println(evolveRandom(DuelRecordSuperPack.merge(randomPack, sampledPack)));
 
-        System.out.println(evolveAdaptive(adaptivePack, iteration));
+//        System.out.println(evolveAdaptive(adaptivePack, iteration));
+
+        List<Strategy> strategies = evolveRm(rmPack, iteration);
+
+        for(Strategy strategy : strategies) {
+            System.out.println(strategy);
+        }
 
         runner.getEngineProvider().close();
 
         System.exit(0);
+    }
+
+    private static List<Strategy> evolveRm(DuelRecordSuperPack rmPack, int iteration) throws IOException, NoSuchMethodException {
+        File geneticCache = new File("sgd/rm_sgd_pairings_" + iteration + ".dat");
+
+        GunGeneticSgd sgd = new GunGeneticSgd(
+                rmPack,
+                0.25,
+                10000,
+                1,
+                SgdGunRandomTargeting.class,
+                new SgdGunRandomStrategy()
+        );
+
+        sgd.log();
+        sgd.setCache(geneticCache);
+
+        return sgd.train(51);
     }
 
     public static Strategy evolveAdaptive(DuelRecordSuperPack pack, int iteration) throws IOException, NoSuchMethodException {
@@ -66,7 +98,7 @@ public class Tuning {
         trainer.setCache(geneticCache);
         trainer.log();
 
-        return trainer.train(40);
+        return trainer.train(40, null);
     }
 
     public static Strategy evolveRandom(DuelRecordSuperPack pack) throws IOException, NoSuchMethodException {
@@ -79,7 +111,7 @@ public class Tuning {
         trainer.setCache(geneticCache);
         trainer.log();
 
-        return trainer.train(20);
+        return trainer.train(20, null);
     }
 
     public static DuelRecordSuperPack ensureAdaptive(DuelRecorderRunner runner, int iteration) {
@@ -123,6 +155,27 @@ public class Tuning {
             return null;
         }
     }
+
+    public static DuelRecordSuperPack ensureRm(DuelRecorderRunner runner) {
+        DuelRecordFS fs = new DuelRecordFS("records/tc", "rsalesc.mega.TickRecorderBot*");
+        DuelRecordEnsurer ensurer = new DuelRecordEnsurer(runner, fs);
+
+        ensurer.log();
+
+        try {
+            return ensurer.ensure(Arrays.asList(TCRM_PAIRINGS), 35, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static final Pair<String, Integer>[] TCRM_PAIRINGS = new Pair[]{
+            new Pair<>("wiki.etc.HTTC 1.0", 15),
+//            new Pair<>("simonton.micro.WeeklongObsession 1.5TC", 15),
+//            new Pair<>("jam.micro.RaikoMicro 1.44TC", 15),
+//            new Pair<>("emp.Yngwie 1.0", 15)
+    };
 
     public static final Pair<String, Integer>[] TEST_PAIRINGS = new Pair[]{
       new Pair<>("jk.nano.Machete 2.0", 2)

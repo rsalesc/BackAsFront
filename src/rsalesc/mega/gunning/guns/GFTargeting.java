@@ -25,6 +25,7 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
 
 /**
@@ -32,6 +33,6 @@ import rsalesc.mega.utils.TargetingLog;
  */
 public interface GFTargeting {
     boolean hasData(EnemyLog enemyLog);
-    GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f);
-    void log(EnemyLog enemyLog, TargetingLog f, BreakType type);
+    GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, IMea mea);
+    void log(EnemyLog enemyLog, TargetingLog f, IMea mea, BreakType type);
 }

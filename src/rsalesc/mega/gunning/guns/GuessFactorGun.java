@@ -25,18 +25,28 @@ package rsalesc.mega.gunning.guns;
 
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
-import rsalesc.baf2.core.listeners.PaintListener;
-import rsalesc.baf2.core.listeners.TickListener;
 import rsalesc.baf2.core.utils.Physics;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
+import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
-import rsalesc.baf2.tracking.EnemyLog;
-import rsalesc.baf2.tracking.EnemyRobot;
-import rsalesc.baf2.tracking.EnemyTracker;
+import rsalesc.baf2.painting.PaintManager;
+import rsalesc.baf2.painting.Painting;
+import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.*;
+import rsalesc.mega.movement.DangerPoint;
+import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
+import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.stats.GaussianKernelDensity;
+import rsalesc.mega.utils.stats.GuessFactorStats;
+import rsalesc.structures.Knn;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Roberto Sales on 15/09/17.
@@ -44,9 +54,16 @@ import java.awt.*;
 public abstract class GuessFactorGun extends AutomaticGun
         implements BulletWaveListener, BulletWavePreciseListener, TickBulletListener {
     public static final String LOG_HINT = "loghint";
+    public static final String FOUND_HINT = "foundhint";
+    private static final double GF_SCALE = 0.9;
 
     private final GFTargeting targeting;
     private TargetingLog lastTargetingLog;
+
+    private GeneratedAngle[] lastGenerated;
+
+    private double lastGf = 0;
+
     private BulletManager waves;
 
     @Override
@@ -63,6 +80,7 @@ public abstract class GuessFactorGun extends AutomaticGun
         return waves;
     }
 
+
     @Override
     public GeneratedAngle[] generateFiringAngles(EnemyLog enemyLog, double power) {
         if(enemyLog == null) {
@@ -76,8 +94,90 @@ public abstract class GuessFactorGun extends AutomaticGun
             return new GeneratedAngle[0];
 
         lastTargetingLog = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
+        lastTargetingLog.lastGf = lastGf;
 
-        return targeting.getFiringAngles(enemyLog, lastTargetingLog);
+        return lastGenerated = targeting.getFiringAngles(enemyLog, lastTargetingLog, lastTargetingLog);
+    }
+
+    @Override
+    public void setupPaintings(PaintManager manager) {
+        Painting painting = new Painting() {
+            @Override
+            public void paint(G g) {
+                final int WAVE_DIVISIONS = 200;
+                long time = getMediator().getTime();
+
+                for (BulletWave wave : getManager().getWaves()) {
+                    if(wave.everyoneInside(getMediator()))
+                        continue;
+
+                    TargetingLog log = (TargetingLog) wave.getData(LOG_HINT);
+                    if (log == null)
+                        continue;
+
+                    double dt = wave.getDistanceTraveled(time);
+
+                    if(log.preciseIntersection != null) {
+                        g.drawRadial(wave.getSource(), log.preciseIntersection.getStartingAngle(), dt, dt+12, Color.RED);
+                        g.drawRadial(wave.getSource(), log.preciseIntersection.getEndingAngle(), dt, dt+12, Color.RED);
+                    }
+
+                    List<Knn.Entry<TimestampedGFRange>> found = (List) wave.getData(FOUND_HINT);
+
+                    if(found == null)
+                        continue;
+
+                    IMea mea = log;
+
+                    GuessFactorStats st = new GuessFactorStats(new GaussianKernelDensity());
+
+                    double bandwidth = Physics.hitAngle(log.distance) / 2 /
+                            Math.min(log.preciseMea.minAbsolute(), log.preciseMea.maxAbsolute());
+
+                    for(Knn.Entry<TimestampedGFRange> entry : found) {
+                        st.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
+                    }
+
+                    double angle = 0;
+                    double ratio = R.DOUBLE_PI / WAVE_DIVISIONS;
+                    double maxDanger = 0;
+
+                    ArrayList<DangerPoint> dangerPoints = new ArrayList<>();
+
+                    for (int i = 0; i < WAVE_DIVISIONS; i++) {
+                        angle += ratio;
+                        rsalesc.baf2.core.utils.geometry.Point hitPoint = wave.getSource().project(angle, wave.getDistanceTraveled(time));
+
+                        double gf = mea.getUnconstrainedGfFromAngle(angle);
+
+                        if (!R.nearOrBetween(-1, gf, +1))
+                            continue;
+
+                        double value = st.getValue(gf);
+                        dangerPoints.add(new DangerPoint(hitPoint, value));
+                        maxDanger = Math.max(maxDanger, value);
+                    }
+
+                    if (R.isNear(maxDanger, 0)) continue;
+
+                    Collections.sort(dangerPoints);
+
+                    int cnt = 0;
+                    for (DangerPoint dangerPoint : dangerPoints) {
+                        Color dangerColor = dangerPoint.getDanger() > -0.01
+                                ? G.getWaveDangerColor(dangerPoint.getDanger() / maxDanger)
+                                : Color.DARK_GRAY;
+
+                        Point base = wave.getSource().project(wave.getAngle(dangerPoint), wave.getDistanceTraveled(time) - 10);
+                        g.fillCircle(base, 2, dangerColor);
+                    }
+                }
+            }
+        };
+
+
+
+        manager.add(KeyEvent.VK_R, "guns", painting);
     }
 
     public void checkBulletIntersection(RobotWave wave, EnemyRobot enemy, AngularRange intersection) {
@@ -86,8 +186,14 @@ public abstract class GuessFactorGun extends AutomaticGun
         if(f == null)
             return;
 
-        f.hitAngle = Physics.absoluteBearing(wave.getSource(), enemy.getPoint());
-        f.hitDistance = wave.getSource().distance(enemy.getPoint());
+        EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
+//        RobotSnapshot interpolated = enemyLog.interpolate(getMediator().getTime() - 2);
+        RobotSnapshot interpolated = enemy;
+        if(interpolated == null)
+            interpolated = enemy;
+
+        f.hitAngle = Physics.absoluteBearing(wave.getSource(), interpolated.getPoint());
+        f.hitDistance = wave.getSource().distance(interpolated.getPoint());
 
         f.preciseIntersection = intersection;
         if(f.preciseIntersection == null) {
@@ -96,9 +202,11 @@ public abstract class GuessFactorGun extends AutomaticGun
         }
 
         BreakType type = wave instanceof TickWave ? BreakType.VIRTUAL_BREAK :
-                (wave.hasHit() && !wave.hasBulletHit() ? BreakType.BULLET_HIT : BreakType.BULLET_BREAK);
+                (wave.hasHit() ? BreakType.BULLET_HIT : BreakType.BULLET_BREAK);
 
-        targeting.log(EnemyTracker.getInstance().getLog(enemy), f, type);
+        lastGf = f.imprecise().getGfFromAngle(f.hitAngle);
+
+        targeting.log(EnemyTracker.getInstance().getLog(enemy), f, f, type);
     }
 
     @Override
@@ -109,6 +217,9 @@ public abstract class GuessFactorGun extends AutomaticGun
     public void checkBulletFired(RobotWave wave) {
         if(lastTargetingLog != null && lastTargetingLog.time + 1 == getMediator().getTime()) {
             wave.setData(LOG_HINT, lastTargetingLog);
+
+            if(targeting instanceof KnnGuessFactorTargeting)
+                wave.setData(FOUND_HINT, ((KnnGuessFactorTargeting) targeting).lastFound);
         }
     }
 
@@ -118,7 +229,8 @@ public abstract class GuessFactorGun extends AutomaticGun
         if(enemies.length == 0)
             return;
 
-        TargetingLog f = TargetingLog.getLog(enemies[0], getMediator(), wave.getPower(), false);
+        TargetingLog f = TargetingLog.getLog(enemies[0], getMediator(), wave.getPower(), false); // TODO: maybe rollback to usual log
+        f.lastGf = lastGf;
         wave.setData(LOG_HINT, f);
     }
 

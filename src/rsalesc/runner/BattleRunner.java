@@ -52,12 +52,20 @@ public class BattleRunner {
 //                "florent.test.Toad 0.14t",
 //                "jk.mega.DrussGT 3.1.4");
 
-        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight 0.4.4b", 3,
-                "jam.micro.RaikoMicro 1.44",
-                "cjm.Charo 1.1",
-                "apv.LauLectrik 1.2"
+        BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight*", 12,
+                "wiki.etc.HTTC 1.0"
         );
+
         runner.run();
+
+//        try {
+//            BatchDuelRunner runner = new BatchDuelRunner(provider, "rsalesc.mega.Knight TC9", 3,
+//                    DuelChallenge.load("/home/rsalesc/robocode/robots/tc/rm.rrc"));
+//
+//            runner.run();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
 

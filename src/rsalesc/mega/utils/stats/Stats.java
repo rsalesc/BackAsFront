@@ -50,6 +50,18 @@ public class Stats {
         this.kernel = kernel;
     }
 
+    public Stats(int size, BinKernelDensity kernel) {
+        buffer = new double[size];
+        this.kernel = kernel.getKernelDensity();
+        this.binKernel = kernel;
+    }
+
+    public Stats(double[] buffer, BinKernelDensity kernel) {
+        this.buffer = buffer;
+        this.kernel = kernel.getKernelDensity();
+        this.binKernel = kernel;
+    }
+
     public KernelDensity getKernel() {
         return kernel;
     }

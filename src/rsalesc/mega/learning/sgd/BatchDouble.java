@@ -21,21 +21,46 @@
  *    distribution.
  */
 
-package rsalesc.mega.gunning.strategies.dc;
+package rsalesc.mega.learning.sgd;
 
-import rsalesc.mega.learning.sgd.SgdGunRandomStrategy;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-/**
- * Created by Roberto Sales on 15/09/17.
- */
-public class TunedRandomStrategy extends SgdGunRandomStrategy {
-    @Override
-    public double[] getWeights() {
-        return new double[]{2.11, 6.61, 6.61, 10, 7.68, 9.62, 3.05, 3.68, 7.22, 0, 0};
+public class BatchDouble implements Iterable<BatchResult>, Comparable<BatchDouble>, Serializable {
+    private final ArrayList<BatchResult> results;
+
+    public BatchDouble(ArrayList<BatchResult> results) {
+        this.results = results;
     }
 
     @Override
-    public double[] getParams() {
-        return new double[]{0, 0};
+    public Iterator<BatchResult> iterator() {
+        return results.iterator();
+    }
+
+    public Double mean() {
+        double sum = 0;
+        for(BatchResult d : results)
+            sum += d.mean();
+
+        return sum / Math.max(results.size(), 1);
+    }
+
+    public Double normalizedMean() {
+        double sum = 0;
+        int lengthSum = 0;
+
+        for(BatchResult d : results) {
+            sum += d.value;
+            lengthSum += d.length;
+        }
+
+        return sum / Math.max(lengthSum, 1);
+    }
+
+    @Override
+    public int compareTo(BatchDouble o) {
+        return mean().compareTo(o.mean());
     }
 }

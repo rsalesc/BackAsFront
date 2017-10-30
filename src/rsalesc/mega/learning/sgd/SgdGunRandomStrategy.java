@@ -21,35 +21,59 @@
  *    distribution.
  */
 
-package rsalesc.mega.gunning.strategies.dc;
+package rsalesc.mega.learning.sgd;
 
 import rsalesc.baf2.core.utils.R;
-import rsalesc.mega.utils.Strategy;
+import rsalesc.baf2.core.utils.geometry.Range;
+import rsalesc.mega.learning.genetic.GeneticStrategy;
 import rsalesc.mega.utils.TargetingLog;
 
-/**
- * Created by Roberto Sales on 22/09/17.
- */
-public class AntiRandomStrategy extends Strategy {
+public class SgdGunRandomStrategy extends GeneticStrategy {
     @Override
     public double[] getQuery(TargetingLog f) {
+        double[] params = getForcedParams();
+
         return new double[]{
                 Math.min(Math.abs(f.lateralVelocity) / 8, 1),
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
                 Math.min(f.distance / 900, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.3), // was 1.3
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.3),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.1), // was 1.3
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.1),
                 1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
                 1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
                 R.constrain(0, f.displaceLast10 / 80, 1),
-                Math.pow(f.bulletsFired * 0.2, 0.5),
+                Math.pow(f.bulletsFired * params[0], params[1]),
                 (R.constrain(-1, f.lastGf, +1) + 1) / 2
         };
     }
 
     @Override
+    public Range[] getWeightsScheme() {
+        Range[] range = new Range[getWeights().length];
+
+        for(int i = 0; i < range.length; i++) {
+            range[i] = new Range(0.0, 10.0);
+        }
+
+        return range;
+    }
+
+    @Override
+    public Range[] getParamsScheme() {
+        return new Range[]{
+                new Range(0.0, 1.0),
+                new Range(0.0, 3.0)
+        };
+    }
+
+    @Override
     public double[] getWeights() {
-        return new double[]{6, 3, 5, 1.5, 5, 2.5, 2, 2.75, 2, 0.8, 3.1};
+        return new double[11];
+    }
+
+    @Override
+    public double[] getParams() {
+        return new double[2];
     }
 }

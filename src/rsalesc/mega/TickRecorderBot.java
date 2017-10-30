@@ -49,7 +49,7 @@ import java.awt.*;
  */
 public class TickRecorderBot extends BackAsFrontRobot2 {
     private boolean MC = false;
-    private boolean TC = false;
+    private boolean TC = true;
 
     public void checkChallenges() {
         MC = MC || getName().endsWith("mc");

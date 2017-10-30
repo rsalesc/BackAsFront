@@ -32,6 +32,7 @@ import rsalesc.mega.utils.Timestamped;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by Roberto Sales on 13/08/17.
@@ -45,6 +46,7 @@ public abstract class Knn<T extends Timestamped> {
     private double scanWeight = 1.0;
     private int defaultK;
     private double defaultRatio = 1.0;
+    private Function<Integer, Double> portionDecider;
     private Strategy strategy;
     private boolean built = false;
     private ParametrizedCondition parametrizedCondition = null;
@@ -79,6 +81,11 @@ public abstract class Knn<T extends Timestamped> {
 
     public Knn<T> setRatio(double ratio) {
         this.defaultRatio = ratio;
+        return this;
+    }
+
+    public Knn<T> setRatio(Function<Integer, Double> fn) {
+        this.portionDecider = fn;
         return this;
     }
 
@@ -181,6 +188,8 @@ public abstract class Knn<T extends Timestamped> {
     }
 
     public int getQueryableData() {
+        if(portionDecider != null)
+            return Math.max(1, (int) Math.ceil(portionDecider.apply(size())));
         return Math.max(1, (int) Math.ceil(size() * defaultRatio));
     }
 

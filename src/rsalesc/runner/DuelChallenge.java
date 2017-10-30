@@ -68,80 +68,75 @@ public class DuelChallenge {
         return referenceBotGroups.size() > 1;
     }
 
-    public static DuelChallenge load(String challengeFilePath) {
-        try {
-            List<String> fileLines = Files.readAllLines(
-                    Paths.get(challengeFilePath), Charset.defaultCharset());
+    public static DuelChallenge load(String challengeFilePath) throws IOException {
+        List<String> fileLines = Files.readAllLines(
+                Paths.get(challengeFilePath), Charset.defaultCharset());
 
-            String name = fileLines.get(0);
-            ScoringStyle scoringStyle =
-                    ScoringStyle.parseStyle(fileLines.get(1).trim());
-            int rounds = Integer.parseInt(
-                    fileLines.get(2).toLowerCase().replaceAll("rounds", "").trim());
-            List<BotListGroup> botGroups = new ArrayList<>();
-            List<String> groupBots = new ArrayList<>();
-            String groupName = DEFAULT_GROUP;
+        String name = fileLines.get(0);
+        ScoringStyle scoringStyle =
+                ScoringStyle.parseStyle(fileLines.get(1).trim());
+        int rounds = Integer.parseInt(
+                fileLines.get(2).toLowerCase().replaceAll("rounds", "").trim());
+        List<BotListGroup> botGroups = new ArrayList<>();
+        List<String> groupBots = new ArrayList<>();
+        String groupName = DEFAULT_GROUP;
 
-            Integer width = null;
-            Integer height = null;
-            int maxBots = 1;
-            for (int x = 3; x < fileLines.size(); x++) {
-                String line = fileLines.get(x).trim();
-                if (line.matches("^\\d+$")) {
-                    int value = Integer.parseInt(line);
-                    if (width == null) {
-                        width = value;
-                    } else if (height == null) {
-                        height = value;
-                    }
-                } else if (line.length() > 0 && !line.contains("#")) {
-                    if (line.contains("{")) {
-                        groupName = line.replace("{", "").trim();
-                    } else if (line.contains("}")) {
-                        botGroups.add(new BotListGroup(groupName, groupBots));
-                        groupName = DEFAULT_GROUP;
-                        groupBots = new ArrayList<>();
-                    } else {
-                        List<String> botList = new ArrayList<>(Arrays.asList(line.split(" *, *")));
+        Integer width = null;
+        Integer height = null;
+        int maxBots = 1;
+        for (int x = 3; x < fileLines.size(); x++) {
+            String line = fileLines.get(x).trim();
+            if (line.matches("^\\d+$")) {
+                int value = Integer.parseInt(line);
+                if (width == null) {
+                    width = value;
+                } else if (height == null) {
+                    height = value;
+                }
+            } else if (line.length() > 0 && !line.contains("#")) {
+                if (line.contains("{")) {
+                    groupName = line.replace("{", "").trim();
+                } else if (line.contains("}")) {
+                    botGroups.add(new BotListGroup(groupName, groupBots));
+                    groupName = DEFAULT_GROUP;
+                    groupBots = new ArrayList<>();
+                } else {
+                    List<String> botList = new ArrayList<>(Arrays.asList(line.split(" *, *")));
 
-                        botList.removeIf(new Predicate<String>() {
-                            @Override
-                            public boolean test(String botName) {
-                                if (botName.contains(".") && botName.contains(" ")) {
-                                    return false;
-                                } else {
-                                    System.out.println("WARNING: " + botName + " doesn't look "
-                                            + "like a bot name, ignoring.");
-                                    return true;
-                                }
+                    botList.removeIf(new Predicate<String>() {
+                        @Override
+                        public boolean test(String botName) {
+                            if (botName.contains(".") && botName.contains(" ")) {
+                                return false;
+                            } else {
+                                System.out.println("WARNING: " + botName + " doesn't look "
+                                        + "like a bot name, ignoring.");
+                                return true;
                             }
-                        });
+                        }
+                    });
 
-                        maxBots = Math.max(maxBots, 1 + botList.size());
-                        groupBots.addAll(botList);
-                    }
+                    maxBots = Math.max(maxBots, 1 + botList.size());
+                    groupBots.addAll(botList);
                 }
             }
-
-            if (maxBots > 2) {
-                throw new RuntimeException("Duel challenge cant have more than "
-                        + "2 bots in a battle.");
-            }
-
-            if (!groupBots.isEmpty()) {
-                botGroups.add(new BotListGroup(groupName, groupBots));
-            }
-
-            if(width != null && width != 800 || height != null && height != 600)
-                throw new RuntimeException("Duel challenge field must be 800x600");
-
-            return new DuelChallenge(name, rounds, scoringStyle,
-                    (width == null ? 800 : width), (height == null ? 600 : height),
-                    botGroups);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
+
+        if (maxBots > 2) {
+            throw new RuntimeException("Duel challenge cant have more than "
+                    + "2 bots in a battle.");
+        }
+
+        if (!groupBots.isEmpty()) {
+            botGroups.add(new BotListGroup(groupName, groupBots));
+        }
+
+        if(width != null && width != 800 || height != null && height != 600)
+            throw new RuntimeException("Duel challenge field must be 800x600");
+
+        return new DuelChallenge(name, rounds, scoringStyle,
+                (width == null ? 800 : width), (height == null ? 600 : height),
+                botGroups);
     }
 
     public static class BotListGroup {

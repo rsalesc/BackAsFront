@@ -42,6 +42,7 @@ import java.util.List;
 public abstract class PrecisePredictor {
     public static List<PredictedPoint> lastEscape = null;
     private static boolean SHARP_TURNING = false;
+    private static boolean MEA_PASS = true;
 
     public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
                                                            int direction, double perpendiculator, boolean hasToPass, boolean brake) {
@@ -62,7 +63,7 @@ public abstract class PrecisePredictor {
         PredictedPoint cur = initialPoint;
         while (hasToPass && !wave.hasPassedRobot(cur, cur.time) || !wave.hasPassed(cur, cur.time)) {
             double pointingAngle = Physics.absoluteBearing(wave.getSource(), cur) + perpendiculator * direction;
-            double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, stick, cur,
+            double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, stick, cur,
                     pointingAngle, direction));
             cur = tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
             res.add(cur);
@@ -96,7 +97,7 @@ public abstract class PrecisePredictor {
         PredictedPoint back = points.get(points.size() - 1);
 
         for (int i = 0; i < 3; i++) {
-            double angle = R.normalAbsoluteAngle(WallSmoothing.naive(field, stick, back,
+            double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(field, stick, back,
                     Physics.absoluteBearing(wave.getSource(), back)
                             + perpendiculator * direction, direction));
 
@@ -108,13 +109,46 @@ public abstract class PrecisePredictor {
         return points;
     }
 
-    public static Range getBetterMaximumEscapeAngle(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
-                                                    int direction) {
+    public static Range getPreciseMEA(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
+                                      int direction) {
         if (direction == 0)
             direction = 1;
 
-        List<PredictedPoint> posList = predictOnWaveImpact(field, stick, initialPoint, wave, direction, R.HALF_PI, true, false);
-        List<PredictedPoint> negList = predictOnWaveImpact(field, stick, initialPoint, wave, -direction, R.HALF_PI, true, false);
+        AxisRectangle shrinkedField = field.shrink(18, 18);
+
+        List<PredictedPoint> posList = predictOnWaveImpact(field, stick, initialPoint, wave, direction, R.HALF_PI, MEA_PASS, false);
+        List<PredictedPoint> negList = predictOnWaveImpact(field, stick, initialPoint, wave, -direction, R.HALF_PI, MEA_PASS, false);
+
+        double absBearing = Physics.absoluteBearing(wave.getSource(), initialPoint);
+        Range res = new Range(-1e-8, +1e-8);
+
+        lastEscape = new ArrayList<>();
+        for (PredictedPoint pos : posList) {
+            if(!shrinkedField.contains(pos))
+                continue;
+
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
+            lastEscape.add(pos);
+        }
+
+        for (PredictedPoint neg : negList) {
+            if(!shrinkedField.contains(neg))
+                continue;
+
+            lastEscape.add(neg);
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
+        }
+
+        return res;
+    }
+
+    public static Range getBetterPreciseMEA(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
+                                      int direction) {
+        if (direction == 0)
+            direction = 1;
+
+        List<PredictedPoint> posList = predictOnWaveImpact(field, stick, initialPoint, wave, direction, R.HALF_PI, MEA_PASS, false);
+        List<PredictedPoint> negList = predictOnWaveImpact(field, stick, initialPoint, wave, -direction, R.HALF_PI, MEA_PASS, false);
 
         double absBearing = Physics.absoluteBearing(wave.getSource(), initialPoint);
         Range res = new Range(-1e-8, +1e-8);
@@ -122,11 +156,20 @@ public abstract class PrecisePredictor {
         lastEscape = new ArrayList<>();
         for (PredictedPoint pos : posList) {
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
-            lastEscape.add(pos);
         }
 
         for (PredictedPoint neg : negList) {
-            lastEscape.add(neg);
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
+        }
+
+        posList = predictOnWaveImpact(initialPoint, wave, R.getLast(posList), MEA_PASS);
+        negList = predictOnWaveImpact(initialPoint, wave, R.getLast(negList), MEA_PASS);
+
+        for (PredictedPoint pos : posList) {
+            res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
+        }
+
+        for (PredictedPoint neg : negList) {
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
         }
 

@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.painting;
 
-import robocode.util.Utils;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.colors.Gradient;
@@ -157,11 +156,13 @@ public class G {
 
     public Shape getArcShape(Point center, double radius, double startAngle, double angle) {
         if (angle > 0) {
-            angle = -angle;
             startAngle = R.normalAbsoluteAngle(startAngle + angle);
+            angle = -angle;
         }
+
         double fixedStart = R.normalAbsoluteAngle(-startAngle + R.HALF_PI);
-        return new Arc2D.Double(center.x, center.y, radius, radius, fixedStart, -angle, Arc2D.OPEN);
+
+        return new Arc2D.Double(center.x, center.y, radius, radius, Math.toDegrees(fixedStart), Math.toDegrees(-angle), Arc2D.OPEN);
     }
 
     public void drawArc(Point center, double radius, double startAngle, double angle) {

@@ -40,7 +40,7 @@ public class GunChromosomeLayoutProvider {
     private final GeneticStrategy strategy;
     private ChromosomeLayout layout;
 
-    public GunChromosomeLayoutProvider(GeneticStrategy strategy) {
+    public GunChromosomeLayoutProvider(GeneticStrategy strategy, int places) {
         this.strategy = strategy;
         this.layout = new ChromosomeLayout();
 
@@ -48,7 +48,7 @@ public class GunChromosomeLayoutProvider {
         Range[] weightRanges = strategy.getWeightsScheme();
 
         for(int i = 0; i < weightGenes.length; i++) {
-            weightGenes[i] = new LongDecimalGene(weightRanges[i].min, weightRanges[i].max, 1);
+            weightGenes[i] = new LongDecimalGene(weightRanges[i].min, weightRanges[i].max, places);
             layout.addGene(weightGenes[i]);
         }
 
@@ -56,7 +56,7 @@ public class GunChromosomeLayoutProvider {
         Range[] paramRanges = strategy.getParamsScheme();
 
         for(int i = 0; i < paramGenes.length; i++) {
-            paramGenes[i] = new LongDecimalGene(paramRanges[i].min, paramRanges[i].max, 1);
+            paramGenes[i] = new LongDecimalGene(paramRanges[i].min, paramRanges[i].max, places);
             layout.addGene(paramGenes[i]);
         }
     }

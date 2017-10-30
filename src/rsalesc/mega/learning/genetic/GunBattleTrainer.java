@@ -27,8 +27,6 @@ import com.sun.xml.internal.ws.encoding.soap.SerializationException;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.Timer;
 import rsalesc.genetic.*;
-import rsalesc.genetic.crossover.TwoPointCrossoverStrategy;
-import rsalesc.genetic.evolution.MutateAndSurviveStrategy;
 import rsalesc.mega.learning.recording.DuelRecordSuperPack;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.runner.FileUtils;
@@ -41,7 +39,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -55,6 +52,7 @@ public class GunBattleTrainer {
     private final int threads;
     private File cache = null;
     private boolean logs = false;
+    private final GunChromosomeLayoutProvider layoutProvider;
 
     public GunBattleTrainer(int popSize, DuelRecordSuperPack superPack, Class<? extends GeneticGunTargeting> targetingClazz,
                             GeneticStrategy strategy, int threads) {
@@ -63,6 +61,11 @@ public class GunBattleTrainer {
         this.targetingClazz = targetingClazz;
         this.strategy = strategy;
         this.threads = threads;
+        this.layoutProvider = new GunChromosomeLayoutProvider(strategy, 5);
+    }
+
+    public GunChromosomeLayoutProvider getLayoutProvider() {
+        return layoutProvider;
     }
 
     public void log() {
@@ -73,13 +76,12 @@ public class GunBattleTrainer {
         this.cache = cache;
     }
 
-    public Strategy train(int gens) throws IOException, NoSuchMethodException {
+    public Strategy train(int gens, EvolutionStrategy<Double> evolution) throws IOException, NoSuchMethodException {
         if(cache != null && cache.exists() && !cache.isFile())
             throw new IllegalStateException("cache file exists but it's actually a directory");
 
-        GunChromosomeLayoutProvider layoutProvider = new GunChromosomeLayoutProvider(strategy);
-
         GunFitnessFunction fitnessFn = new GunFitnessFunction(superPack, layoutProvider, targetingClazz, threads);
+        evolution.setFitnessFunction(fitnessFn);
 
 //        MutateAndSurviveStrategy<Double> evolution = new MutateAndSurviveStrategy<>(
 //                fitnessFn, 0.02, 0, 0.5, new TwoPointCrossoverStrategy()
@@ -95,17 +97,17 @@ public class GunBattleTrainer {
 //                .setProvider(layoutProvider)
 //                .createGunGradientDescentStrategy();
 
-        GunLocalSearchStrategy evolution = new GunLocalSearchStrategyBuilder()
-                .setStrategy(new TwoPointCrossoverStrategy())
-                .setFitnessFunction(fitnessFn)
-                .setProvider(layoutProvider)
-                .setCrosses(4)
-                .setLearningRate(0.7)
-                .setNeighborThreshold(0.4)
-                .setMaxIterations(3)
-                .createGunLocalSearchStrategy();
-
-        evolution.log();
+//        GunLocalSearchStrategy evolution = new GunLocalSearchStrategyBuilder()
+//                .setStrategy(new TwoPointCrossoverStrategy())
+//                .setFitnessFunction(fitnessFn)
+//                .setProvider(layoutProvider)
+//                .setCrosses(4)
+//                .setLearningRate(0.7)
+//                .setNeighborThreshold(0.4)
+//                .setMaxIterations(3)
+//                .createGunLocalSearchStrategy();
+//
+//        evolution.log();
 
         Generation<Double> cachedGeneration = loadGeneration(cache, layoutProvider.getLayout());
 
@@ -213,7 +215,7 @@ public class GunBattleTrainer {
         return layoutProvider.extractStrategy(fittest.getChromosome());
     }
 
-    private static void saveGeneration(File cache, Generation generation) throws IOException {
+    public static void saveGeneration(File cache, Generation generation) throws IOException {
         if(cache != null) {
             if(!cache.getParentFile().isDirectory())
                 if(!cache.getParentFile().mkdirs())
@@ -233,7 +235,7 @@ public class GunBattleTrainer {
         }
     }
 
-    private static <T extends Comparable<T> & Serializable> Generation<T> loadGeneration(File cache, ChromosomeLayout layout) throws IOException {
+    public static <T extends Comparable<T> & Serializable> Generation<T> loadGeneration(File cache, ChromosomeLayout layout) throws IOException {
         if(cache == null)
             return null;
 

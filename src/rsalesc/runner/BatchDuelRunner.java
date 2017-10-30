@@ -25,10 +25,7 @@ package rsalesc.runner;
 
 import rsalesc.baf2.core.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Roberto Sales on 05/10/17.
@@ -85,22 +82,28 @@ public class BatchDuelRunner {
         }
 
         for(int cnt = 0; cnt < seasons; cnt++) {
-            for (Match match : matches) {
+            Iterator<Match> it = matches.iterator();
+            while(it.hasNext()) {
+                Match match = it.next();
+
                 System.out.print("\rRunning " + (cnt+1) + "-th match against " + match.bot + "...");
 
                 DuelBattleRunner runner = new DuelBattleRunner(myself, match.bot, rounds);
                 BatchDuelObserver observer = new BatchDuelObserver(myself);
                 runner.run(provider, observer);
 
-                if (observer.getDuelResult() == null)
-                    throw new IllegalStateException();
+                if (observer.getDuelResult() == null) {
+                    System.err.println("\r" + "Could not reproduce battle against " + match.bot + ", removing it from list of reference bots.");
+                    it.remove();
+                    continue;
+                }
 
                 DuelResult result = observer.getDuelResult();
                 results.add(result);
                 groupedResults.get(match.group).add(result);
 
                 // current battle result
-                System.out.println("\r" + match.bot + ": " + result);
+                System.out.println("\r" + result);
 
                 // current bot result
                 BatchDuelResults filteredResults = new BatchDuelResults();

@@ -21,29 +21,34 @@
  *    distribution.
  */
 
-package rsalesc.mega.learning.genetic;
+package rsalesc.mega.learning.sgd;
 
-import rsalesc.baf2.core.utils.geometry.Range;
+import rsalesc.mega.learning.genetic.GeneticGunTargeting;
 import rsalesc.mega.utils.Strategy;
+import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.structures.Knn;
+import rsalesc.structures.KnnTree;
+import rsalesc.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 03/10/17.
  */
-public abstract class GeneticStrategy extends Strategy {
-    public Range[] getWeightsScheme() {
-        Range[] range = new Range[getWeights().length];
-
-        for(int i = 0; i < range.length; i++)
-            range[i] = new Range(0.0, 4.0);
-
-        return range;
+public class SgdGunRandomTargeting extends GeneticGunTargeting {
+    public SgdGunRandomTargeting(int threadNum, Strategy strategy) {
+        super(threadNum, strategy);
     }
 
-    public Range[] getParamsScheme() {
-        Range[] range = new Range[getParams().length];
-        for(int i = 0; i < range.length; i++)
-            range[i] = new Range(0.0, 5.0);
+    @Override
+    public KnnView<TimestampedGFRange> getNewKnnSet() {
+        KnnView<TimestampedGFRange> set = new KnnView<>();
+        set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
+                .add(new KnnTree<TimestampedGFRange>()
+                        .setMode(KnnTree.Mode.MANHATTAN)
+                        .setK(100)
+                        .setRatio(0.2)
+                        .setStrategy(getGeneticStrategy())
+                        .logsEverything());
 
-        return range;
+        return set;
     }
 }

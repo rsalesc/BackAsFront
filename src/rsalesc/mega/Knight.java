@@ -28,6 +28,7 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
+import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
@@ -51,6 +52,7 @@ import rsalesc.structures.KnnTree;
 import rsalesc.structures.KnnView;
 
 import java.awt.*;
+import java.util.Comparator;
 
 /**
  * Created by Roberto Sales on 11/09/17.
@@ -136,6 +138,27 @@ public class Knight extends BackAsFrontRobot2 {
 //        addListener(randomGun);
 
         if(!MC) {
+            array.setComparator(new Comparator<AutomaticGunArray.GunScorePair>() {
+                @Override
+                public int compare(AutomaticGunArray.GunScorePair o1, AutomaticGunArray.GunScorePair o2) {
+                    boolean invert = o1.gun == randomGun;
+
+                    AutomaticGunArray.GunScorePair ro = !invert ? o1 : o2;
+                    AutomaticGunArray.GunScorePair ao = !invert ? o2 : o1;
+
+                    int round = array.getMediator().getRoundNum();
+                    int res = 1;
+
+                    if(round < 2 || ro.score > ao.score
+                            || (round <= 8 && ro.score > 4 * ao.score)
+                            || (round <= 15 && ro.score > 8 * ao.score)
+                            || (R.isNear(ao.score, 0)))
+                        res = -1;
+
+                    return res * (invert ? -1 : 1);
+                }
+            });
+
             add(array);
         } else if(!MC2k6) {
             add(new RaikoGun());

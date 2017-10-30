@@ -151,18 +151,18 @@ public class TrueSurfing extends BaseSurfing {
                 if (stopDirection == 0) stopDirection = 1;
 
                 controller.setMaxVelocity(0);
-                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 + perp * stopDirection, stopDirection));
                 controller.setBackAsFront(angle);
             } else if (clockwiseDanger < counterDanger) {
-                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 + perp, +1));
                 controller.setMaxVelocity(Rules.MAX_VELOCITY);
                 controller.setBackAsFront(angle);
             } else {
-                double angle = R.normalAbsoluteAngle(WallSmoothing.naive(shrinkedField, WALL_STICK, me.getPoint(),
+                double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, WALL_STICK, me.getPoint(),
                         Physics.absoluteBearing(nextWave.getSource(), me.getPoint())
                                 - perp, -1));
                 controller.setMaxVelocity(Rules.MAX_VELOCITY);

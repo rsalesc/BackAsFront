@@ -24,7 +24,6 @@
 package rsalesc.baf2.core.utils;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.utils.geometry.Point;
 
 /**
@@ -79,11 +78,11 @@ public abstract class Physics {
     }
 
     public static double maxTurningRate(double velocity) {
-        return Math.toRadians(MAX_TURN_RATE - 0.75 * Math.abs(velocity));
+        return Rules.getTurnRateRadians(velocity);
     }
 
     public static double bulletVelocity(double power) {
-        return 20. - power * 3;
+        return Rules.getBulletSpeed(power);
     }
 
     public static double bulletPower(double velocity) {

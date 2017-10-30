@@ -251,14 +251,14 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
         AxisRectangle shrinkedField = getMediator().getBattleField().shrink(18, 18);
 
-        double clockwiseAngle = WallSmoothing.naive(
+        double clockwiseAngle = WallSmoothing.smooth(
                 shrinkedField,
                 WALL_STICK,
                 my.getPoint(),
                 R.normalAbsoluteAngle(absBearing + perp),
                 +1
         );
-        double counterAngle = WallSmoothing.naive(
+        double counterAngle = WallSmoothing.smooth(
                 shrinkedField,
                 WALL_STICK,
                 my.getPoint(),

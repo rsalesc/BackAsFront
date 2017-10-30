@@ -39,27 +39,13 @@ public abstract class WallSmoothing {
             R.PI + R.HALF_PI
     };
 
-    public static double naive(AxisRectangle shrinkedField, double stick, Point source, double angle, int direction) {
-//        if(field.contains(source.project(angle, WALL_STICK)))
-//            return angle;
-//
-//        double l = 0, r = R.PI;
-//        while(l+0.06 < r) {
-//            double mid = (l+r)/2;
-//            if(field.contains(source.project(angle + mid * direction, WALL_STICK)))
-//                r = mid;
-//            else l = mid;
-//        }
-//
-//        if(field.contains(source.project(angle + l * direction, WALL_STICK)))
-//            return angle + l * direction;
+    public static double smooth(AxisRectangle shrinkedField, double stick, Point source, double angle, int direction) {
+        while(!shrinkedField.strictlyContains(source.project(angle, stick)))
+            angle += 0.05*direction;
 
-//        while(!shrinkedField.strictlyContains(source.project(angle, stick)))
-//            angle += 0.05*direction;
-//
-//        return angle;
+        return angle;
 
-        return pythagorean(shrinkedField, stick, source, angle, direction);
+//        return pythagorean(shrinkedField, stick, source, angle, direction);
     }
 
     public static double pythagorean(AxisRectangle shrinkedField, double stick, Point source, double angle, int direction) {

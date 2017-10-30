@@ -61,7 +61,8 @@ public abstract class AutomaticGun extends StoreComponent {
 
             if(enemies.length > 0) {
                 Controller controller = getMediator().getAimControllerOrDummy();
-                if(getMediator().getTicksToCool() <= 2) {
+
+                if(getMediator().getTicksToCool() <= 2 || getMediator().getTicksToCool() % 3 == 0) {
                     EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemies[0]);
                     GeneratedAngle[] angles = generateFiringAngles(enemyLog,
                             lastPower = powerSelector.selectPower(getMediator(), StatTracker.getInstance().getCurrentStatData()));

@@ -23,6 +23,7 @@
 
 package rsalesc.baf2.painting;
 
+import robocode.Condition;
 import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.KeyHandler;
 import rsalesc.baf2.core.listeners.PaintListener;
@@ -54,17 +55,41 @@ public class PaintManager extends Component implements PaintListener {
     }
 
     public void add(Painting painting) {
-        paintings.add(new KeyPainting(null, painting, true));
+        paintings.add(new KeyPainting(null, painting, true, null));
     }
 
     public void add(AWTKeyStroke stroke, String group, Painting painting, boolean state) {
+        add(stroke, group, painting, state, null);
+    }
+
+    public void add(AWTKeyStroke stroke, String group, Painting painting) {
+        add(stroke, group, painting, false, null);
+    }
+
+    public void add(AWTKeyStroke stroke, String group, Painting painting, Condition condition) {
+        add(stroke, group, painting, false, condition);
+    }
+
+    public void add(AWTKeyStroke stroke, String group, Painting painting, boolean state, Condition condition) {
         addGroup(stroke, group);
         paintings.add(new KeyPainting(stroke, painting, state));
     }
 
-    public void add(int keyCode, String group, Painting painting, boolean state) {
+    public void add(int keyCode, String group, Painting painting, boolean state, Condition condition) {
         AWTKeyStroke stroke = AWTKeyStroke.getAWTKeyStroke(keyCode, 0);
-        add(stroke, group, painting, state);
+        add(stroke, group, painting, state, condition);
+    }
+
+    public void add(int keyCode, String group, Painting painting, boolean state) {
+        add(keyCode, group, painting, state, null);
+    }
+
+    public void add(int keyCode, String group, Painting painting) {
+        add(keyCode, group, painting, false, null);
+    }
+
+    public void add(int keyCode, String group, Painting painting, Condition condition) {
+        add(keyCode, group, painting, false, condition);
     }
 
     @Override
@@ -120,15 +145,24 @@ public class PaintManager extends Component implements PaintListener {
         public final AWTKeyStroke stroke;
         public final Painting painting;
         public final boolean defaultState;
+        public final Condition condition;
+
+        private KeyPainting(AWTKeyStroke stroke, Painting painting, boolean defaultState, Condition condition) {
+            this.stroke = stroke;
+            this.painting = painting;
+            this.defaultState = defaultState;
+            this.condition = condition;
+        }
 
         private KeyPainting(AWTKeyStroke stroke, Painting painting, boolean defaultState) {
             this.stroke = stroke;
             this.painting = painting;
             this.defaultState = defaultState;
+            this.condition = null;
         }
 
         public boolean enabled(KeyHandler handler) {
-            return stroke == null || handler.enabled(stroke) != defaultState;
+            return (condition == null || condition.test()) && (stroke == null || handler.enabled(stroke) != defaultState);
         }
     }
 }

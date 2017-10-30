@@ -110,15 +110,13 @@ public class EnemyRobot extends BaseEnemyRobot implements RobotSnapshot {
     }
 
     public int getDirection(Point from) {
-        double head = getHeading();
-        if (ahead < 0) {
-            head += R.PI;
-            head = R.normalAbsoluteAngle(head);
-        }
-        double absBearing = Physics.absoluteBearing(getPoint(), from);
+        double head = getBafHeading();
+
+        double absBearing = Physics.absoluteBearing(from, getPoint());
         double off = R.normalRelativeAngle(head - absBearing);
-        if (off > 0) return -1;
-        else if (off < 0) return 1;
+
+        if (off > 0) return +1;
+        else if (off < 0) return -1;
         else return 0;
     }
 

@@ -40,8 +40,7 @@ public class GuessFactorStats extends Stats {
     }
 
     public GuessFactorStats(BinKernelDensity binKernel) {
-        super(BUCKET_COUNT, binKernel.getKernelDensity());
-        setBinKernel(binKernel);
+        super(BUCKET_COUNT, binKernel);
     }
 
     public GuessFactorStats(double[] buffer, KernelDensity kernel) {
