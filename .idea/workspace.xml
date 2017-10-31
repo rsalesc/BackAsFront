@@ -8,28 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/KnightAdaptiveStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/KnightBaseStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/jk/mega/gun/GFRange.java" afterPath="$PROJECT_DIR$/src/jk/mega/gun/GFRange.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/mega/gun/Indice.java" afterPath="$PROJECT_DIR$/src/jk/mega/gun/Indice.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/precise/EnergyDomeWorker.java" afterPath="$PROJECT_DIR$/src/jk/precise/EnergyDomeWorker.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/tree/KDTree.java" afterPath="$PROJECT_DIR$/src/jk/tree/KDTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightDCSurfer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightVCSSurfer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/OldKnightDCSurfer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MonkFeet.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/risk/MonkFeet.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MedinaBoard.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/KdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/KdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/KdTreeTest.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/KdTreeTest.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/WeightedEuclideanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/WeightedEuclideanKdTree.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -1220,7 +1203,7 @@
       <workItem from="1509252586571" duration="17118000" />
       <workItem from="1509297010918" duration="15546000" />
       <workItem from="1509314337047" duration="52902000" />
-      <workItem from="1509414748744" duration="21448000" />
+      <workItem from="1509414748744" duration="21785000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1505318578286</created>
@@ -1369,7 +1352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509416667025</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="new movement view">
+      <created>1509463898647</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1509463898647</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1405,7 +1395,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="975624000" />
+    <option name="totallyTimeSpent" value="975961000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1555,7 +1545,8 @@
     <MESSAGE value="two old guns, two new guns" />
     <MESSAGE value="fix mea predictor wall check" />
     <MESSAGE value="drusstest, better enemy MEA, tweak adaptive" />
-    <option name="LAST_COMMIT_MESSAGE" value="drusstest, better enemy MEA, tweak adaptive" />
+    <MESSAGE value="new movement view" />
+    <option name="LAST_COMMIT_MESSAGE" value="new movement view" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
