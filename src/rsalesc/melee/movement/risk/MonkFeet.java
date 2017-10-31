@@ -36,9 +36,9 @@ import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.movement.KnightDCSurfer;
 import rsalesc.mega.movement.Surfer;
 import rsalesc.mega.movement.TrueSurfing;
+import rsalesc.mega.movement.surfers.KnightDCSurfer;
 
 import java.awt.*;
 

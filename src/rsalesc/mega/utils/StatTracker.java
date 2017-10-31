@@ -33,6 +33,7 @@ import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
+import rsalesc.mega.movement.surfers.KnightDCSurfer;
 import rsalesc.runner.SerializeHelper;
 
 /**
@@ -169,8 +170,23 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
         }
     }
 
+    public String getOnlyEnemyName() {
+        StatData data = getCurrentStatData();
+
+        for(String name : data.getEnemies()) {
+            return name;
+        }
+
+        return null;
+    }
+
     @Override
     public void onLastBreath() {
+        String onlyEnemy = getOnlyEnemyName();
+
+        if(onlyEnemy != null && KnightDCSurfer.FLAT_CONDITION.test(new NamedStatData(getCurrentStatData(), onlyEnemy)))
+            System.out.println("Flattener enabled!");
+
         getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
         getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
 

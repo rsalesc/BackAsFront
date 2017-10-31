@@ -58,10 +58,14 @@ import java.util.Comparator;
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
     private boolean MC = false || MC2k6;
-    private boolean TC = true;
+    private boolean TC = false;
 
     public void checkChallenges() {
-        MC = MC || getName().endsWith("mc");
+        if(getName().split(" ").length > 1) {
+            MC = MC || getName().split(" ")[1].startsWith("MC");
+            MC2k6 = MC && getName().split(" ")[1].endsWith("2k6");
+            TC = TC || getName().split(" ")[1].startsWith("TC");
+        }
     }
 
     @Override

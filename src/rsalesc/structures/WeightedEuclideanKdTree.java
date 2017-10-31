@@ -23,8 +23,6 @@
 
 package rsalesc.structures;
 
-import rsalesc.baf2.core.utils.R;
-
 /**
  * Created by Roberto Sales on 20/07/17.
  */
@@ -62,7 +60,7 @@ public class WeightedEuclideanKdTree<T> extends KdTree<T> {
             if (!Double.isNaN(acc))
                 res += acc * acc;
         }
-        return R.sqrt(res);
+        return res;
     }
 
     @Override
@@ -81,6 +79,6 @@ public class WeightedEuclideanKdTree<T> extends KdTree<T> {
                 res += acc * acc;
         }
 
-        return R.sqrt(res);
+        return res;
     }
 }

@@ -23,6 +23,7 @@
 
 package rsalesc.structures;
 
+import jk.tree.KDTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -121,6 +122,31 @@ public class KdTreeTest {
         return res;
     }
 
+    double[][] withJkTree() {
+        System.out.println("Running with jk-knn");
+        KDTree.Euclidean<Integer> tree = new KDTree.Euclidean<>(dimension);
+        for (int i = 0; i < pointsCount; i++) {
+            tree.addPoint(points[i], null);
+        }
+
+        double[][] res = new double[queriesCount][];
+        for (int i = 0; i < queriesCount; i++) {
+            ArrayList<KDTree.SearchResult<Integer>> entries = tree.nearestNeighbours(queries[i], this.K);
+            int actualK = Math.min(this.K, entries.size());
+
+            res[i] = new double[actualK];
+
+            int j = actualK;
+            for (KDTree.SearchResult<Integer> entry : entries) {
+                res[i][--j] = entry.distance;
+            }
+
+            dump(res[i]);
+        }
+
+        return res;
+    }
+
     double[][] withTree() {
         System.out.println("Running with knn");
         EuclideanKdTree<Integer> tree = new EuclideanKdTree<>(dimension, SIZE_LIMIT);
@@ -199,6 +225,30 @@ public class KdTreeTest {
     public void iterator() {
         double[][] p1 = withIterator();
         double[][] p2 = withoutTree();
+
+        int differed = 0;
+        double error = 0;
+        for (int i = 0; i < queriesCount; i++) {
+            if (p1[i].length != p2[i].length) {
+                differed++;
+            } else {
+                for (int j = 0; j < p1[i].length; j++) {
+//                    System.out.println("A: " + p1[i][j] + ", B: " + p2[i][j]);
+
+                    error += Math.abs(p1[i][j] - p2[i][j]);
+                }
+
+//                System.out.println();
+            }
+        }
+
+//        System.out.println(error + " " + differed);
+        assertTrue(error < 1e-9);
+    }
+
+    public void jk() {
+        double[][] p1 = withTree();
+        double[][] p2 = withJkTree();
 
         int differed = 0;
         double error = 0;

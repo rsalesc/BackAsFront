@@ -117,6 +117,18 @@ abstract public class KdTree<T> {
         this.parent = parent;
     }
 
+    private KdTree(KdTree<T> parent, double[][] recycle) {
+        this.dim = parent.dim;
+        this.bucketSize = parent.bucketSize;
+
+        this.points = recycle;
+        this.data = new Object[recycle.length];
+        this.length = 0;
+        this.maxLength = parent.maxLength;
+
+        this.parent = parent;
+    }
+
     public int size() {
         return this.length;
     }
@@ -168,7 +180,7 @@ abstract public class KdTree<T> {
                 if (current.cutPosition == current.max[current.hyperplane])
                     current.cutPosition = current.min[current.hyperplane];
 
-                KdTree<T> left = new KdNode(current);
+                KdTree<T> left = new KdNode(current, current.points);
                 KdTree<T> right = new KdNode(current);
 
                 double max = 0;
@@ -439,6 +451,10 @@ abstract public class KdTree<T> {
 
     private class KdNode extends KdTree<T> {
         private KdNode(KdTree<T> parent) {
+            super(parent);
+        }
+
+        private KdNode(KdTree<T> parent, double[][] recycle) {
             super(parent);
         }
 

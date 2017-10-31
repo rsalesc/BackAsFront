@@ -59,7 +59,7 @@ import java.util.Collections;
  * Created by Roberto Sales on 12/09/17.
  */
 public abstract class BaseSurfing extends StoreComponent implements EnemyWaveListener, EnemyWavePreciseListener {
-    protected static final boolean PRECISE = false;
+    protected static final boolean PRECISE = true;
     protected static final String LOG_HINT = "surfing-log";
     protected static final int WALL_STICK = 160;
     private int breaks = 0;
@@ -139,14 +139,14 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
     @Override
     public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
-        if(wave.hasBulletHit() || wave.hasHit())
+        if(wave.hasAnyHit())
             return;
 
         TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
         if (f == null)
             return;
 
-        f.hitAngle = Physics.absoluteBearing(wave.getSource(), me.getPoint());
+        f.hitAngle = intersection.getAngle(intersection.getCenter());
         f.hitDistance = me.getPoint().distance(wave.getSource());
 
         double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
@@ -165,7 +165,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         breaks++;
 
         f.hitAngle = angle;
-        f.hitDistance = MyLog.getInstance().getLatest().getPoint().distance(wave.getSource());
+        f.hitDistance = getMediator().getPoint().distance(wave.getSource());
 
         double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
@@ -183,7 +183,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         breaks++;
 
         f.hitAngle = angle;
-        f.hitDistance = MyLog.getInstance().getLatest().getPoint().distance(wave.getSource());
+        f.hitDistance = getMediator().getPoint().distance(wave.getSource());
 
         double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
         f.preciseIntersection = new AngularRange(f.hitAngle, -hitAngle, +hitAngle);
@@ -217,8 +217,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         int iBucket = stats.getBucket(gfRange.min);
         int jBucket = stats.getBucket(gfRange.max);
 
-        if(stats.getGuessFactor(iBucket) < gfRange.min) iBucket++;
-        if(stats.getGuessFactor(jBucket) > gfRange.max) jBucket--;
+//        if(stats.getGuessFactor(iBucket) < gfRange.min) iBucket++;
+//        if(stats.getGuessFactor(jBucket) > gfRange.max) jBucket--;
 
         for (int i = iBucket; i <= jBucket; i++) {
             if(wave.isShadowed(mea.getAngle(stats.getGuessFactor(i))))
