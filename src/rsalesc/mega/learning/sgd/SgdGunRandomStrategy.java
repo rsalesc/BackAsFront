@@ -29,51 +29,58 @@ import rsalesc.mega.learning.genetic.GeneticStrategy;
 import rsalesc.mega.utils.TargetingLog;
 
 public class SgdGunRandomStrategy extends GeneticStrategy {
+    private static final Range IMPORTANT_RANGE = new Range(0.4, 1.0);
+    private static final Range DISCARDABLE_RANGE = new Range(0.0, 3.5);
+    private static final Range LESS_IMPORTANT_RANGE = new Range(0.4, 2.0);
+
     @Override
     public double[] getQuery(TargetingLog f) {
         double[] params = getForcedParams();
 
         return new double[]{
-                Math.min(Math.abs(f.lateralVelocity) / 8, 1),
-                R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
-                Math.min(f.distance / 900, 1),
-                R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.1), // was 1.3
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.1),
-                1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
-                1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
-                R.constrain(0, f.displaceLast10 / 80, 1),
-                Math.pow(f.bulletsFired * params[0], params[1]),
-                (R.constrain(-1, f.lastGf, +1) + 1) / 2
+                10  * Math.min(Math.abs(f.lateralVelocity) / 8, 1),
+                2   * R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
+                6   * Math.min(f.bft() / 81, 1),
+                2   * R.constrain(0, (f.accel + 1) / 2, 1),
+                4.5 * R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1), // was 1.3
+                2   * R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
+                2   * 1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
+                2   * 1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
+                2   * R.constrain(0, f.displaceLast10 / 80, 1),
+//                1   * Math.pow(f.bulletsFired * params[0], params[1]),
+                3   * (R.constrain(-1, f.lastGf, +1) + 1) / 2
         };
     }
 
     @Override
     public Range[] getWeightsScheme() {
-        Range[] range = new Range[getWeights().length];
-
-        for(int i = 0; i < range.length; i++) {
-            range[i] = new Range(0.0, 10.0);
-        }
-
-        return range;
-    }
-
-    @Override
-    public Range[] getParamsScheme() {
         return new Range[]{
-                new Range(0.0, 1.0),
-                new Range(0.0, 3.0)
+                IMPORTANT_RANGE,
+                LESS_IMPORTANT_RANGE,
+                IMPORTANT_RANGE,
+                LESS_IMPORTANT_RANGE,
+                IMPORTANT_RANGE,
+                LESS_IMPORTANT_RANGE,
+                DISCARDABLE_RANGE,
+                LESS_IMPORTANT_RANGE,
+                LESS_IMPORTANT_RANGE,
+//                new Range(0.0, 1.0),
+                DISCARDABLE_RANGE
         };
     }
 
     @Override
+    public Range[] getParamsScheme() {
+        return new Range[0];
+    }
+
+    @Override
     public double[] getWeights() {
-        return new double[11];
+        return new double[10];
     }
 
     @Override
     public double[] getParams() {
-        return new double[2];
+        return new double[0];
     }
 }

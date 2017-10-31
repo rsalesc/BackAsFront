@@ -69,7 +69,7 @@ public class GunGeneticSgd {
         this.targetingConstructor = targetingClazz.getConstructor(int.class, Strategy.class);
         this.strategy = strategy;
 
-        this.layoutProvider = new GunChromosomeLayoutProvider(strategy, 5);
+        this.layoutProvider = new GunChromosomeLayoutProvider(strategy, 3);
     }
 
     public GunChromosomeLayoutProvider getLayoutProvider() {
@@ -291,9 +291,9 @@ public class GunGeneticSgd {
         double curPerf = evaluate(executorService, chromosome, records).mean();
 
         for (LongDecimalGene gene : genes) {
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 3; j++) {
                 double x = chromosome.getAllele(gene).getValue();
-                double h = learningRate * (1 << j); // TODO: ?
+                double h = learningRate * Math.pow(2.5, j); // TODO: ?
 
                 chromosome.setAllele(gene, x + h);
                 double posPerf = evaluate(executorService, chromosome, records).mean();

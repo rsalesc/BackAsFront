@@ -68,10 +68,12 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
         field = _getBattleField();
     }
 
+    @Override
     public double getX() {
         return status.getX();
     }
 
+    @Override
     public double getY() {
         return status.getY();
     }
@@ -86,17 +88,9 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
         return status.getHeading();
     }
 
-    public long getRealTime() {
-        return super.getTime();
-    }
-
     @Override
     public int getRoundNum() {
         return status.getRoundNum();
-    }
-
-    public BattleTime getBattleTime() {
-        return new BattleTime(getTime(), getRoundNum());
     }
 
     @Override
@@ -142,6 +136,14 @@ abstract class OldBackAsFrontRobot extends AdvancedRobot {
     public void setMaxVelocity(double x) {
         _maxVelocity = x;
         super.setMaxVelocity(x);
+    }
+
+    public BattleTime getBattleTime() {
+        return new BattleTime(getTime(), getRoundNum());
+    }
+
+    public long getRealTime() {
+        return super.getTime();
     }
 
     public Point getPoint() {

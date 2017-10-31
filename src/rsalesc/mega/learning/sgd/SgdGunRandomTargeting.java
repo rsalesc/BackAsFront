@@ -41,7 +41,7 @@ public class SgdGunRandomTargeting extends GeneticGunTargeting {
     @Override
     public KnnView<TimestampedGFRange> getNewKnnSet() {
         KnnView<TimestampedGFRange> set = new KnnView<>();
-        set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
+        set.setDistanceWeighter(new Knn.InverseDistanceWeighter<>(0.5))
                 .add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)

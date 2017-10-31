@@ -41,8 +41,7 @@ import java.util.List;
  */
 public abstract class PrecisePredictor {
     public static List<PredictedPoint> lastEscape = null;
-    private static boolean SHARP_TURNING = false;
-    private static boolean MEA_PASS = true;
+    private static boolean MEA_PASS = false;
 
     public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
                                                            int direction, double perpendiculator, boolean hasToPass, boolean brake) {
@@ -147,6 +146,8 @@ public abstract class PrecisePredictor {
         if (direction == 0)
             direction = 1;
 
+        AxisRectangle shrinkedField = field.shrink(18, 18);
+
         List<PredictedPoint> posList = predictOnWaveImpact(field, stick, initialPoint, wave, direction, R.HALF_PI, MEA_PASS, false);
         List<PredictedPoint> negList = predictOnWaveImpact(field, stick, initialPoint, wave, -direction, R.HALF_PI, MEA_PASS, false);
 
@@ -155,10 +156,16 @@ public abstract class PrecisePredictor {
 
         lastEscape = new ArrayList<>();
         for (PredictedPoint pos : posList) {
+            if(!shrinkedField.contains(pos))
+                break;
+
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
         }
 
         for (PredictedPoint neg : negList) {
+            if(!shrinkedField.contains(neg))
+                break;
+
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
         }
 
@@ -166,10 +173,16 @@ public abstract class PrecisePredictor {
         negList = predictOnWaveImpact(initialPoint, wave, R.getLast(negList), MEA_PASS);
 
         for (PredictedPoint pos : posList) {
+            if(!shrinkedField.contains(pos))
+                break;
+
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), pos) - absBearing) * direction);
         }
 
         for (PredictedPoint neg : negList) {
+            if(!shrinkedField.contains(neg))
+                break;
+
             res.push(R.normalRelativeAngle(Physics.absoluteBearing(wave.getSource(), neg) - absBearing) * direction);
         }
 

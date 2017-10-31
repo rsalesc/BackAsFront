@@ -60,11 +60,11 @@ public class Tuning {
 
 //        System.out.println(evolveAdaptive(adaptivePack, iteration));
 
-//        List<Strategy> strategies = evolveRm(rmPack, iteration);
-//
-//        for(Strategy strategy : strategies) {
-//            System.out.println(strategy);
-//        }
+        List<Strategy> strategies = evolveRm(rmPack, iteration);
+
+        for(Strategy strategy : strategies) {
+            System.out.println(strategy);
+        }
 
         runner.getEngineProvider().close();
 
@@ -76,7 +76,7 @@ public class Tuning {
 
         GunGeneticSgd sgd = new GunGeneticSgd(
                 rmPack,
-                0.25,
+                0.2,
                 10000,
                 1,
                 SgdGunRandomTargeting.class,
@@ -86,7 +86,7 @@ public class Tuning {
         sgd.log();
         sgd.setCache(geneticCache);
 
-        return sgd.train(51);
+        return sgd.train(10);
     }
 
     public static Strategy evolveAdaptive(DuelRecordSuperPack pack, int iteration) throws IOException, NoSuchMethodException {

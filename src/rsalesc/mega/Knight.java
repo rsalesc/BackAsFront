@@ -33,9 +33,7 @@ import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.gunning.AntiAdaptiveGun;
-import rsalesc.mega.gunning.AntiRandomGun;
-import rsalesc.mega.gunning.RaikoGun;
+import rsalesc.mega.gunning.*;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
 import rsalesc.mega.gunning.guns.KnnPlayer;
 import rsalesc.mega.gunning.guns.PlayItForwardGun;
@@ -60,7 +58,7 @@ import java.util.Comparator;
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
     private boolean MC = false || MC2k6;
-    private boolean TC = false;
+    private boolean TC = true;
 
     public void checkChallenges() {
         MC = MC || getName().endsWith("mc");
@@ -87,10 +85,13 @@ public class Knight extends BackAsFrontRobot2 {
 
         KnightStance move = new KnightStance(waveManager);
 
-//        ExperimentalPifRandomGun randomGun = new ExperimentalPifRandomGun();
-        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
-//        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
+        SlowDecayGun randomGun = new SlowDecayGun(bulletManager, null);
+
+//        FastDecayGun adaptiveGun = new FastDecayGun(bulletManager, null);
+//        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
+
         AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
+//        ExperimentalAntiAdaptiveGun adaptiveGun = new ExperimentalAntiAdaptiveGun(bulletManager, null);
         AutomaticGunArray array = new AutomaticGunArray() {
             @Override
             public StorageNamespace getStorageNamespace() {

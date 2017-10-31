@@ -31,8 +31,10 @@ import rsalesc.baf2.core.benchmark.BenchmarkNode;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.*;
-import rsalesc.baf2.predictor.EnemyPredictor;
+import rsalesc.baf2.core.utils.geometry.AngularRange;
+import rsalesc.baf2.core.utils.geometry.AxisRectangle;
+import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
 import rsalesc.baf2.tracking.*;
@@ -160,7 +162,7 @@ public class TargetingLog implements Serializable, IMea {
         f.aiming = aiming;
         f.bulletsFired = mediator.getBulletsFired();
 
-        computeDuelLog(f, f, EnemyTracker.getInstance().getLog(enemy), enemy);
+        computeEnemyDuelLog(f, f, EnemyTracker.getInstance().getLog(enemy), enemy);
         f.escapeDirection = f.direction;
 
         return f;
@@ -394,7 +396,7 @@ public class TargetingLog implements Serializable, IMea {
 
         BattleTime shotBattleTime = new BattleTime(f.time + 1, f.battleTime.getRound());
 
-        f.preciseMea = EnemyPredictor.getPreciseMea(f.field, PredictedPoint.from(robot),
+        f.preciseMea = PrecisePredictor.getBetterPreciseMEA(f.field, MEA_STICK, PredictedPoint.from(robot),
                 new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)), f.direction);
 
         double halfWidth = Physics.hitAngle(f.source.distance(robot.getPoint())) / 2; // TODO: change that for me

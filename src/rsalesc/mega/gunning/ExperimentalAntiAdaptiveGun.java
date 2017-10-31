@@ -26,7 +26,7 @@ package rsalesc.mega.gunning;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
-import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
+import rsalesc.mega.gunning.guns.KnnProductGuessFactorTargeting;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.gunning.strategies.dc.AntiSurferStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
@@ -37,20 +37,19 @@ import rsalesc.structures.KnnView;
 /**
  * Created by Roberto Sales on 15/09/17.
  */
-public class AntiAdaptiveGun extends GuessFactorGun {
-    public AntiAdaptiveGun(BulletManager manager, PowerSelector selector) {
-        super(new KnnGuessFactorTargeting() {
+public class ExperimentalAntiAdaptiveGun extends GuessFactorGun {
+    public ExperimentalAntiAdaptiveGun(BulletManager manager, PowerSelector selector) {
+        super(new KnnProductGuessFactorTargeting() {
             @Override
             public KnnView<TimestampedGFRange> getNewKnnSet() {
                 return new KnnView<TimestampedGFRange>()
-//                        .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
+                        .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                         .add(new KnnTree<TimestampedGFRange>()
                                 .setLimit(7500)
                                 .setMode(KnnTree.Mode.MANHATTAN)
                                 .setK(4)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                                 .logsBreak()
                                 .logsHit())
                         .add(new KnnTree<TimestampedGFRange>()
@@ -59,7 +58,6 @@ public class AntiAdaptiveGun extends GuessFactorGun {
                                 .setK(4)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                                 .logsBreak()
                                 .logsHit())
                         .add(new KnnTree<TimestampedGFRange>()
@@ -68,7 +66,6 @@ public class AntiAdaptiveGun extends GuessFactorGun {
                                 .setK(4)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                                 .logsBreak()
                                 .logsHit())
                         .add(new KnnTree<TimestampedGFRange>()
@@ -77,7 +74,6 @@ public class AntiAdaptiveGun extends GuessFactorGun {
                                 .setK(4)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                                 .logsBreak()
                                 .logsHit())
                         .add(new KnnTree<TimestampedGFRange>()
@@ -86,26 +82,33 @@ public class AntiAdaptiveGun extends GuessFactorGun {
                                 .setK(2)
                                 .setRatio(0.15)
                                 .setStrategy(new AntiSurferStrategy())
-                                .setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0))
                                 .logsBreak()
-                                .logsHit())
+                                .logsHit());
+            }
 
-                        // hit negative
+            @Override
+            public KnnView<TimestampedGFRange> getNewAlternativeKnnSet() {
+                return new KnnView<TimestampedGFRange>()
                         .add(new KnnTree<TimestampedGFRange>()
-                                .setMode(KnnTree.Mode.MANHATTAN)
-                                .setLimit(4)
-                                .setK(1)
-                                .setRatio(1)
-                                .setScanWeight(-1.0) // -1 was pretty good actually
-                                .setStrategy(new AntiSurferStrategy())
-                                .logsHit())
-
-                        ;
+                            .setLimit(4)
+                            .setMode(KnnTree.Mode.MANHATTAN)
+                            .setK(1)
+                            .setRatio(0.15)
+                            .setStrategy(new AntiSurferStrategy())
+                            .logsHit())
+//                        .add(new KnnTree<TimestampedGFRange>()
+//                            .setLimit(12)
+//                            .setMode(KnnTree.Mode.MANHATTAN)
+//                            .setK(2)
+//                            .setRatio(0.15)
+//                            .setStrategy(new AntiSurferStrategy())
+//                            .logsHit())
+                    ;
             }
 
             @Override
             public StorageNamespace getStorageNamespace() {
-                return this.getGlobalStorage().namespace("anti-adaptive-targeting");
+                return this.getGlobalStorage().namespace("exp-adaptive-targeting");
             }
         }, manager);
 
@@ -114,11 +117,11 @@ public class AntiAdaptiveGun extends GuessFactorGun {
 
     @Override
     public String getGunName() {
-        return "Anti-Adaptive Gun";
+        return "Exp. Anti-Adaptive Gun";
     }
 
     @Override
     public StorageNamespace getStorageNamespace() {
-        return getGlobalStorage().namespace("anti-adaptive-gun");
+        return getGlobalStorage().namespace("exp-adaptive-gun");
     }
 }

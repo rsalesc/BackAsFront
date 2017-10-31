@@ -38,9 +38,8 @@ public class FastDecayStrategy extends Strategy {
                 R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
                 Math.min(f.distance / 900, 1),
                 R.constrain(0, (f.accel + 1) / 2, 1),
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.3), // was 1.3
-                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.3),
-                1.0 / (1.0 + 2. * f.timeRevert / f.bft()),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1.0), // was 1.3
+                R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1.0),
                 1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
                 R.constrain(0, f.displaceLast10 / 80, 1),
                 Math.pow(f.bulletsFired, 3.4),
@@ -50,6 +49,6 @@ public class FastDecayStrategy extends Strategy {
 
     @Override
     public double[] getWeights() {
-        return new double[]{4, 1, 1.5, 13.5, 4, 1.5, 1.2, 1.5, 2, 0.5, 1.5};
+        return new double[]{4, 1, 1.5, 13.5, 4, 1.5, 1.2, 2, 0.5, 1.5};
     }
 }
