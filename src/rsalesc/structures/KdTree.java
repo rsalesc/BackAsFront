@@ -27,9 +27,13 @@ package rsalesc.structures;
  * Created by rsalesc on 20/07/17.
  */
 
+import rsalesc.baf2.core.annotations.Modified;
 import rsalesc.baf2.core.utils.R;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Implementation of K-d Tree inspired by
@@ -68,12 +72,12 @@ abstract public class KdTree<T> {
     protected double[] min;
     protected double[] max;
     private Object[] data;
-    private int length;
+    protected int length;
     private Integer maxLength;
     private int bucketSize;
     // splitting>
-    private int hyperplane;
-    private double cutPosition;
+    protected int hyperplane;
+    protected double cutPosition;
 
     // neighbors
     private KdTree<T> left;
@@ -159,8 +163,9 @@ abstract public class KdTree<T> {
         while (!current.isLeaf() || current.isHeavy()) {
             // in this case we have to split the node
             if (current.isLeaf()) {
-                current.hyperplane = this.minkowskiBestHyperplane(current);
-                current.cutPosition = (current.max[current.hyperplane] + current.min[current.hyperplane]) / 2;
+//                current.hyperplane = this.minkowskiBestHyperplane(current);
+//                current.cutPosition = (current.max[current.hyperplane] + current.min[current.hyperplane]) / 2;
+                this.cut(current);
 
                 if (current.cutPosition == Double.POSITIVE_INFINITY)
                     current.cutPosition = Double.MAX_VALUE;
@@ -439,6 +444,38 @@ abstract public class KdTree<T> {
 
     public abstract double minkowskiToHyperrect(double[] p, double[] min, double[] max);
 
+    public abstract double minkowskiDimensionLength(KdTree<T> node, int i);
+
+    protected void cut(@Modified KdTree<T> node) {
+        double bestVariance = 0;
+        for (int i = 0; i < node.dim; i++) {
+            double nbest = this.minkowskiDimensionLength(node, i);
+            if (Double.isNaN(nbest)) nbest = 0;
+            if (nbest > bestVariance) {
+                double mean = 0;
+                for(int j = 0; j < node.length; j++) {
+                    mean += node.points[j][i];
+                }
+
+                mean /= node.length;
+
+                double variance = 0;
+                for(int j = 0; j < node.length; j++) {
+                    variance += R.sqr(node.points[j][i] - mean);
+                }
+
+                variance /= node.length;
+
+                if(variance > bestVariance) {
+                    bestVariance = variance;
+                    node.cutPosition = mean;
+                    node.hyperplane = i;
+                }
+            }
+        }
+    }
+
+
     public static class Entry<T> {
         public final double distance;
         public final T payload;
@@ -497,6 +534,11 @@ abstract public class KdTree<T> {
          */
         @Override
         public double minkowskiToHyperrect(double[] p, double[] min, double[] max) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public double minkowskiDimensionLength(KdTree<T> node, int i) {
             throw new UnsupportedOperationException();
         }
     }

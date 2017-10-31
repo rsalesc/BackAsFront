@@ -78,4 +78,9 @@ public class EuclideanKdTree<T> extends KdTree<T> {
 
         return res;
     }
+
+    @Override
+    public double minkowskiDimensionLength(KdTree<T> node, int i) {
+        return (node.max[i] - node.min[i]);
+    }
 }
