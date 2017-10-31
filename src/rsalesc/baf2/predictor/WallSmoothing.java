@@ -45,7 +45,35 @@ public abstract class WallSmoothing {
 //
 //        return angle;
 
-        return pythagorean(shrinkedField, stick, source, angle, direction);
+        return cb(shrinkedField, stick, source, angle, direction);
+    }
+
+    /**
+     * Fast Exact Wall Smoothing by Cb.
+     */
+    public static double cb(AxisRectangle field, double wallStick, Point location, double angle, int circleDirection) {
+        Point p = location.project(angle, wallStick);
+        for (int i = 0; !field.contains(p) && i < 4; i++) {
+            if (p.x < 18) {
+                p.x = 18;
+                double a = location.x - 18;
+                p.y = location.y + circleDirection * Math.sqrt(wallStick * wallStick - a * a);
+            } else if (p.y > field.maxy - 18) {
+                p.y = field.maxy - 18;
+                double a = field.maxy - 18 - location.y;
+                p.x = location.x + circleDirection * Math.sqrt(wallStick * wallStick - a * a);
+            } else if (p.x > field.maxx - 18) {
+                p.x = field.maxx - 18;
+                double a = field.maxx - 18 - location.x;
+                p.y = location.y - circleDirection * Math.sqrt(wallStick * wallStick - a * a);
+            } else if (p.y < 18) {
+                p.y = 18;
+                double a = location.y - 18;
+                p.x = location.x - circleDirection * Math.sqrt(wallStick * wallStick - a * a);
+            }
+        }
+
+        return Physics.absoluteBearing(location, p);
     }
 
     public static double weirdSmoothing(AxisRectangle shrinkedField, Point source, Point cur, double angle, double stick) {
