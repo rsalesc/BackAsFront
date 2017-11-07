@@ -23,7 +23,6 @@
 
 package rsalesc.baf2.predictor;
 
-import robocode.util.Utils;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -111,7 +110,7 @@ public class FastPredictor {
         if(steps == 0)
             return new PredictedPoint[]{dest};
 
-        double dh = BackAsFrontRobot2.getQuickestTurn(Utils.normalRelativeAngle(dest.heading - source.heading)) / steps;
+        double dh = BackAsFrontRobot2.getQuickestTurn(R.normalRelativeAngle(dest.heading - source.heading)) / steps;
         double dx = (dest.x - source.x) / steps;
         double dy = (dest.y - source.y) / steps;
         double dv = (dest.velocity - source.velocity) / steps;
@@ -139,7 +138,7 @@ public class FastPredictor {
         if(steps == 0)
             return dest;
 
-        double dh = BackAsFrontRobot2.getQuickestTurn(Utils.normalRelativeAngle(dest.heading - source.heading)) / steps;
+        double dh = BackAsFrontRobot2.getQuickestTurn(R.normalRelativeAngle(dest.heading - source.heading)) / steps;
         double dx = (dest.x - source.x) / steps;
         double dy = (dest.y - source.y) / steps;
         double dv = (dest.velocity - source.velocity) / steps;

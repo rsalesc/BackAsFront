@@ -23,9 +23,11 @@
 
 package rsalesc.mega.utils;
 
+import robocode.Rules;
 import rsalesc.baf2.core.utils.BattleTime;
 import robocode.StatusEvent;
 import rsalesc.baf2.core.utils.Pair;
+import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 
 import java.io.Serializable;
@@ -52,12 +54,17 @@ public class StatData implements Serializable {
     private HashMap<String, Double> damageFired = new PredictedHashMap<>(15);
     private HashMap<String, Double> damageFelt = new PredictedHashMap<>(15);
 
+    private HashMap<String, Double> randomFelt = new PredictedHashMap<>(15);
+    private HashMap<String, Double> randomDamageFelt = new PredictedHashMap<>(15);
+
     private HashMap<String, Integer> shotsReceived = new PredictedHashMap<>(15);
     private HashMap<String, Integer> shotsInflicted = new PredictedHashMap<>(15);
     private HashMap<String, Integer> shotsFired = new PredictedHashMap<>(15);
     private HashMap<String, Integer> shotsFelt = new PredictedHashMap<>(15);
 
-    private HashMap<Pair<String, Integer>, TreeSet<Integer>> meetings = new PredictedHashMap<>(1000);
+    private HashMap<Pair<String, Integer>, TreeSet<Integer>> meetings = new PredictedHashMap<>(300);
+
+    private HashMap<Pair<String, Object>, Object> data = new PredictedHashMap<>(15);
 
     public void onStatus(StatusEvent e) {
         time = new BattleTime(e.getTime(), e.getStatus().getRoundNum());
@@ -106,38 +113,52 @@ public class StatData implements Serializable {
         return shotsFelt.getOrDefault(name, 0);
     }
 
-    public void logShotReceived(String name, double x) {
+    private double getRandomDamageFelt(String name) {
+        return randomDamageFelt.getOrDefault(name, 0.0);
+    }
+
+    public double getRandomFelt(String name) {
+        return randomFelt.getOrDefault(name, 0.0);
+    }
+
+    public void logShotReceived(String name, double power, double distance) {
+        double x = Rules.getBulletDamage(power);
         totalDamageReceived += x;
         totalShotsReceived++;
 
-        logShotDodged(name, x);
+        logShotDodged(name, power, distance);
         damageReceived.put(name, getDamageReceived(name) + x);
         shotsReceived.put(name, getShotsReceived(name) + 1);
     }
 
-    public void logShotInflicted(String name, double x) {
+    public void logShotInflicted(String name, double power) {
+        double x = Rules.getBulletDamage(power);
         totalDamageInflicted += x;
         totalShotsInflicted++;
 
-        logShotMissed(name, x);
+        logShotMissed(name, power);
         damageInflicted.put(name, getDamageInflicted(name) + x);
         shotsInflicted.put(name, getShotsInflicted(name) + 1);
     }
 
-    public void logShotMissed(double x) {
+    public void logShotMissed(double power) {
         totalShotsFired++;
-        totalDamageFired += x;
+        totalDamageFired += Rules.getBulletDamage(power);
     }
 
-    public void logShotMissed(String name, double x) {
-        logShotMissed(x);
-        damageFired.put(name, getDamageFired(name) + x);
+    public void logShotMissed(String name, double power) {
+        logShotMissed(power);
+        damageFired.put(name, getDamageFired(name) + Rules.getBulletDamage(power));
         shotsFired.put(name, getShotsFired(name) + 1);
     }
 
-    public void logShotDodged(String name, double x) {
+    public void logShotDodged(String name, double power, double distance) {
+        double x = Rules.getBulletDamage(power);
         damageFelt.put(name, getDamageFelt(name) + x);
         shotsFelt.put(name, getShotsFelt(name) + 1);
+        randomFelt.put(name, getRandomFelt(name) + Physics.hitAngle(distance) / Physics.maxEscapeAngle(Rules.getBulletSpeed(power)));
+        randomDamageFelt.put(name, getRandomDamageFelt(name)
+                + Physics.hitAngle(distance) / Physics.maxEscapeAngle(Rules.getBulletSpeed(power)) * x);
     }
 
     public int getRound() {
@@ -184,6 +205,18 @@ public class StatData implements Serializable {
         return (double) getShotsInflicted(name) / (getShotsFired(name) + 1e-12);
     }
 
+    public double getEnemyRandomHitPercentage(String name) {
+        return getRandomFelt(name) / (getShotsFelt(name) + 1e-12);
+    }
+
+    public double getEnemyRandomWeightedHitPercentage(String name) {
+        return getRandomDamageFelt(name) / (getDamageFelt(name) + 1e-12);
+    }
+
+    public double getEnemyRelativeWeightedHitPercentage(String name) {
+        return getEnemyWeightedHitPercentage(name) / (getEnemyRandomWeightedHitPercentage(name) + 1e-12);
+    }
+
     public int getMeetings(String name, int L, int R) {
         HashSet<Integer> rounds = new HashSet<>();
         for(int i = L; i <= R; i++) {
@@ -213,5 +246,13 @@ public class StatData implements Serializable {
         res.addAll(met);
 
         return res;
+    }
+
+    public void setData(String name, Object key, Object data) {
+        this.data.put(new Pair<>(name, key), data);
+    }
+
+    public Object getData(String name, Object key) {
+        return this.data.get(new Pair<>(name, key));
     }
 }

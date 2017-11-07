@@ -25,6 +25,7 @@ package rsalesc.mega.gunning.guns;
 
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
 import rsalesc.mega.utils.IMea;
@@ -67,6 +68,7 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
 
     @Override
     public GeneratedAngle[] getFiringAngles(EnemyLog enemyLog, TargetingLog f, IMea mea) {
+        Benchmark.getInstance().start("KnnGuessFactorTargeting.getFiringAngles()");
         KnnView<TimestampedGFRange> view = getKnnSet(enemyLog.getName());
 
         List<Knn.Entry<TimestampedGFRange>> found = view.query(f);
@@ -98,6 +100,7 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
         double bestGf = maxOverlapCenter(found, mea);
         lastFound = found;
 
+        Benchmark.getInstance().stop();
         return new GeneratedAngle[]{new GeneratedAngle(1.0, mea.getAngle(bestGf), f.distance)};
     }
 
@@ -161,6 +164,7 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
         double bestAcc = 0;
         double acc = 0;
 
+//        System.out.println("=======");
         for(int i = 0; i < events.length; i++) {
             SweepEvent event = events[i];
 
@@ -172,7 +176,12 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
                 }
             } else if(event.type == SweepEvent.EventType.END)
                 acc -= event.weight;
+
+//            System.out.println(event.axis + " " + (event.type == SweepEvent.EventType.START ? "+" + event.weight : "-" + event.weight)
+//                    + " acc: " + acc);
         }
+
+//        System.out.println("gf: " + bestGf + ", bacc: " + bestAcc);
 
         return bestGf;
     }

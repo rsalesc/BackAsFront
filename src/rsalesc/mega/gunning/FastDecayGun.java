@@ -34,6 +34,8 @@ import rsalesc.structures.Knn;
 import rsalesc.structures.KnnTree;
 import rsalesc.structures.KnnView;
 
+import java.util.function.Function;
+
 /**
  * Created by Roberto Sales on 15/09/17.
  */
@@ -47,7 +49,12 @@ public class FastDecayGun extends GuessFactorGun {
                 set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)
-                        .setRatio(0.22)
+                        .setRatio(new Function<Integer, Double>() {
+                            @Override
+                            public Double apply(Integer integer) {
+                                return Math.sqrt(integer);
+                            }
+                        })
                         .setStrategy(new FastDecayStrategy())
                         .logsHit()
                         .logsBreak());
@@ -57,7 +64,7 @@ public class FastDecayGun extends GuessFactorGun {
 
             @Override
             public StorageNamespace getStorageNamespace() {
-                return this.getGlobalStorage().namespace("fast-decay-targeting");
+                return this.getGlobalStorage().namespace("fdt");
             }
         }, manager);
 
@@ -71,6 +78,6 @@ public class FastDecayGun extends GuessFactorGun {
 
     @Override
     public StorageNamespace getStorageNamespace() {
-        return getGlobalStorage().namespace("fast-decay-gun");
+        return getGlobalStorage().namespace("fdg");
     }
 }

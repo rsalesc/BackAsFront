@@ -250,4 +250,18 @@ public class Wave {
         else
             return false;
     }
+
+    public PredictedPoint impactPoint(List<PredictedPoint> points) {
+        PredictedPoint last = points.get(points.size() - 1);
+
+        for(int i = points.size() - 2; i >= 0; i--) {
+            PredictedPoint pt = points.get(i);
+            if(!this.hasPassed(pt, pt.time))
+                break;
+
+            last = pt;
+        }
+
+        return last;
+    }
 }

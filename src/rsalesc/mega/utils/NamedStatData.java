@@ -66,6 +66,14 @@ public class NamedStatData {
         return data.getRound();
     }
 
+    public void setData(Object key, Object data) {
+        this.data.setData(name, key, data);
+    }
+
+    public Object getData(Object key) {
+        return data.getData(name, key);
+    }
+
     public int getMeetings(int L, int R) {
         return data.getMeetings(name, L, R);
     }
@@ -76,6 +84,14 @@ public class NamedStatData {
 
     public int getMeetings() {
         return getMeetings(1);
+    }
+
+    public double getEnemyRandomWeightedHitPercentage() {
+        return data.getEnemyRandomWeightedHitPercentage(name);
+    }
+
+    public double getEnemyRelativeWeightedHitPercentage() {
+        return data.getEnemyRelativeWeightedHitPercentage(name);
     }
 
     public static class HitCondition extends Knn.ParametrizedCondition {
@@ -98,6 +114,86 @@ public class NamedStatData {
 
             return range.isNearlyContained(p, /*-R.marginOfError(p, samples)*/ 1e-9)
                     && data.getMeetings() >= meetings;
+        }
+
+        @Override
+        public void mutate(Knn.ConditionMutation mutation) {
+
+        }
+    }
+
+    public static class WeightedHitCondition extends Knn.ParametrizedCondition {
+        private final Range range;
+        private final int meetings;
+        private final int atLeast;
+
+        public WeightedHitCondition(Range range, int meetings) {
+            this.range = range;
+            this.meetings = meetings;
+            this.atLeast = 10000;
+        }
+
+        public WeightedHitCondition(Range range, int meetings, int atLeast) {
+            this.range = range;
+            this.meetings = meetings;
+            this.atLeast = atLeast;
+        }
+
+        @Override
+        public boolean test(Object o) {
+            if(!(o instanceof NamedStatData))
+                throw new IllegalStateException();
+
+            NamedStatData data = (NamedStatData) o;
+            double p = data.getEnemyWeightedHitPercentage();
+            int samples = data.getEnemyShotsFired();
+
+            Integer lastMeeting = (Integer) data.getData(this);
+
+            boolean turnOn = range.isNearlyContained(p, /*-R.marginOfError(p, samples)*/ 1e-9)
+                    && data.getMeetings() >= meetings || (lastMeeting != null && lastMeeting >= atLeast);
+
+            if(turnOn)
+                data.setData(this, data.getMeetings());
+
+            return turnOn;
+        }
+
+        @Override
+        public void mutate(Knn.ConditionMutation mutation) {
+
+        }
+    }
+
+    public static class RelativelyWeightedHitCondition extends Knn.ParametrizedCondition {
+        private final double x;
+        private final int meetings;
+        private final int atLeast;
+
+        public RelativelyWeightedHitCondition(double x, int meetings, int atLeast) {
+            this.x = x;
+            this.meetings = meetings;
+            this.atLeast = atLeast;
+        }
+
+        @Override
+        public boolean test(Object o) {
+            if(!(o instanceof NamedStatData))
+                throw new IllegalStateException();
+
+            NamedStatData data = (NamedStatData) o;
+
+            double p = data.getEnemyRelativeWeightedHitPercentage();
+
+            Integer lastMeeting = (Integer) data.getData(this);
+
+            boolean turnOn = p > x
+                    && data.getMeetings() >= meetings || (lastMeeting != null && lastMeeting >= atLeast);
+
+            if(turnOn)
+                data.setData(this, data.getMeetings());
+
+            return turnOn;
         }
 
         @Override

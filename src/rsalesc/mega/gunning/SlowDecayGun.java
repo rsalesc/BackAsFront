@@ -51,8 +51,8 @@ public class SlowDecayGun extends GuessFactorGun {
                         .setRatio(new Function<Integer, Double>() {
                             @Override
                             public Double apply(Integer integer) {
-//                                return Math.sqrt(integer);
-                                return integer * 0.22;
+                                return Math.sqrt(integer);
+//                                return integer * 0.22;
                             }
                         })
                         .setStrategy(new SlowDecayStrategy())
@@ -63,7 +63,7 @@ public class SlowDecayGun extends GuessFactorGun {
 
             @Override
             public StorageNamespace getStorageNamespace() {
-                return this.getGlobalStorage().namespace("slow-decay-targeting");
+                return this.getGlobalStorage().namespace("sdt");
             }
         }, manager);
 
@@ -77,6 +77,6 @@ public class SlowDecayGun extends GuessFactorGun {
 
     @Override
     public StorageNamespace getStorageNamespace() {
-        return getGlobalStorage().namespace("slow-decay-gun");
+        return getGlobalStorage().namespace("sdg");
     }
 }

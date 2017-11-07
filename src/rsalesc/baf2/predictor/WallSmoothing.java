@@ -54,21 +54,21 @@ public abstract class WallSmoothing {
     public static double cb(AxisRectangle field, double wallStick, Point location, double angle, int circleDirection) {
         Point p = location.project(angle, wallStick);
         for (int i = 0; !field.contains(p) && i < 4; i++) {
-            if (p.x < 18) {
-                p.x = 18;
-                double a = location.x - 18;
+            if (p.x < field.minx) {
+                p.x = field.minx;
+                double a = location.x - field.minx;
                 p.y = location.y + circleDirection * Math.sqrt(wallStick * wallStick - a * a);
-            } else if (p.y > field.maxy - 18) {
-                p.y = field.maxy - 18;
-                double a = field.maxy - 18 - location.y;
+            } else if (p.y > field.maxy) {
+                p.y = field.maxy;
+                double a = field.maxy - location.y;
                 p.x = location.x + circleDirection * Math.sqrt(wallStick * wallStick - a * a);
-            } else if (p.x > field.maxx - 18) {
-                p.x = field.maxx - 18;
-                double a = field.maxx - 18 - location.x;
+            } else if (p.x > field.maxx) {
+                p.x = field.maxx;
+                double a = field.maxx - location.x;
                 p.y = location.y - circleDirection * Math.sqrt(wallStick * wallStick - a * a);
-            } else if (p.y < 18) {
-                p.y = 18;
-                double a = location.y - 18;
+            } else if (p.y < field.miny) {
+                p.y = field.miny;
+                double a = location.y - field.miny;
                 p.x = location.x - circleDirection * Math.sqrt(wallStick * wallStick - a * a);
             }
         }

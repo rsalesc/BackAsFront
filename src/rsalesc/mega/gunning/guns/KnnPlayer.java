@@ -24,7 +24,6 @@
 package rsalesc.mega.gunning.guns;
 
 import robocode.Rules;
-import robocode.util.Utils;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.utils.Physics;
@@ -185,7 +184,7 @@ public abstract class KnnPlayer extends StoreComponent implements Player, KnnPro
                 continue;
 
             double angle = Physics.absoluteBearing(nextPosition, lastPosition);
-            double offset = Utils.normalRelativeAngle(angle - Physics.absoluteBearing(nextPosition, enemy.getPoint()));
+            double offset = R.normalRelativeAngle(angle - Physics.absoluteBearing(nextPosition, enemy.getPoint()));
 
             if(Math.abs(offset) > Rules.MAX_VELOCITY * impactTime / nextPosition.distance(enemy.getPoint()))
                 continue;

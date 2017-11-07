@@ -28,7 +28,7 @@ import rsalesc.baf2.waves.BulletManager;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
+import rsalesc.mega.gunning.strategies.dc.YetAnotherRandomStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.structures.Knn;
 import rsalesc.structures.KnnTree;
@@ -48,7 +48,7 @@ public class AntiRandomGun extends GuessFactorGun {
                         .setMode(KnnTree.Mode.MANHATTAN)
                         .setK(100)
                         .setRatio(0.2)
-                        .setStrategy(new GeneralPurposeStrategy())
+                        .setStrategy(new YetAnotherRandomStrategy())
                         .logsEverything());
 
                 return set;

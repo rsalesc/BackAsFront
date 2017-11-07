@@ -25,19 +25,45 @@ package rsalesc.baf2.core.benchmark;
 
 import rsalesc.baf2.core.utils.Timer;
 
+import java.util.Objects;
+
 /**
  * Created by Roberto Sales on 12/10/17.
  */
-public class BenchmarkNode {
+public class BenchmarkNode implements Comparable<BenchmarkNode> {
     private final Benchmark benchmark;
     private final String group;
+    public final BenchmarkNode parent;
 
     private Timer timer;
 
-    public BenchmarkNode(Benchmark benchmark, String group) {
+    public BenchmarkNode(Benchmark benchmark, String group, BenchmarkNode parent) {
         this.benchmark = benchmark;
         this.group = group;
         this.timer = new Timer();
+        this.parent = parent;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    @Override
+    public int hashCode() {
+        if(parent == null)
+            return group.hashCode();
+
+        return Objects.hash(parent, group);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof BenchmarkNode))
+            return false;
+
+        BenchmarkNode rhs = (BenchmarkNode) obj;
+
+        return group.equals(rhs.group) && (parent == null && rhs.parent == null || parent != null && rhs.parent != null && parent.equals(rhs.parent));
     }
 
     public void start() {
@@ -45,6 +71,28 @@ public class BenchmarkNode {
     }
 
     public void stop() {
-        benchmark.log(group, (double) timer.stop() / 1e6);
+        benchmark.log(this, (double) timer.stop() / 1e6);
+    }
+
+    @Override
+    public int compareTo(BenchmarkNode o) {
+        if(parent != null && o.parent != null) {
+            int res = parent.compareTo(o.parent);
+            if(res != 0)
+                return res;
+
+            return group.compareTo(o.group);
+        } else {
+            int res = group.compareTo(o.group);
+            if(res != 0)
+                return res;
+
+            if(parent != null)
+                return +1;
+            if(o.parent != null)
+                return -1;
+
+            return 0;
+        }
     }
 }

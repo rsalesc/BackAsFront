@@ -35,20 +35,21 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
-import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.tracking.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
 public class WaveManager extends Component implements EnemyFireListener, EnemyWaveListener,
-        ScannedRobotListener, BulletListener, HitListener, EnemyWavePreciseListener {
+        ScannedRobotListener, BulletListener, HitListener, EnemyWavePreciseListener, EnemyCooledListener, EnemyPreCooledListener {
     private boolean checked = false;
     private ArrayList<EnemyWave> waves = new ArrayList<>();
 
@@ -56,10 +57,23 @@ public class WaveManager extends Component implements EnemyFireListener, EnemyWa
     public void onEnemyFire(EnemyFireEvent e) {
         BattleTime battleTime = new BattleTime(e.getTime(), getMediator().getRoundNum());
 
-        EnemyWave wave = new EnemyWave(e.getEnemy(), e.getSource(), battleTime, e.getSpeed());
+        EnemyWave wave = isHeat(e) ? new HeatWave(e.getEnemy(), e.getSource(), battleTime, e.getSpeed()) :
+                new EnemyWave(e.getEnemy(), e.getSource(), battleTime, e.getSpeed());
+
+        waves.removeIf(new Predicate<EnemyWave>() {
+            @Override
+            public boolean test(EnemyWave enemyWave) {
+                return enemyWave.getEnemy().getName().equals(e.getEnemy().getName()) && enemyWave.isHeat();
+            }
+        });
+
         waves.add(wave);
 
         onEnemyWaveFired(wave);
+    }
+
+    private boolean isHeat(EnemyFireEvent e) {
+        return e instanceof EnemyCooledEvent;
     }
 
     public boolean hasPreciseListener() {
@@ -348,5 +362,17 @@ public class WaveManager extends Component implements EnemyFireListener, EnemyWa
                 listener.onEnemyWavePreciselyIntersects(wave, me, intersection);
             }
         }
+    }
+
+    @Override
+    public void onEnemyCooled(EnemyCooledEvent e) {
+//        System.out.println("Creating gunheat wave!");
+        onEnemyFire(e);
+    }
+
+    @Override
+    public void onEnemyPreCooled(EnemyCooledEvent e) {
+//        System.out.println("Creating pre-gunheat wave!");
+        onEnemyFire(e);
     }
 }

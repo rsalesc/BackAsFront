@@ -65,4 +65,13 @@ public class RTest {
 
         Assertions.assertTrue(expected.equals(resultSet));
     }
+
+    @Test
+    public void exploit() {
+        double energy = 100.0;
+        double[] e = R.getExploitablePowers(energy);
+
+        for(double x : e)
+            System.out.println(x);
+    }
 }

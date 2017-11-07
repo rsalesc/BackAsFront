@@ -28,7 +28,7 @@ import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.Component;
-import rsalesc.baf2.core.listeners.PaintListener;
+import rsalesc.baf2.core.listeners.LastBreathListener;
 import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
@@ -42,9 +42,10 @@ import java.awt.event.KeyEvent;
 /**
  * Created by Roberto Sales on 28/09/17.
  */
-public class ShadowManager extends Component implements BulletWaveListener, EnemyWaveListener {
+public class ShadowManager extends Component implements BulletWaveListener, EnemyWaveListener, LastBreathListener {
     private final BulletManager bulletManager;
     private final WaveManager waveManager;
+    private static int shadowedHits = 0;
 
     public ShadowManager(BulletManager bulletManager, WaveManager waveManager) {
         this.bulletManager = bulletManager;
@@ -95,8 +96,10 @@ public class ShadowManager extends Component implements BulletWaveListener, Enem
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
-        if(wave.isShadowed(e.getBullet().getHeadingRadians()))
+        if(wave.isShadowed(e.getBullet().getHeadingRadians())) {
             BackAsFrontRobot2.warn("Hit by bullet in shadow!");
+            shadowedHits++;
+        }
     }
 
     @Override
@@ -108,6 +111,8 @@ public class ShadowManager extends Component implements BulletWaveListener, Enem
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
 
     }
+
+
 
     @Override
     public void setupPaintings(PaintManager manager) {
@@ -127,5 +132,10 @@ public class ShadowManager extends Component implements BulletWaveListener, Enem
                 }
             }
         }, true);
+    }
+
+    @Override
+    public void onLastBreath() {
+        System.out.println("Total of " + shadowedHits + " hit(s) in shadows!");
     }
 }

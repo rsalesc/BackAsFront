@@ -28,7 +28,9 @@ import robocode.HitByBulletEvent;
 import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.controllers.Controller;
+import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -38,28 +40,28 @@ import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
+import rsalesc.baf2.predictor.PredictedPoint;
+import rsalesc.baf2.predictor.WallSmoothing;
 import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.*;
 import rsalesc.mega.movement.distancing.FallbackSurfingDistancer;
-import rsalesc.baf2.predictor.PredictedPoint;
-import rsalesc.baf2.predictor.WallSmoothing;
-import rsalesc.mega.utils.IMea;
-import rsalesc.mega.utils.NamedStatData;
-import rsalesc.mega.utils.StatTracker;
-import rsalesc.mega.utils.TargetingLog;
+import rsalesc.mega.utils.*;
 import rsalesc.mega.utils.stats.GaussianKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
+import rsalesc.structures.Knn;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
 public abstract class BaseSurfing extends StoreComponent implements EnemyWaveListener, EnemyWavePreciseListener {
     protected static final boolean PRECISE = true;
+    protected static final boolean SINGLE_EVAL = false;
     protected static final String LOG_HINT = "surfing-log";
     protected static final int WALL_STICK = 160;
     private int breaks = 0;
@@ -106,6 +108,14 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         return stats;
     }
 
+    public static List<Knn.Entry<TimestampedGFRange>> getFallbackScans() {
+        List<Knn.Entry<TimestampedGFRange>> found = new ArrayList<>();
+        found.add(new Knn.Entry<>(1.0, 0, new TimestampedGFRange(new BattleTime(0L, 0), 0, 0, 0)));
+        found.add(new Knn.Entry<>(0.6, 0, new TimestampedGFRange(new BattleTime(0L, 0), 0.876, 0.876, 0.876)));
+
+        return found;
+    }
+
     @Override
     public StorageNamespace getStorageNamespace() {
         return getGlobalStorage().namespace("base-surfing");
@@ -133,24 +143,30 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
     @Override
     public void onEnemyWaveBreak(EnemyWave wave, MyRobot me) {
-        breaks++;
+        if(!wave.isHeat())
+            breaks++;
     }
 
 
     @Override
     public void onEnemyWavePreciselyIntersects(EnemyWave wave, MyRobot me, AngularRange intersection) {
-        if(wave.hasAnyHit())
+        if(wave.hasAnyHit() || wave.isHeat())
             return;
 
         TargetingLog f = (TargetingLog) wave.getData(LOG_HINT);
         if (f == null)
             return;
 
-        f.hitAngle = intersection.getAngle(intersection.getCenter());
         f.hitDistance = me.getPoint().distance(wave.getSource());
 
-        double hitAngle = Physics.hitAngle(f.hitDistance) / 2;
-        f.preciseIntersection = intersection == null ? new AngularRange(f.hitAngle, -hitAngle, +hitAngle) : intersection;
+        double hitWidth = Physics.hitAngle(f.hitDistance) / 2;
+
+        if(intersection == null) {
+            f.preciseIntersection = new AngularRange(f.hitAngle = wave.getAngle(me.getPoint()), -hitWidth, +hitWidth);
+        } else {
+            f.preciseIntersection = intersection;
+            f.hitAngle = intersection.getAngle(intersection.getCenter());
+        }
 
         surfer.log(EnemyTracker.getInstance().getLog(wave.getEnemy().getName()), f, getMea(f), BreakType.BULLET_BREAK);
     }
@@ -196,6 +212,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         if (log == null)
             throw new IllegalStateException();
 
+        Benchmark.getInstance().start("BaseSurfing.getDanger() stats");
         IMea mea = precise ? log : log.imprecise();
 
         if (intersection == null) {
@@ -217,9 +234,6 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         int iBucket = stats.getBucket(gfRange.min);
         int jBucket = stats.getBucket(gfRange.max);
 
-//        if(stats.getGuessFactor(iBucket) < gfRange.min) iBucket++;
-//        if(stats.getGuessFactor(jBucket) > gfRange.max) jBucket--;
-
         for (int i = iBucket; i <= jBucket; i++) {
             if(wave.isShadowed(mea.getAngle(stats.getGuessFactor(i))))
                 continue;
@@ -231,6 +245,52 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             value /= Math.max(jBucket - iBucket + 1, 1);
             value *= Math.abs(mea.getOffset(gfRange.max) - mea.getOffset(gfRange.min));
         }
+
+        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
+        value *= shadowFactor;
+
+        Benchmark.getInstance().stop();
+        return value;
+    }
+
+    protected double getDanger(EnemyWave wave, List<Knn.Entry<TimestampedGFRange>> found, AngularRange intersection, PredictedPoint pass, boolean precise) {
+        TargetingLog log = (TargetingLog) wave.getData(LOG_HINT);
+        if (log == null)
+            throw new IllegalStateException();
+
+        IMea mea = precise ? log : log.imprecise();
+
+        if (intersection == null) {
+            double distance = wave.getSource().distance(pass);
+            double passBearing = Physics.absoluteBearing(wave.getSource(), pass);
+            double width = Physics.hitAngle(distance) / 2;
+            intersection = new AngularRange(passBearing, -width, width);
+        }
+
+        double gfLow = mea.getGfFromAngle(intersection.getStartingAngle());
+        double gfHigh = mea.getGfFromAngle(intersection.getEndingAngle());
+
+        Range gfRange = new Range();
+        gfRange.push(gfLow);
+        gfRange.push(gfHigh);
+
+        double value = 0;
+
+        double gf = gfRange.getCenter();
+        double bandwidth = gfRange.getRadius();
+        double weightSum = 1e-21;
+        double invBandwidth = 1.0 / bandwidth;
+
+        for(Knn.Entry<TimestampedGFRange> entry : found) {
+            double entryGf = entry.payload.mean;
+
+            if(!wave.isShadowed(mea.getAngle(entryGf))) {
+                value += entry.weight * R.gaussKernel(R.normalRelativeAngle(entryGf  - gf) * invBandwidth);
+                weightSum += entry.weight;
+            }
+        }
+
+        value /= weightSum;
 
         double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
         value *= shadowFactor;

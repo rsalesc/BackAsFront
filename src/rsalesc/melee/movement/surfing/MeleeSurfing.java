@@ -29,8 +29,6 @@ import robocode.HitByBulletEvent;
 import robocode.Rules;
 import rsalesc.baf2.BackAsFrontRobot2;
 import rsalesc.baf2.core.Component;
-import rsalesc.baf2.core.benchmark.Benchmark;
-import rsalesc.baf2.core.benchmark.BenchmarkNode;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -146,10 +144,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double stickLength = Math.min(STICK_LENGTH, closest * 0.75);
         long stickTime = (long) Math.ceil(stickLength / (Rules.MAX_VELOCITY / 2));
 
-        BenchmarkNode nodeP = Benchmark.getInstance().getNode("point-generation");
-        nodeP.start();
         List<PredictedPoint>[] pts = generatePoints(initialPoint, stickLength);
-        nodeP.stop();
 
         SurfingOption bestOption = new SurfingOption(initialPoint, initialPoint, Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
 
@@ -159,8 +154,6 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         double maxDanger = 1e-20;
         double maxRisk = 1e-20;
 
-        BenchmarkNode node = Benchmark.getInstance().getNode("branch-and-bound");
-        node.start();
         pathTesting:
         for(int i = 0; i < pts.length; i++) {
             if(pts[i] == null)
@@ -180,10 +173,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
                     if(comingWave.hasPassed(predicted, predicted.time)) {
                         toRemove.add(comingWave);
 
-                        BenchmarkNode nodeD = Benchmark.getInstance().getNode("danger-eval");
-                        nodeD.start();
                         danger += getDanger(comingWave, predicted);
-                        nodeD.stop();
                     }
                 }
 
@@ -198,8 +188,6 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
             maxDanger = Math.max(maxDanger, danger);
             maxRisk = Math.max(maxRisk, risks[i]);
         }
-
-        node.stop();
 
         for(int i = 0; i < pts.length; i++) {
             if(pts[i] == null)

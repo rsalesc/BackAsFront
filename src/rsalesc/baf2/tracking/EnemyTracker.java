@@ -146,6 +146,23 @@ public class EnemyTracker {
         return res.toArray(new EnemyRobot[0]);
     }
 
+    public EnemyRobot[] getLatest(long atLeast, long atMost) {
+        ArrayList<EnemyRobot> res = new ArrayList<>();
+
+        for(Map.Entry<String, EnemyLog> entry : seenEnemies.entrySet()) {
+            if(entry.getValue().isAlive()) {
+                EnemyLog enemyLog = entry.getValue();
+                EnemyRobot past = enemyLog.atMostAt(atMost);
+                if(past != null && past.getTime() >= atLeast) {
+                    res.add(past);
+                }
+            }
+        }
+
+        return res.toArray(new EnemyRobot[0]);
+    }
+
+
     public EnemyRobot[] getLatestDeadOrAlive() {
         EnemyRobot[] res = new EnemyRobot[sizeSeen()];
         int cnt = 0;

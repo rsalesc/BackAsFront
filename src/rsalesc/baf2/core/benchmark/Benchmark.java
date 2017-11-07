@@ -30,15 +30,20 @@ import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.core.utils.R;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by Roberto Sales on 12/10/17.
  */
 public class Benchmark extends Component implements LastBreathListener {
+    private static final String SEP = "|";
+    private static final int COL_SIZE = 11;
+
     private static final Benchmark SINGLETON = new Benchmark();
-    private static final HashMap<Pair<String, Integer>, BenchmarkAccumulator> results = new PredictedHashMap<>(30);
+    private static final HashMap<Pair<BenchmarkNode, Integer>, BenchmarkAccumulator> results = new PredictedHashMap<>(30);
 
     private boolean enabled = false;
+    private BenchmarkNode lastParent;
 
     private Benchmark() {}
 
@@ -54,60 +59,163 @@ public class Benchmark extends Component implements LastBreathListener {
         return results.get(new Pair<>(group, getMediator().getRoundNum()));
     }
 
-    public Set<Map.Entry<Pair<String, Integer>, BenchmarkAccumulator>> getResults() {
+    public Set<Map.Entry<Pair<BenchmarkNode, Integer>, BenchmarkAccumulator>> getResults() {
         return results.entrySet();
     }
 
-    public List<Pair<String, BenchmarkAccumulator>> getRoundResults() {
-        Set<Map.Entry<Pair<String, Integer>, BenchmarkAccumulator>> st = getResults();
-        ArrayList<Pair<String, BenchmarkAccumulator>> res = new ArrayList<>();
+    public List<Pair<BenchmarkNode, BenchmarkAccumulator>> getRoundResults() {
+        Set<Map.Entry<Pair<BenchmarkNode, Integer>, BenchmarkAccumulator>> st = getResults();
+        ArrayList<Pair<BenchmarkNode, BenchmarkAccumulator>> res = new ArrayList<>();
 
-        for(Map.Entry<Pair<String, Integer>, BenchmarkAccumulator> entry : st) {
+        for(Map.Entry<Pair<BenchmarkNode, Integer>, BenchmarkAccumulator> entry : st) {
             if(entry.getKey().second == getMediator().getRoundNum())
                 res.add(new Pair<>(entry.getKey().first, entry.getValue()));
         }
 
-        res.sort(new Comparator<Pair<String, BenchmarkAccumulator>>() {
+        Comparator<Pair<BenchmarkNode, BenchmarkAccumulator>> comparator = new Comparator<Pair<BenchmarkNode, BenchmarkAccumulator>>() {
             @Override
-            public int compare(Pair<String, BenchmarkAccumulator> o1, Pair<String, BenchmarkAccumulator> o2) {
+            public int compare(Pair<BenchmarkNode, BenchmarkAccumulator> o1, Pair<BenchmarkNode, BenchmarkAccumulator> o2) {
                 return o1.first.compareTo(o2.first);
             }
-        });
+        };
 
-        return res;
+        res.sort(comparator);
+
+        TreeMap<BenchmarkNode, List<Pair<BenchmarkNode, BenchmarkAccumulator>>> adj = new TreeMap<>();
+
+        for(Pair<BenchmarkNode, BenchmarkAccumulator> pair : res) {
+            BenchmarkNode ptr = pair.first;
+
+            outerWhile:
+            while(ptr.parent != null) {
+                ptr = ptr.parent;
+
+                for(Pair<BenchmarkNode, BenchmarkAccumulator> pair2 : res) {
+                    if(pair2.first.equals(ptr)) {
+                        if(!adj.containsKey(ptr)) {
+                            adj.put(ptr, new ArrayList<>());
+                        }
+
+                        adj.get(ptr).add(pair);
+                        break outerWhile;
+                    }
+                }
+            }
+        }
+
+        for(Map.Entry<BenchmarkNode, List<Pair<BenchmarkNode, BenchmarkAccumulator>>> entry : adj.entrySet()) {
+            entry.getValue().sort(comparator);
+        }
+
+        ArrayList<Pair<BenchmarkNode, BenchmarkAccumulator>> actualRes = new ArrayList<>();
+
+        Function<Pair<BenchmarkNode, BenchmarkAccumulator>, Object> dfs = new Function<Pair<BenchmarkNode, BenchmarkAccumulator>, Object>() {
+            @Override
+            public Object apply(Pair<BenchmarkNode, BenchmarkAccumulator> pair) {
+                actualRes.add(pair);
+
+                if(adj.containsKey(pair.first)) {
+                    for (Pair<BenchmarkNode, BenchmarkAccumulator> child : adj.get(pair.first)) {
+                        this.apply(child);
+                    }
+                }
+
+                return null;
+            }
+        };
+
+        for(Pair<BenchmarkNode, BenchmarkAccumulator> pair : res) {
+            if(pair.first.parent == null)
+                dfs.apply(pair);
+        }
+
+        return actualRes;
     }
 
-    public BenchmarkAccumulator ensure(String group) {
-        Pair<String, Integer> key = new Pair<>(group, getMediator().getRoundNum());
+    public BenchmarkAccumulator ensure(BenchmarkNode node) {
+        Pair<BenchmarkNode, Integer> key = new Pair<>(node, getMediator().getRoundNum());
         if(!results.containsKey(key))
             results.put(key, new BenchmarkAccumulator(getMediator()));
 
         return results.get(key);
     }
 
-    public BenchmarkNode getNode(String group) {
-        return new BenchmarkNode(this, group);
+    public void start(String group) {
+        if(!enabled)
+            return;
+
+        lastParent = new BenchmarkNode(this, group, lastParent);
+        lastParent.start();
     }
 
-    public void log(String group, double delta) {
+    public void stop() {
+        if(!enabled || lastParent == null)
+            return;
+
+        lastParent.stop();
+        lastParent = lastParent.parent;
+    }
+
+    public void log(BenchmarkNode node, double delta) {
         if(enabled)
-            ensure(group).log(delta);
+            ensure(node).log(delta);
+    }
+
+    public String formattedTime(double ms) {
+        return R.formattedDouble(ms) + " ms";
+    }
+
+    public String getColumn(String x) {
+        return " " + String.format("%" + Math.max(x.length(), COL_SIZE) + "s", x) + " ";
+    }
+
+    public String getPadding(int level) {
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < level; i++)
+            res.append(" ");
+
+        return res.toString();
     }
 
     @Override
     public void onLastBreath() {
-        for(Pair<String, BenchmarkAccumulator> entry : getRoundResults()) {
+        System.out.println("Profiling -----------------------------");
+
+        System.out.println(getColumn("avg.") + SEP + getColumn("worst") + SEP + getColumn("error") + SEP
+            + getColumn("execs.") + SEP + getColumn("tick avg.") + SEP + getColumn("tick worst") + SEP + " group");
+
+        BenchmarkNode last = null;
+        int level = 0;
+
+        for(Pair<BenchmarkNode, BenchmarkAccumulator> entry : getRoundResults()) {
+            while(last != null && !last.equals(entry.first.parent)) {
+                last = last.parent;
+                level--;
+            }
+
+            level++;
+            last = entry.first;
+
             BenchmarkAccumulator acc = entry.second;
-            System.out.println(entry.first + ": " + R.formattedDouble(acc.getAverageTime()) +  " ms avg., "
-                + R.formattedDouble(acc.getWorstTime()) + " ms worst, " + R.formattedDouble(acc.getError()) + " ms error.");
+//            System.out.println(entry.first + ": " + R.formattedDouble(acc.getAverageTime()) +  " ms avg., "
+//                + R.formattedDouble(acc.getWorstTime()) + " ms worst, " + R.formattedDouble(acc.getError()) + " ms error.");
+
+            System.out.print(getColumn(formattedTime(acc.getAverageTime()))
+                + SEP + getColumn(formattedTime(acc.getWorstTime()))
+                + SEP + getColumn(formattedTime(acc.getError()))
+                + SEP + getColumn(String.valueOf(acc.getExperiments())));
 
             BenchmarkAccumulator execAcc = acc.getTickExecutionAccumulator();
             acc = acc.getTickAccumulator();
+//
+//            System.out.println("\t Tick work: " + R.formattedDouble(acc.getAverageTime()) +  " ms avg., "
+//                    + R.formattedDouble(acc.getWorstTime()) + " ms worst, " + R.formattedDouble(acc.getError()) + " ms error, "
+//                    + R.formattedDouble(execAcc.getAverageTime()) + " execution(s) avg, "
+//                    + (long) (execAcc.getWorstTime()) + " execution(s) worst.");
 
-            System.out.println("\t Tick work: " + R.formattedDouble(acc.getAverageTime()) +  " ms avg., "
-                    + R.formattedDouble(acc.getWorstTime()) + " ms worst, " + R.formattedDouble(acc.getError()) + " ms error, "
-                    + R.formattedDouble(execAcc.getAverageTime()) + " execution(s) avg, "
-                    + (long) (execAcc.getWorstTime()) + " execution(s) worst.");
+            System.out.print(SEP + getColumn(formattedTime(acc.getAverageTime())) + SEP + getColumn(formattedTime(acc.getWorstTime())));
+
+            System.out.println(SEP + getPadding(level) + entry.first.getGroup());
         }
     }
 }

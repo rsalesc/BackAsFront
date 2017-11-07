@@ -30,6 +30,7 @@ import rsalesc.baf2.waves.EnemyWave;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Roberto Sales on 29/08/17.
@@ -47,6 +48,10 @@ public class HeatTracker implements CrossFireListener {
 
     public static HeatTracker getInstance() {
         return SINGLETON;
+    }
+
+    public Set<Map.Entry<String, HeatLog>> entries() {
+        return logs.entrySet();
     }
 
     public void setup() {

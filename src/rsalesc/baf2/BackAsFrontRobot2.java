@@ -65,10 +65,13 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     public void initializeDefault() {
         paintManager = new PaintManager();
 
-        Benchmark.getInstance().enable(); // TODO: improve this
         addListener(Benchmark.getInstance());
         addListener(KeyHandler.getInstance());
         addListener(paintManager);
+    }
+
+    public void benchmark() {
+        Benchmark.getInstance().enable();
     }
 
     public PaintManager getPaintManager() {
@@ -92,6 +95,7 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
     @Override
     public void run() {
         while (true) {
+            Benchmark.getInstance().start("run()");
             for (Component component : components) {
                 if (!component.isVirtual()) component.beforeRun();
             }
@@ -105,11 +109,14 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
                 if (!component.isVirtual()) component.afterRun();
             }
 
+            Benchmark.getInstance().stop();
             execute();
         }
     }
 
     public void handleEvents() {
+        Benchmark.getInstance().start("handleEvents()");
+
         for (Component component : components) {
             if (component instanceof RobotDeathListener) {
                 RobotDeathListener listener = (RobotDeathListener) component;
@@ -186,6 +193,8 @@ public abstract class BackAsFrontRobot2 extends OldBackAsFrontRobot {
                 }
             }
         }
+
+        Benchmark.getInstance().stop();
     }
 
     @Override

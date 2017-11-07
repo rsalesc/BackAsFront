@@ -24,6 +24,7 @@
 package rsalesc.mega.movement;
 
 import robocode.Rules;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.controllers.Controller;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -45,7 +46,9 @@ import rsalesc.mega.movement.distancing.DefaultSurfingDistancer;
 import rsalesc.mega.movement.distancing.SurfingDistancer;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
+import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.stats.GuessFactorStats;
+import rsalesc.structures.Knn;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -83,13 +86,17 @@ public class TrueSurfing extends BaseSurfing {
     }
 
     public void run() {
+        Benchmark.getInstance().start("BaseSurfing.run()");
+
         final MyRobot me = MyLog.getInstance().getLatest();
         final EnemyRobot enemy = getEnemy();
 
         breakOptions.clear();
 
-        if (enemy == null)
+        if (enemy == null) {
+            Benchmark.getInstance().stop();
             return;
+        }
 
         EnemyWaveCondition hasLogCondition = new EnemyWaveCondition() {
             @Override
@@ -116,7 +123,7 @@ public class TrueSurfing extends BaseSurfing {
             EnemyWaveCondition hasLogCondition2 = new EnemyWaveCondition() {
                 @Override
                 public boolean test(EnemyWave wave) {
-                    return wave.getData(LOG_HINT) != null && !wave.hasAnyHit() && wave.getTouchTime(me) > nextWave.getTouchTime(me) + 1;
+                    return wave.getData(LOG_HINT) != null && !wave.hasAnyHit() /*&& wave.getTouchTime(me) > nextWave.getTouchTime(me) + 1*/;
                 }
             };
 
@@ -126,7 +133,7 @@ public class TrueSurfing extends BaseSurfing {
 
             for (int i = 0; i < 3; i++) {
                 double currentDanger = firstCandidates[i].danger;
-                SurfingCandidate[] secondCandidates = getSurfingCandidates(firstCandidates[i].passPoint, secondWave, 1);
+                SurfingCandidate[] secondCandidates = getSurfingCandidates(firstCandidates[i].transitionPoint, secondWave, 1);
                 if (secondCandidates != null) {
                     double bestCompoundDanger = Double.POSITIVE_INFINITY;
                     for (int j = 0; j < 3; j++) {
@@ -141,7 +148,7 @@ public class TrueSurfing extends BaseSurfing {
             }
 
             for(int i = 0; i < firstCandidates.length; i++) {
-                breakOptions.add(firstCandidates[i].passPoint);
+                breakOptions.add(firstCandidates[i].transitionPoint);
             }
 
             double distance = nextWave.getSource().distance(me.getPoint());
@@ -170,6 +177,7 @@ public class TrueSurfing extends BaseSurfing {
             }
         }
 
+        Benchmark.getInstance().stop();
         controller.release();
     }
 
@@ -184,7 +192,6 @@ public class TrueSurfing extends BaseSurfing {
         IMea mea = getMea(f);
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
-        GuessFactorStats stats = getSurfer().getStats(enemyLog, f, mea, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
 
         AxisRectangle field = getMediator().getBattleField();
         double distance = nextWave.getSource().distance(initialPoint);
@@ -206,6 +213,10 @@ public class TrueSurfing extends BaseSurfing {
         PredictedPoint counterPass = R.getLast(counterPoints);
         PredictedPoint stopPass = R.getLast(stopPoints);
 
+        PredictedPoint clockwiseTransition = nextWave.impactPoint(clockwisePoints);
+        PredictedPoint counterTransition = nextWave.impactPoint(counterPoints);
+        PredictedPoint stopTransition = nextWave.impactPoint(stopPoints);
+
         AngularRange clockwiseIntersection =
                 Wave.preciseIntersection(nextWave, clockwisePoints);
         AngularRange counterIntersection =
@@ -213,17 +224,26 @@ public class TrueSurfing extends BaseSurfing {
         AngularRange stopIntersection =
                 Wave.preciseIntersection(nextWave, stopPoints);
 
-//        double clockwiseDanger = getDanger(nextWave, enemyLog, clockwiseIntersection, clockwisePass);
-//        double counterDanger = getDanger(nextWave, enemyLog, counterIntersection, counterPass);
-//        double stopDanger = getDanger(nextWave, enemyLog, stopIntersection, stopPass);
-        double clockwiseDanger = getDanger(nextWave, stats, clockwiseIntersection, clockwisePass, PRECISE);
-        double counterDanger = getDanger(nextWave, stats, counterIntersection, counterPass, PRECISE);
-        double stopDanger = getDanger(nextWave, stats, stopIntersection, stopPass, PRECISE);
+        double clockwiseDanger, counterDanger, stopDanger;
+
+        if(SINGLE_EVAL && getSurfer() instanceof KnnSurfer) {
+            List<Knn.Entry<TimestampedGFRange>> found =
+                    ((KnnSurfer) getSurfer()).getMatches(enemyLog, f, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
+
+            clockwiseDanger = getDanger(nextWave, found, clockwiseIntersection, clockwisePass, PRECISE);
+            counterDanger = getDanger(nextWave, found, counterIntersection, counterPass, PRECISE);
+            stopDanger = getDanger(nextWave, found, stopIntersection, stopPass, PRECISE);
+        } else {
+            GuessFactorStats stats = getSurfer().getStats(enemyLog, f, mea, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
+            clockwiseDanger = getDanger(nextWave, stats, clockwiseIntersection, clockwisePass, PRECISE);
+            counterDanger = getDanger(nextWave, stats, counterIntersection, counterPass, PRECISE);
+            stopDanger = getDanger(nextWave, stats, stopIntersection, stopPass, PRECISE);
+        }
 
         SurfingCandidate[] res = new SurfingCandidate[]{
-                new SurfingCandidate(clockwiseDanger, clockwisePass),
-                new SurfingCandidate(stopDanger, stopPass),
-                new SurfingCandidate(counterDanger, counterPass)
+                new SurfingCandidate(clockwiseDanger, clockwiseTransition),
+                new SurfingCandidate(stopDanger, stopTransition),
+                new SurfingCandidate(counterDanger, counterTransition)
         };
 
         double distanceToSource = initialPoint.distance(nextWave.getSource());
@@ -232,13 +252,19 @@ public class TrueSurfing extends BaseSurfing {
 
         for (int i = 0; i < 3; i++) {
 //            if (distanceToSource < 100) {
-//                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].passPoint.velocity)) / 4, 1);
+//                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].transitionPoint.velocity)) / 4, 1);
 //            }
 
+            double passDistance = Math.min(
+                    res[i].transitionPoint.distance(nextWave.getSource()),
+                    res[i].transitionPoint.distance(enemyLog.getLatest().getPoint()));
+
             res[i].danger *= Rules.getBulletDamage(Physics.bulletPower(nextWave.getVelocity()));
-            res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
-            res[i].danger *=
-                    Math.pow(2.5, distanceToSource / res[i].passPoint.distance(nextWave.getSource()) - 1);
+//            res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
+            res[i].danger *= R.sqr(impactTime - 100);
+            res[i].danger /= Math.max((passDistance - 40), 1);
+//            res[i].danger *=
+//                    Math.pow(2.5, distanceToSource / res[i].transitionPoint.distance(nextWave.getSource()) - 1);
         }
 
         return res;
@@ -250,12 +276,12 @@ public class TrueSurfing extends BaseSurfing {
     }
 
     private class SurfingCandidate {
-        public final PredictedPoint passPoint;
+        public final PredictedPoint transitionPoint;
         public double danger;
 
-        public SurfingCandidate(double danger, PredictedPoint passPoint) {
+        public SurfingCandidate(double danger, PredictedPoint transitionPoint) {
             this.danger = danger;
-            this.passPoint = passPoint;
+            this.transitionPoint = transitionPoint;
         }
     }
 }

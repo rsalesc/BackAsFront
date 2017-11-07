@@ -25,6 +25,7 @@ package rsalesc.mega.gunning.guns;
 
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
@@ -32,14 +33,15 @@ import rsalesc.baf2.core.utils.geometry.Point;
 import rsalesc.baf2.painting.G;
 import rsalesc.baf2.painting.PaintManager;
 import rsalesc.baf2.painting.Painting;
-import rsalesc.baf2.tracking.*;
+import rsalesc.baf2.tracking.EnemyLog;
+import rsalesc.baf2.tracking.EnemyRobot;
+import rsalesc.baf2.tracking.EnemyTracker;
+import rsalesc.baf2.tracking.RobotSnapshot;
 import rsalesc.baf2.waves.*;
 import rsalesc.mega.movement.DangerPoint;
 import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.stats.GaussianKernelDensity;
-import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.structures.Knn;
 
 import java.awt.*;
@@ -83,6 +85,7 @@ public abstract class GuessFactorGun extends AutomaticGun
 
     @Override
     public GeneratedAngle[] generateFiringAngles(EnemyLog enemyLog, double power) {
+        Benchmark.getInstance().start("GuessFactorGun.generateFiringAngles()");
         if(enemyLog == null) {
             EnemyRobot[] enemies = EnemyTracker.getInstance().getLatest();
             if(enemies.length == 0)
@@ -96,7 +99,10 @@ public abstract class GuessFactorGun extends AutomaticGun
         lastTargetingLog = TargetingLog.getLog(enemyLog.getLatest(), getMediator(), power, true);
         lastTargetingLog.lastGf = lastGf;
 
-        return lastGenerated = targeting.getFiringAngles(enemyLog, lastTargetingLog, lastTargetingLog);
+        lastGenerated = targeting.getFiringAngles(enemyLog, lastTargetingLog, lastTargetingLog);
+        Benchmark.getInstance().stop();
+
+        return lastGenerated;
     }
 
     @Override
@@ -129,15 +135,6 @@ public abstract class GuessFactorGun extends AutomaticGun
 
                     IMea mea = log;
 
-                    GuessFactorStats st = new GuessFactorStats(new GaussianKernelDensity());
-
-                    double bandwidth = Physics.hitAngle(log.distance) / 2 /
-                            Math.min(log.preciseMea.minAbsolute(), log.preciseMea.maxAbsolute());
-
-                    for(Knn.Entry<TimestampedGFRange> entry : found) {
-                        st.logGuessFactor(entry.payload.mean, entry.weight, bandwidth);
-                    }
-
                     double angle = 0;
                     double ratio = R.DOUBLE_PI / WAVE_DIVISIONS;
                     double maxDanger = 0;
@@ -153,7 +150,13 @@ public abstract class GuessFactorGun extends AutomaticGun
                         if (!R.nearOrBetween(-1, gf, +1))
                             continue;
 
-                        double value = st.getValue(gf);
+                        double value = 0;
+
+                        for(Knn.Entry<TimestampedGFRange> entry : found) {
+                            if(R.nearOrBetween(entry.payload.min, gf, entry.payload.max))
+                                value += entry.weight;
+                        }
+
                         dangerPoints.add(new DangerPoint(hitPoint, value));
                         maxDanger = Math.max(maxDanger, value);
                     }
@@ -186,6 +189,8 @@ public abstract class GuessFactorGun extends AutomaticGun
         if(f == null)
             return;
 
+        Benchmark.getInstance().start("GuessFactorGun.checkBulletIntersection()");
+
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(enemy);
 //        RobotSnapshot interpolated = enemyLog.interpolate(getMediator().getTime() - 2);
         RobotSnapshot interpolated = enemy;
@@ -207,6 +212,7 @@ public abstract class GuessFactorGun extends AutomaticGun
         lastGf = f.imprecise().getGfFromAngle(f.hitAngle);
 
         targeting.log(EnemyTracker.getInstance().getLog(enemy), f, f, type);
+        Benchmark.getInstance().stop();
     }
 
     @Override

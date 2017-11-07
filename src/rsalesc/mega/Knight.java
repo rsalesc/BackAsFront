@@ -28,18 +28,15 @@ import rsalesc.baf2.core.Component;
 import rsalesc.baf2.core.RobotMediator;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.listeners.RoundStartedListener;
-import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.gunning.*;
-import rsalesc.mega.gunning.guns.AutomaticGunArray;
-import rsalesc.mega.gunning.guns.KnnPlayer;
-import rsalesc.mega.gunning.guns.PlayItForwardGun;
-import rsalesc.mega.gunning.power.MirrorPowerSelector;
-import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.power.TCPowerSelector;
+import rsalesc.mega.gunning.FastDecayGun;
+import rsalesc.mega.gunning.RaikoGun;
+import rsalesc.mega.gunning.SlowDecayGun;
+import rsalesc.mega.gunning.guns.*;
+import rsalesc.mega.gunning.power.*;
 import rsalesc.mega.gunning.strategies.dc.GeneralPurposeStrategy;
 import rsalesc.mega.movement.KnightStance;
 import rsalesc.mega.radar.PerfectLockRadar;
@@ -50,10 +47,15 @@ import rsalesc.structures.KnnTree;
 import rsalesc.structures.KnnView;
 
 import java.awt.*;
-import java.util.Comparator;
+import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 11/09/17.
+ *
+ * Change log:
+ * 0.6.0
+ * - wait two rounds to decide gun
+ * - add fast decay gun in place of old adaptive gun
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
@@ -74,8 +76,6 @@ public class Knight extends BackAsFrontRobot2 {
         checkChallenges();
 
         add(new Colorizer());
-
-//	    MovieTracker movieTracker = new MovieTracker(105, 20, 8);
         
         Tracker tracker = new Tracker();
         BulletManager bulletManager = new BulletManager();
@@ -85,35 +85,23 @@ public class Knight extends BackAsFrontRobot2 {
         StatTracker statTracker = StatTracker.getInstance();
         statTracker.log();
 
-        PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector();
+        PowerPredictor predictor = new DuelPowerPredictor();
+        PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector(predictor);
 
         KnightStance move = new KnightStance(waveManager);
 
-        SlowDecayGun randomGun = new SlowDecayGun(bulletManager, null);
+        AutomaticGun generalPurposeGun = new SlowDecayGun(bulletManager, null);
+        AutomaticGun adaptiveGun = new FastDecayGun(bulletManager, null);
 
-//        FastDecayGun adaptiveGun = new FastDecayGun(bulletManager, null);
-//        AntiRandomGun randomGun = new AntiRandomGun(bulletManager, null);
-
-        AntiAdaptiveGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
-//        ExperimentalAntiAdaptiveGun adaptiveGun = new ExperimentalAntiAdaptiveGun(bulletManager, null);
-        AutomaticGunArray array = new AutomaticGunArray() {
-            @Override
-            public StorageNamespace getStorageNamespace() {
-                return getGlobalStorage().namespace("knight-gun-array");
-            }
-        };
+        AutomaticGunArray array = new GunArray(generalPurposeGun, adaptiveGun, new RandomGun());
 
         if(!MC) {
             array.setPowerSelector(selector);
-
-            array.addGun(randomGun);
-            array.addGun(adaptiveGun);
             array.log();
         }
 
-        if(selector instanceof MirrorPowerSelector)
-            tracker.addListener(selector);
-
+        tracker.heat(predictor);
+        tracker.addListener(predictor);
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
 
@@ -121,56 +109,29 @@ public class Knight extends BackAsFrontRobot2 {
         if(!TC) waveManager.addListener(move);
 
         if(!MC) {
-            bulletManager.addListener(randomGun);
+            bulletManager.addListener(generalPurposeGun);
             bulletManager.addListener(adaptiveGun);
             bulletManager.addListener(array);
         }
 
         add(tracker);
-//        add(movieTracker);
-
-        if(selector instanceof MirrorPowerSelector)
-            addListener((MirrorPowerSelector) selector);
 
         add(bulletManager);
         add(waveManager);
         add(shadowManager);
-        
-//        movieTracker.addListener(randomGun);
 
         add(statTracker);
         if(!TC) add(move);
 
-//        addListener(randomGun);
-
         if(!MC) {
-            array.setComparator(new Comparator<AutomaticGunArray.GunScorePair>() {
-                @Override
-                public int compare(AutomaticGunArray.GunScorePair o1, AutomaticGunArray.GunScorePair o2) {
-                    boolean invert = o1.gun != randomGun;
-
-                    AutomaticGunArray.GunScorePair ro = !invert ? o1 : o2;
-                    AutomaticGunArray.GunScorePair ao = !invert ? o2 : o1;
-
-                    int round = array.getMediator().getRoundNum();
-                    int res = 1;
-
-                    if(round < 2 || ro.score > ao.score
-                            || (round <= 8 && ro.score > 4 * ao.score)
-                            || (round <= 15 && ro.score > 8 * ao.score)
-                            || (R.isNear(ao.score, 0)))
-                        res = -1;
-
-                    return res * (invert ? -1 : 1);
-                }
-            });
-
             add(array);
         } else if(!MC2k6) {
             add(new RaikoGun());
         }
 
         add(new PerfectLockRadar());
+        if(selector instanceof MirrorPowerSelector)
+            addListener((MirrorPowerSelector) selector);
     }
 
     class Colorizer extends Component implements RoundStartedListener {
@@ -214,6 +175,52 @@ public class Knight extends BackAsFrontRobot2 {
         @Override
         public StorageNamespace getStorageNamespace() {
             return this.getGlobalStorage().namespace("knn-rr");
+        }
+    }
+
+    class GunArray extends AutomaticGunArray {
+        GunArray(AutomaticGun generalPurpose, AutomaticGun antiSurfer, AutomaticGun random) {
+            if(generalPurpose != null) addGun(generalPurpose);
+            if(antiSurfer != null) addGun(antiSurfer);
+            if(random != null) addGun(random);
+
+            if(getGuns().size() == 0)
+                throw new IllegalStateException("GunArray can't be empty");
+
+            this.setPicker(new GunPicker() {
+                @Override
+                public AutomaticGun apply(ArrayList<GunScorePair> gunScorePairs) {
+                    int round = getMediator().getRoundNum();
+                    GunScorePair gpScore = AutomaticGunArray.getGunScorePair(gunScorePairs, generalPurpose);
+                    GunScorePair asScore = AutomaticGunArray.getGunScorePair(gunScorePairs, antiSurfer);
+                    GunScorePair randomScore = AutomaticGunArray.getGunScorePair(gunScorePairs, random);
+
+                    double maxHits = 0;
+
+                    if(asScore != null)
+                        maxHits = Math.max(maxHits, asScore.score);
+                    if(randomScore != null)
+                        maxHits = Math.max(maxHits, randomScore.score);
+
+                    if(gpScore != null && (
+                            (maxHits * 0.8 <= gpScore.score && round < 7)
+                            || (maxHits * 0.9 <= gpScore.score && round < 15)
+                            || maxHits <= gpScore.score
+                            )) {
+                        return generalPurpose;
+                    } else if(asScore != null && asScore.score >= maxHits)
+                        return antiSurfer;
+                    else if(random != null)
+                        return random;
+                    else
+                        return generalPurpose;
+                }
+            });
+        }
+
+        @Override
+        public StorageNamespace getStorageNamespace() {
+            return getGlobalStorage().namespace("kga");
         }
     }
 }

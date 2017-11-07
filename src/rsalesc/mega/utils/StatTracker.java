@@ -26,6 +26,7 @@ package rsalesc.mega.utils;
 import robocode.*;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
+import rsalesc.baf2.core.benchmark.Benchmark;
 import rsalesc.baf2.core.listeners.BulletListener;
 import rsalesc.baf2.core.listeners.LastBreathListener;
 import rsalesc.baf2.core.listeners.StatusListener;
@@ -34,7 +35,6 @@ import rsalesc.baf2.tracking.*;
 import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.mega.movement.surfers.KnightDCSurfer;
-import rsalesc.runner.SerializeHelper;
 
 /**
  * Created by Roberto Sales on 13/09/17.
@@ -93,6 +93,8 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onStatus(StatusEvent e) {
+        Benchmark.getInstance().start("StatTracker.onStatus()");
+
         getMeleeStatData().onStatus(e);
         getDuelStatData().onStatus(e);
 
@@ -117,6 +119,8 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
                 getDuelStatData().logMeeting(enemy.getName(), others);
             }
         }
+
+        Benchmark.getInstance().stop();
     }
 
     @Override
@@ -126,7 +130,7 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onBulletHit(BulletHitEvent e) {
-        getCurrentStatData().logShotInflicted(e.getName(), Rules.getBulletDamage(e.getBullet().getPower()));
+        getCurrentStatData().logShotInflicted(e.getName(), e.getBullet().getPower());
     }
 
     @Override
@@ -136,10 +140,10 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
             if(enemies.length > 0) {
                 EnemyRobot enemy = enemies[0];
 
-                getDuelStatData().logShotMissed(enemy.getName(), Rules.getBulletDamage(e.getBullet().getPower()));
+                getDuelStatData().logShotMissed(enemy.getName(), e.getBullet().getPower());
             }
         } else {
-            getDuelStatData().logShotMissed(Rules.getBulletDamage(e.getBullet().getPower()));
+            getDuelStatData().logShotMissed(e.getBullet().getPower());
         }
     }
 
@@ -155,7 +159,8 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
 
     @Override
     public void onEnemyWaveHitMe(EnemyWave wave, HitByBulletEvent e) {
-        getCurrentStatData().logShotReceived(e.getBullet().getName(), Rules.getBulletDamage(e.getBullet().getPower()));
+        getCurrentStatData().logShotReceived(e.getBullet().getName(), e.getBullet().getPower(),
+                MyLog.getInstance().getLatest().getPoint().distance(wave.getSource()));
     }
 
     @Override
@@ -166,7 +171,7 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
     @Override
     public void onEnemyWavePass(EnemyWave wave, MyRobot me) {
         if(!wave.hasAnyHit()) {
-            getCurrentStatData().logShotDodged(wave.getEnemy().getName(), Rules.getBulletDamage(wave.getPower()));
+            getCurrentStatData().logShotDodged(wave.getEnemy().getName(), wave.getPower(), me.getPoint().distance(wave.getSource()));
         }
     }
 
@@ -185,16 +190,20 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
         String onlyEnemy = getOnlyEnemyName();
 
         if(onlyEnemy != null && KnightDCSurfer.FLAT_CONDITION.test(new NamedStatData(getCurrentStatData(), onlyEnemy)))
-            System.out.println("Flattener enabled!");
+            System.out.println("FLATTENER ENABLED!");
+        else
+            System.out.println("FLATTENER DISABLED!");
 
-        getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
-        getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
+//        getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
+//        getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());
 
         if(log) {
             StatData data = getDuelStatData();
             for(String name : data.getEnemies()) {
                 System.out.println(name + ": "
                     + R.formattedPercentage(data.getEnemyWeightedHitPercentage(name)) + " whit movement, "
+                    + R.formattedPercentage(data.getEnemyRandomWeightedHitPercentage(name)) + " rand. whit movement, "
+                    + R.formattedPercentage(data.getEnemyRelativeWeightedHitPercentage(name)) + " relative whit movement, "
                     + R.formattedPercentage(data.getWeightedHitPercentage(name)) + " whit gun");
             }
         }

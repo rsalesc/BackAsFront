@@ -41,6 +41,6 @@ public class UnsegStrats extends Strategy {
 
     @Override
     public double[] getWeights() {
-        return new double[]{2, 2, 1};
+        return new double[]{1, 1, 1};
     }
 }

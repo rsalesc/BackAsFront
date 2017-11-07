@@ -13,6 +13,7 @@
       <root url="jar://$USER_HOME$/robocode/libs/robocode.sound-1.9.3.0.jar!/" />
       <root url="jar://$USER_HOME$/robocode/libs/robocode.ui-1.9.3.0.jar!/" />
       <root url="jar://$USER_HOME$/robocode/libs/robocode.ui.editor-1.9.3.0.jar!/" />
+      <root url="jar://$USER_HOME$/robocode/robots/AIR.iRobot_1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

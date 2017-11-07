@@ -250,4 +250,17 @@ public class G {
         drawString(p, s);
         popColor();
     }
+
+    public void drawCenteredString(Point p, String s) {
+        FontMetrics metrics = g.getFontMetrics();
+        double width = metrics.stringWidth(s);
+
+        g.drawString(s, (float) (p.x - width / 2), (float) p.y);
+    }
+
+    public void drawCenteredString(Point p, String s, Color c) {
+        pushColor(c);
+        drawCenteredString(p, s);
+        popColor();
+    }
 }

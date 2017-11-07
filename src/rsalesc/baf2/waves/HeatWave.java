@@ -21,33 +21,14 @@
  *    distribution.
  */
 
-package rsalesc.mega.gunning.power;
+package rsalesc.baf2.waves;
 
-import rsalesc.baf2.core.Component;
-import rsalesc.baf2.core.RobotMediator;
-import rsalesc.mega.utils.StatData;
+import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.geometry.Point;
+import rsalesc.baf2.tracking.EnemyRobot;
 
-/**
- * Created by Roberto Sales on 20/09/17.
- */
-public class MirrorSwarmSelector extends Component implements PowerSelector {
-    MirrorPowerSelector duelSelector;
-    MeleePowerSelector meleeSelector = new MeleePowerSelector();
-
-    public MirrorSwarmSelector(PowerPredictor predictor) {
-        duelSelector = new MirrorPowerSelector(predictor);
-    }
-
-    @Override
-    public void init(RobotMediator mediator) {
-        super.init(mediator);
-    }
-
-    @Override
-    public double selectPower(RobotMediator mediator, StatData o) {
-        if(mediator.getOthers() == 1)
-            return duelSelector.selectPower(mediator, o);
-        else
-            return meleeSelector.selectPower(mediator, o);
+public class HeatWave extends EnemyWave {
+    public HeatWave(EnemyRobot robot, Point source, BattleTime time, double velocity) {
+        super(robot, source, time, velocity);
     }
 }

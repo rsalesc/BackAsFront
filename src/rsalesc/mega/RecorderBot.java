@@ -34,9 +34,7 @@ import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.gunning.AntiAdaptiveGun;
 import rsalesc.mega.gunning.RaikoGun;
 import rsalesc.mega.gunning.guns.AutomaticGunArray;
-import rsalesc.mega.gunning.power.MirrorPowerSelector;
-import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.power.TCPowerSelector;
+import rsalesc.mega.gunning.power.*;
 import rsalesc.mega.learning.recording.GunRecorder;
 import rsalesc.mega.movement.KnightStance;
 import rsalesc.mega.radar.PerfectLockRadar;
@@ -68,7 +66,8 @@ public class RecorderBot extends BackAsFrontRobot2 {
         StatTracker statTracker = StatTracker.getInstance();
         statTracker.log();
 
-        PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector();
+        PowerPredictor predictor = new DuelPowerPredictor();
+        PowerSelector selector = TC ? new TCPowerSelector() : new MirrorPowerSelector(predictor);
 
         KnightStance move = new KnightStance(waveManager);
 
@@ -87,9 +86,7 @@ public class RecorderBot extends BackAsFrontRobot2 {
         array.addGun(adaptiveGun);
         array.log();
 
-        if(selector instanceof MirrorPowerSelector)
-            tracker.addListener(selector);
-
+        tracker.addListener(predictor);
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
 
@@ -101,9 +98,6 @@ public class RecorderBot extends BackAsFrontRobot2 {
         bulletManager.addListener(array);
 
         add(tracker);
-
-        if(selector instanceof MirrorPowerSelector)
-            addListener((MirrorPowerSelector) selector);
 
         add(bulletManager);
         add(waveManager);

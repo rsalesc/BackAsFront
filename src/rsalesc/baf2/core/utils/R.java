@@ -39,12 +39,58 @@ import java.util.List;
  * Created by Roberto Sales on 22/07/17.
  */
 public class R {
+    static double[] _exploit5s = {
+            0.15,
+            0.25,
+            0.35,
+            0.45,
+            0.55,
+            0.65,
+            0.75,
+            0.85,
+            0.95,
+            1.05,
+            1.15,
+            1.25,
+            1.35,
+            1.45,
+            1.55,
+            1.65,
+            1.75,
+            1.85,
+            1.95,
+            2.05,
+            2.15,
+            2.25,
+            2.35,
+            2.45,
+            2.55,
+            2.65,
+            2.75,
+            2.85,
+            2.95
+    };
+
+    static double[] exploit5s;
+
+    static {
+        double[] nv = new double[3*_exploit5s.length];
+        for(int i = 0; i < _exploit5s.length; i++) {
+            double x = _exploit5s[i];
+            nv[i*3] = x;
+            nv[i*3+1] = Math.nextAfter(x, +1);
+            nv[i*3+2] = Math.nextAfter(x, -1);
+        }
+
+        exploit5s = nv;
+    }
+
     public static final double PI = Math.acos(-1);
     public static final double HALF_PI = PI / 2;
     public static final double DOUBLE_PI = PI * 2;
     public static final double EPSILON = 1e-9;
     private static final DecimalFormat PERCENTAGE_FORMATTER = new DecimalFormat("#.##");
-    public static final boolean FAST_MATH = true;
+    public static boolean FAST_MATH = true;
     public static final LinkedList<Boolean> fm = new LinkedList<>();
 
     public static double sin(double radians) {
@@ -207,8 +253,54 @@ public class R {
         return R.nearOrBetween(min, x, max) && !R.isNear(x, min) && !R.isNear(x, max);
     }
 
-    public static double basicSurferRounding(double x) {
+    public static double[] getExploitablePowers(double recordedEnergy) {
+        List<Double> list = new ArrayList<>();
+
+        for(double power : exploit5s) {
+            double nextEnergy = recordedEnergy - power;
+            double recordedDiff = recordedEnergy - nextEnergy;
+
+            if(Math.round(bulletVelocity(recordedDiff) * 10) != Math.round(bulletVelocity(power) * 10)) {
+                list.add(power);
+            }
+        }
+
+        double[] res = new double[list.size()];
+
+        for(int i = 0; i < res.length; i++)
+            res[i] = list.get(i);
+
+        return res;
+    }
+
+    private static double bulletVelocity(double power) {
+        return (20D - (3D*power));
+    }
+
+    public static double basicSurferRounding(double energy, double x) {
         return Math.max(Math.min(x, 0.15), Math.floor(x / 0.05) * 0.05 - (x < 0.05 ? 0.05 : 0));
+//        double bestDiff = Double.POSITIVE_INFINITY;
+//        int best = -1;
+//        double[] p = getExploitablePowers(energy);
+//
+//        for(int i = 0; i < p.length; i++) {
+//            if(Math.abs(x - p[i]) < bestDiff) {
+//                bestDiff = Math.abs(x - p[i]);
+//                best = i;
+//            }
+//        }
+//
+//        if(best == -1)
+//            return x;
+//
+//        if((p[best] - x > 0.1 && energy < 30) || energy < p[best] + 0.01) {
+//            if(best == 0)
+//                return x;
+//
+//            return p[best - 1];
+//        }
+//
+//        return p[best];
     }
 
     public static void probabilityDistribution(@Modified double[] h) {

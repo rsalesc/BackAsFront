@@ -26,7 +26,6 @@ package rsalesc.baf2.waves;
 import robocode.Bullet;
 import robocode.ScannedRobotEvent;
 import rsalesc.baf2.core.utils.BattleTime;
-import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.LineSegment;
@@ -46,6 +45,10 @@ public class EnemyWave extends RobotWave {
     public EnemyWave(EnemyRobot robot, Point source, BattleTime time, double velocity) {
         super(source, time, velocity);
         setEnemy(robot);
+    }
+
+    public boolean isHeat() {
+        return this instanceof HeatWave;
     }
 
     public EnemyRobot getEnemy() {
@@ -70,7 +73,8 @@ public class EnemyWave extends RobotWave {
 
     public boolean wasFiredBy(Bullet bullet, long time) {
         return bullet.getName().equals(enemy.getName()) && R.isNear(getVelocity(), bullet.getVelocity())
-                && R.isNear(new Point(bullet.getX(), bullet.getY()).distance(getSource()), getDistanceTraveled(time), 40);
+                && R.isNear(new Point(bullet.getX(), bullet.getY()).distance(getSource()), getDistanceTraveled(time), 40)
+                && !this.isHeat();
     }
 
     public boolean isShadowed(double angle) {
@@ -133,20 +137,25 @@ public class EnemyWave extends RobotWave {
     }
 
     public static Shadow getShadow(EnemyWave wave, BulletWave bullet) {
+        boolean oldFastMath = R.FAST_MATH;
+        R.FAST_MATH = false;
+
         LineSegment intersection = getShadowSegment(wave, bullet);
         if(intersection == null) {
+            R.FAST_MATH = oldFastMath;
             return null;
         }
 
-        Point middle = intersection.middle();
+//        Point middle = intersection.middle();
+//
+//        double absBearing = Physics.absoluteBearing(wave.getSource(), middle);
+//        AngularRange range = new AngularRange(absBearing, -1e-8, +1e-8);
+//
+//        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
+//        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
 
-        double absBearing = Physics.absoluteBearing(wave.getSource(), middle);
-        AngularRange range = new AngularRange(absBearing, -1e-8, +1e-8);
-
-        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
-        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
-
-        return new Shadow(range, bullet);
+        R.FAST_MATH = oldFastMath;
+        return new SegmentShadow(intersection, bullet, wave);
     }
 
     public static LineSegment getShadowSegment(EnemyWave wave, BulletWave bullet) {

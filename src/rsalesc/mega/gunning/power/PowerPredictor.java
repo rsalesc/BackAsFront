@@ -23,31 +23,18 @@
 
 package rsalesc.mega.gunning.power;
 
-import rsalesc.baf2.core.Component;
-import rsalesc.baf2.core.RobotMediator;
-import rsalesc.mega.utils.StatData;
+import rsalesc.baf2.tracking.*;
 
-/**
- * Created by Roberto Sales on 20/09/17.
- */
-public class MirrorSwarmSelector extends Component implements PowerSelector {
-    MirrorPowerSelector duelSelector;
-    MeleePowerSelector meleeSelector = new MeleePowerSelector();
-
-    public MirrorSwarmSelector(PowerPredictor predictor) {
-        duelSelector = new MirrorPowerSelector(predictor);
-    }
+public interface PowerPredictor extends EnemyFireListener {
+    void train(RobotSnapshot shooter, double power, long time);
+    double predict(RobotSnapshot shooter);
 
     @Override
-    public void init(RobotMediator mediator) {
-        super.init(mediator);
-    }
+    default void onEnemyFire(EnemyFireEvent e) {
+        EnemyRobot before = EnemyTracker.getInstance().getLog(e.getEnemy()).before(e.getEnemy());
+        if(before == null)
+            before = e.getEnemy();
 
-    @Override
-    public double selectPower(RobotMediator mediator, StatData o) {
-        if(mediator.getOthers() == 1)
-            return duelSelector.selectPower(mediator, o);
-        else
-            return meleeSelector.selectPower(mediator, o);
+        train(before, e.getPower(), e.getTime());
     }
 }

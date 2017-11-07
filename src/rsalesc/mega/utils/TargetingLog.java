@@ -26,8 +26,6 @@ package rsalesc.mega.utils;
 import jk.math.FastTrig;
 import robocode.Rules;
 import rsalesc.baf2.core.RobotMediator;
-import rsalesc.baf2.core.benchmark.Benchmark;
-import rsalesc.baf2.core.benchmark.BenchmarkNode;
 import rsalesc.baf2.core.utils.BattleTime;
 import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
@@ -62,6 +60,7 @@ public class TargetingLog implements Serializable, IMea {
     public static final int SEEN_THRESHOLD = 10;
     public static final int BACK_IN_TIME = 80;
     private static final int MEA_STICK = 105; // default 105
+    private static final int ENEMY_MEA_STICK = 125; // default 105
     private static final int MELEE_STICK = 140;
 
     public Point source;
@@ -133,9 +132,6 @@ public class TargetingLog implements Serializable, IMea {
     public static TargetingLog getCrossLog(MyRobot pastMe, InterpolatedSnapshot receiver,
                                            Point source, RobotMediator mediator, double power) {
 
-        BenchmarkNode node = Benchmark.getInstance().getNode("cross-log");
-        node.start();
-
         TargetingLog f = new TargetingLog();
         f.source = source;
         f.bulletPower = power;
@@ -147,7 +143,6 @@ public class TargetingLog implements Serializable, IMea {
         computeMeleeLog(f, f.imprecise(), EnemyTracker.getInstance().getLog(receiver), receiver);
         f.escapeDirection = f.direction;
 
-        node.stop();
 
         return f;
     }
@@ -396,7 +391,7 @@ public class TargetingLog implements Serializable, IMea {
 
         BattleTime shotBattleTime = new BattleTime(f.time + 1, f.battleTime.getRound());
 
-        f.preciseMea = PrecisePredictor.getBetterPreciseMEA(f.field, MEA_STICK, PredictedPoint.from(robot),
+        f.preciseMea = PrecisePredictor.getBetterPreciseMEA(f.field, ENEMY_MEA_STICK, PredictedPoint.from(robot),
                 new Wave(f.source, shotBattleTime, Rules.getBulletSpeed(f.bulletPower)), f.direction);
 
         double halfWidth = Physics.hitAngle(f.source.distance(robot.getPoint())) / 2; // TODO: change that for me

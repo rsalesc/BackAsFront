@@ -35,7 +35,9 @@ import rsalesc.mega.gunning.guns.AutomaticGunArray;
 import rsalesc.mega.gunning.guns.KnnPlayer;
 import rsalesc.mega.gunning.guns.HeadOnGun;
 import rsalesc.mega.gunning.guns.PlayItForwardGun;
+import rsalesc.mega.gunning.power.DuelPowerPredictor;
 import rsalesc.mega.gunning.power.MirrorSwarmSelector;
+import rsalesc.mega.gunning.power.PowerPredictor;
 import rsalesc.mega.gunning.power.PowerSelector;
 import rsalesc.mega.tracking.EnemyMovie;
 import rsalesc.mega.utils.StatTracker;
@@ -68,7 +70,8 @@ public class Roborito extends BackAsFrontRobot2 {
         AutomaticGunArray meleeArray = new GunArray();
         MonkFeet move = new MonkFeet(waveManager);
 
-        MirrorSwarmSelector swarmSelector = new MirrorSwarmSelector();
+        PowerPredictor predictor = new DuelPowerPredictor();
+        MirrorSwarmSelector swarmSelector = new MirrorSwarmSelector(predictor);
 
         PifGun pifGun = new PifGun(null);
 
@@ -82,6 +85,7 @@ public class Roborito extends BackAsFrontRobot2 {
 //        swarm.addGun(meleeArray, 4);
 //        swarm.addGun(pifGun, 0);
 
+        tracker.addListener(predictor);
         tracker.addListener(bulletManager);
         tracker.addListener(waveManager);
         tracker.addListener(swarmSelector);

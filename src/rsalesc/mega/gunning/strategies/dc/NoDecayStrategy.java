@@ -21,35 +21,33 @@
  *    distribution.
  */
 
-package rsalesc.mega.movement.strategies.dc;
+package rsalesc.mega.gunning.strategies.dc;
 
 import rsalesc.baf2.core.utils.R;
 import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.TargetingLog;
 
-public class KnightBaseStrategy extends Strategy {
+/**
+ * Created by Roberto Sales on 22/09/17.
+ */
+public class NoDecayStrategy extends Strategy {
     @Override
     public double[] getQuery(TargetingLog f) {
         return new double[]{
-                Math.abs(f.lateralVelocity) / 8,
-                (f.advancingVelocity + 8) / 16,
-                Math.min(f.bft() / 81, 1),
-                (f.accel + 1) / 2,
-                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1),
+                Math.min(Math.abs(f.lateralVelocity) / 8, 1),
+                R.constrain(0, (f.advancingVelocity / 8 + 1) / 2, 1),
+                Math.min(f.distance / 900, 1),
+                R.constrain(0, (f.accel + 1) / 2, 1),
+                R.constrain(0, f.getPreciseMea().max / f.getTraditionalMea(), 1), // was 1.3
                 R.constrain(0, -f.getPreciseMea().min / f.getTraditionalMea(), 1),
-                1.0 / (1.0 + 2*f.timeDecel),
-                1.0 / (1.0 + 2*f.timeRevert),
-                Math.min(f.displaceLast10 / 80, 1)
+                1.0 / (1.0 + 2. * f.timeDecel / f.bft()),
+                R.constrain(0, f.displaceLast10 / 80, 1),
+                (R.constrain(-1, f.lastGf, +1) + 1) / 2
         };
     }
 
     @Override
     public double[] getWeights() {
-        return new double[]{7.5, 3.75, 3, 2.5, 4.5, 1.75, 2, 2, 2};
+        return new double[]{6, 3, 5, 1.5, 5, 2.5, 2, 2, 3.1};
     }
-
-//    @Override
-//    public double[] getWeights() {
-//        return new double[]{9, 3.5, 5, 2, 4.5, 1.75, 2, 2, 2};
-//    }
 }

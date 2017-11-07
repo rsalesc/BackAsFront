@@ -112,7 +112,7 @@ public class MonkPowerSelector implements PowerSelector {
             if (myEnergy < 0.4)
                 return 0;
 
-            return R.basicSurferRounding(R.constrain(0.15, Math.min(power, hisEnergy * 0.25),
+            return R.basicSurferRounding(myEnergy, R.constrain(0.15, Math.min(power, hisEnergy * 0.25),
                     Math.max(myEnergy - 0.1, 0.1)));
         }
 
