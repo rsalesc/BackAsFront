@@ -506,7 +506,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
         int cnt = 0;
 
         if(mySnap != null) {
-            TargetingLog f = TargetingLog.getEnemyMeleeLog(mySnap, wave.getSource(), getMediator(), wave.getPower(), wave.getEnemy().getName());
+            TargetingLog f = TargetingLog.getEnemyMeleeLog(mySnap, wave.getSource(), getMediator(), wave.getPower());
             data[cnt++] = new MeleeSituation(mySnap.getName(), f);
         }
 
@@ -521,8 +521,7 @@ public class MeleeSurfing extends Component implements CrossFireListener, EnemyW
                 continue;
 
             TargetingLog f =
-                    TargetingLog.getCrossLog(pastMe, interpolatedSnapshot, interpolatedFirer.getPoint(), getMediator(), wave.getPower(),
-                            wave.getEnemy().getName());
+                    TargetingLog.getCrossLog(pastMe, interpolatedSnapshot, interpolatedFirer.getPoint(), getMediator(), wave.getPower());
             data[cnt++] = new MeleeSituation(interpolatedSnapshot.getName(), f);
         }
 

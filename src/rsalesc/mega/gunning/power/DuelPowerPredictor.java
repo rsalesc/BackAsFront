@@ -87,7 +87,7 @@ public class DuelPowerPredictor extends StoreComponent implements PowerPredictor
 
     @Override
     public double predict(RobotSnapshot shooter) {
-        MyRobot robot = MyLog.getInstance().atMostAt(shooter.getTime());
+        MyRobot robot = MyLog.getInstance().getLatest();
         if(robot == null)
             return 3.0;
 
@@ -120,7 +120,7 @@ public class DuelPowerPredictor extends StoreComponent implements PowerPredictor
         }
 
         if(best_h == 0)
-            return 2.4;
+            return 1.5;
 
         return best;
     }

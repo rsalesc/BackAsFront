@@ -45,8 +45,8 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
 
     public static final Knn.ParametrizedCondition FLAT_CONDITION =
             new Knn.OrCondition()
-                    .add(new NamedStatData.WeightedHitCondition(0.09, 2, 17))
-                    .add(new NamedStatData.WeightedHitCondition(0.08, 6, 17))
+                    .add(new NamedStatData.WeightedHitCondition(0.09, 2, 15))
+                    .add(new NamedStatData.WeightedHitCondition(0.08, 4, 15))
             ;
 
     public static final Knn.ParametrizedCondition MFLAT_CONDITION =
@@ -93,7 +93,7 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
                 .setK(25)
                 .setRatio(0.3)
                 .setStrategy(new UnsegStrats())
-                .setDistanceWeighter(new Knn.NormalizeManhattanWeighter<>(new UnsegStrats(), BASE_STRATEGY))
+//                .setDistanceWeighter(new Knn.NormalizeManhattanWeighter<>(new UnsegStrats(), BASE_STRATEGY))
                 .setScanWeight(0.03)
                 .logsHit())
         ;

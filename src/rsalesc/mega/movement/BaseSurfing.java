@@ -136,15 +136,15 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         MyRobot decisionMe = MyLog.getInstance().atLeastAt(wave.getTime() - 1);
 
         TargetingLog f = TargetingLog.getEnemyLog(decisionMe, wave.getSource(),
-                getMediator(), Physics.bulletPower(wave.getVelocity()), wave.getEnemy().getName());
+                getMediator(), Physics.bulletPower(wave.getVelocity()));
 
         wave.setData(LOG_HINT, f);
     }
 
     @Override
     public void onEnemyWaveBreak(EnemyWave wave, MyRobot me) {
-        if(!wave.isHeat())
-            breaks++;
+        // TODO: check if wave is heat?
+        breaks++;
     }
 
 
@@ -250,8 +250,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             value *= Math.abs(mea.getOffset(gfRange.max) - mea.getOffset(gfRange.min));
         }
 
-//        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
-//        value *= shadowFactor;
+        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
+        value *= shadowFactor;
 
         Benchmark.getInstance().stop();
         return value;

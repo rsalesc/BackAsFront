@@ -55,7 +55,7 @@ public abstract class KnightVCSSurfer extends SegmentedDataSurfer {
 
         view.add(
             new GFSegmentationSet()
-            .setScanWeight(0.7)
+            .setScanWeight(2.0)
             .setStrategy(new SlicingFlattenerStrategy())
             .setCondition(KnightDCSurfer.MFLAT_CONDITION)
             .setWeighter(new DrussSegmentationWeighter<>())

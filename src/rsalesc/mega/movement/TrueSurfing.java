@@ -192,11 +192,10 @@ public class TrueSurfing extends BaseSurfing {
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
         EnemyRobot latestEnemy = enemyLog.getLatest();
 
-//        Point orbitCenter = latestEnemy.getPoint();
         Point orbitCenter = nextWave.getSource();
 
         AxisRectangle field = getMediator().getBattleField();
-        double distance = nextWave.getSource().distance(orbitCenter);
+        double distance = initialPoint.distance(orbitCenter);
         double perp = distancer.getPerpendiculator(distance);
 
         int stopDirection = initialPoint.getDirection(orbitCenter);

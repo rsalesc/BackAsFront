@@ -51,8 +51,13 @@ import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 11/09/17.
- * TODO: targetinglog is a bit weird with the new time-since stuff
- *
+ * Change log 0.6.7
+ * - Rollback TargetingLog to 7/11
+ * - Rollback shadow factor
+ * - Rollback # of meetings flat threshold
+ * - Rollback check if wave is heat before adding to var breaks
+ * - Revert DuelPowerPredictor
+ * - Fix distance-to-wave-center calculation (bug introduced somewhere in the 0.6 series)
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
@@ -69,7 +74,6 @@ public class Knight extends BackAsFrontRobot2 {
 
     @Override
     public void initialize() {
-
         checkChallenges();
 
         add(new Colorizer());
@@ -120,6 +124,9 @@ public class Knight extends BackAsFrontRobot2 {
         add(statTracker);
         if(!TC) add(move);
 
+        if(selector instanceof MirrorPowerSelector)
+            addListener((MirrorPowerSelector) selector);
+
         if(!MC) {
             add(array);
         } else if(!MC2k6) {
@@ -127,8 +134,6 @@ public class Knight extends BackAsFrontRobot2 {
         }
 
         add(new PerfectLockRadar());
-        if(selector instanceof MirrorPowerSelector)
-            addListener((MirrorPowerSelector) selector);
     }
 
     class Colorizer extends Component implements RoundStartedListener {
