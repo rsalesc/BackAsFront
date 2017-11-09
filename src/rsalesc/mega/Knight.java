@@ -53,10 +53,6 @@ import java.util.ArrayList;
  * Created by Roberto Sales on 11/09/17.
  * TODO: targetinglog is a bit weird with the new time-since stuff
  *
- * Change log:
- * - Tweak VCS, bandwidth in VCS is 0.15
- * - Don't use shadow factor, just do not log shadowed bins
- * - Imprecise MEA in movement
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
@@ -205,8 +201,9 @@ public class Knight extends BackAsFrontRobot2 {
 
                     if(gpScore != null && (
                             (maxHits * 0.8 <= gpScore.score && round < 7)
-                            || (maxHits * 0.9 <= gpScore.score && round < 15)
-                            || maxHits <= gpScore.score
+                            || (maxHits * 0.9 <= gpScore.score && round < 15) ||
+
+                            maxHits <= gpScore.score
                             )) {
                         return generalPurpose;
                     } else if(asScore != null && asScore.score >= maxHits)

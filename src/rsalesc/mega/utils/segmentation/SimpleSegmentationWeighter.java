@@ -26,9 +26,9 @@ package rsalesc.mega.utils.segmentation;
 /**
  * Created by Roberto Sales on 30/09/17.
  */
-public class SimpleSegmentationWeighter extends SegmentationWeighter {
+public class SimpleSegmentationWeighter<T> extends SegmentationWeighter<T> {
     @Override
-    public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry) {
+    public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry, SegmentedData<T> data) {
         return segmentationEntry.getSliceCount();
     }
 

@@ -26,16 +26,18 @@ package rsalesc.mega.utils.segmentation;
 /**
  * Created by Roberto Sales on 30/09/17.
  */
-public class DrussSegmentationWeighter extends SegmentationWeighter {
+public class DrussSegmentationWeighter<T> extends SegmentationWeighter<T> {
     @Override
-    public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry) {
-        return segmentationEntry.getSliceCount();
+    public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry, SegmentedData<T> data) {
+//        return segmentationEntry.getSliceCount();
+        double roll = 1.0 - 1.0 / (1.0 + getDepth(segmentationEntry));
+
+//        return data.size() * (1-roll) / (roll-Math.pow(roll, data.size() + 1));
+        return data.size() * segmentationEntry.getSliceCount();
     }
 
     @Override
     public int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry) {
-
-
         return (int) Math.ceil(2 * getDepth(segmentationEntry) + 1);
     }
 

@@ -47,6 +47,10 @@ public class SegmentedData<T> {
         list.add(data);
     }
 
+    public int size() {
+        return list.size();
+    }
+
     public ArrayList<T> getData() {
         ArrayList<T> rev = new ArrayList<>(list);
         Collections.reverse(rev);

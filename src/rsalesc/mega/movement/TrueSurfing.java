@@ -44,9 +44,7 @@ import rsalesc.baf2.waves.Wave;
 import rsalesc.baf2.waves.WaveManager;
 import rsalesc.mega.movement.distancing.DefaultSurfingDistancer;
 import rsalesc.mega.movement.distancing.SurfingDistancer;
-import rsalesc.mega.utils.IMea;
-import rsalesc.mega.utils.TargetingLog;
-import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.*;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.structures.Knn;
 
@@ -194,7 +192,8 @@ public class TrueSurfing extends BaseSurfing {
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
         EnemyRobot latestEnemy = enemyLog.getLatest();
 
-        Point orbitCenter = latestEnemy.getPoint();
+//        Point orbitCenter = latestEnemy.getPoint();
+        Point orbitCenter = nextWave.getSource();
 
         AxisRectangle field = getMediator().getBattleField();
         double distance = nextWave.getSource().distance(orbitCenter);
@@ -253,21 +252,22 @@ public class TrueSurfing extends BaseSurfing {
         double impactTime = Math.max((distanceToSource - nextWave.getDistanceTraveled(initialPoint.time))
                 / nextWave.getVelocity(), 1);
 
-        for (int i = 0; i < 3; i++) {
-//            if (distanceToSource < 100) {
-//                res[i].danger *= Math.max((Rules.MAX_VELOCITY - Math.abs(res[i].transitionPoint.velocity)) / 4, 1);
-//            }
+        StatData data = StatTracker.getInstance().getDuelStatData();
+        NamedStatData namedData = new NamedStatData(data, enemyLog.getName());
 
+        for (int i = 0; i < 3; i++) {
             double passDistance = Math.min(
                     res[i].transitionPoint.distance(nextWave.getSource()),
                     res[i].transitionPoint.distance(orbitCenter));
+
+//            res[i].danger += namedData.getEnemyHitPercentage();
 
             res[i].danger *= Rules.getBulletDamage(Physics.bulletPower(nextWave.getVelocity()));
 //            res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
             res[i].danger *= R.sqr(impactTime - 100);
             res[i].danger /= Math.max((passDistance - 40), 1);
 //            res[i].danger *=
-//                    Math.pow(2.5, distanceToSource / res[i].transitionPoint.distance(nextWave.getSource()) - 1);
+//                    Math.pow(2.5, distanceToSource / passDistance - 1);
         }
 
         return res;

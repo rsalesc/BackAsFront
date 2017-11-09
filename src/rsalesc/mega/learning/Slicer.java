@@ -34,25 +34,25 @@ public class Slicer {
             new String[]{"BFT", "LAT_VEL", "ADV_VEL", "ESCAPE", "ESCAPE", "ACCEL", "DECEL", "REVERT", "D10"};
 
     private static final double[] simpleChances =
-            new double[]{0.7, 0.9, 0.4, 0.6, 0.35, 0.15, 0, 0, 0};
+            new double[]{0.6, 0.95, 0.35, 0.0, 0.0, 0, 0, 0, 0};
 
     private static final double[] adaptiveChances =
             new double[]{0.75, 0.75, 0.2, 0.5, 0.2, 0.2, 0.25, 0.25, 0.25};
 
     private static final double[] flattenerChances =
-            new double[]{0.6, 0.6, 0.4, 0.6, 0.4, 0.65, 0.4, 0.4, 0.4};
+            new double[]{0.8, 0.9, 0.4, 0.6, 0.4, 0.65, 0.4, 0.4, 0.4};
 
     private static final double[] tickChances =
             new double[]{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.45, 0.5};
 
     private static final double[] pmChances =
-            new double[]{0.2, 1.0, 0.3, 0, 0, 0.3, 0.7, 0.4, 0.75};
+            new double[]{0, 1.0, 0.5, 0, 0, 0.5, 0.5, 0.5, 0.6};
 
 
     public static void main(String[] args) {
 //        printSlices(
-//                generateSliced("simple", 35, 2.0, adaptiveNames, simpleChances),
-//                generateSliced("pm", 25, 10.0, adaptiveNames, pmChances),
+//                generateSliced("simple", 25, 2.0, adaptiveNames, simpleChances),
+//                generateSliced("pm", 30, 10.0, adaptiveNames, pmChances),
 //                generateSliced("adaptive", 40, 10.0, adaptiveNames, adaptiveChances)
 //        );
 

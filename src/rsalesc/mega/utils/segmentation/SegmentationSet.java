@@ -38,7 +38,7 @@ public class SegmentationSet<T> {
 
     private MultipleSlicingStrategy strategy;
     private ArrayList<SegmentationEntry> segmentations;
-    private SegmentationWeighter weighter;
+    private SegmentationWeighter<T> weighter;
     private SegmentationNormalizer<T> normalizer;
     private boolean built = false;
 
@@ -101,7 +101,7 @@ public class SegmentationSet<T> {
         return this;
     }
 
-    public SegmentationSet<T> setWeighter(SegmentationWeighter weighter) {
+    public SegmentationSet<T> setWeighter(SegmentationWeighter<T> weighter) {
         this.weighter = weighter;
         return this;
     }
@@ -133,9 +133,9 @@ public class SegmentationSet<T> {
             return DEFAULT_SIZE;
     }
 
-    private double getWeight(SegmentationEntry entry) {
+    private double getWeight(SegmentationEntry entry, SegmentedData<T> data) {
         if(weighter != null)
-            return weighter.getWeight(entry);
+            return weighter.getWeight(entry, data);
         else
             return 1.0;
     }
@@ -161,7 +161,8 @@ public class SegmentationSet<T> {
         ArrayList<WeightedSegmentedData<T>> res = new ArrayList<>();
 
         for(SegmentationEntry entry : segmentations) {
-            res.add(getDataFrom(entry, vals).weight(getWeight(entry), getDepth(entry)));
+            SegmentedData<T> data = getDataFrom(entry, vals);
+            res.add(data.weight(getWeight(entry, data), getDepth(entry)));
         }
 
         if(normalizer != null)

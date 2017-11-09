@@ -9,62 +9,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2847bca9-8077-4222-a645-4bef3de5fcb8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/MatrixUtils.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/GuessFactorNetwork.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/L2Regularization.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/LogisticStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/MLP.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/MLPRegularization.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/MLPStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/MLPTest.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/nn/RawStrategy.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationHeightNormalizer.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationNormalizer.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedEntry.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/rsalesc/structures/WeightedKdTree.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/jk/mega/gun/GFRange.java" afterPath="$PROJECT_DIR$/src/jk/mega/gun/GFRange.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/mega/gun/Indice.java" afterPath="$PROJECT_DIR$/src/jk/mega/gun/Indice.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/precise/EnergyDomeWorker.java" afterPath="$PROJECT_DIR$/src/jk/precise/EnergyDomeWorker.java" />
       <change beforePath="$PROJECT_DIR$/src/jk/tree/KDTree.java" afterPath="$PROJECT_DIR$/src/jk/tree/KDTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/Benchmark.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/Benchmark.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWave.java" afterPath="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWave.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiAdaptiveGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/AutomaticGun.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/KnnGuessFactorTargeting.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorPowerSelector.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorPowerSelector.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/AntiRandomStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/MainStrategy.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnnFlattenedSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/KnnFlattenedSurfer.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/Slices.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/Slices.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingPatternMatcherStrategy.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
+      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" />
       <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedSegmentedData.java" afterPath="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedSegmentedData.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" afterPath="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/KnnTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/KnnTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/WeightedEuclideanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/WeightedEuclideanKdTree.java" />
-      <change beforePath="$PROJECT_DIR$/src/rsalesc/structures/WeightedManhattanKdTree.java" afterPath="$PROJECT_DIR$/src/rsalesc/structures/WeightedManhattanKdTree.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -85,64 +49,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Knight.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Knight.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/Knight.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1476">
-              <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+            <state relative-caret-position="54">
+              <caret line="54" column="2" lean-forward="false" selection-start-line="54" selection-start-column="2" selection-end-line="54" selection-end-column="2" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="KnnSurfer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnnSurfer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="46" column="22" lean-forward="false" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SegmentedDataSurfer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="88" column="81" lean-forward="false" selection-start-line="88" selection-start-column="81" selection-end-line="88" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseSurfing.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3276">
-              <caret line="242" column="26" lean-forward="false" selection-start-line="242" selection-start-column="26" selection-end-line="242" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TrueSurfing.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1019">
-              <caret line="262" column="63" lean-forward="false" selection-start-line="262" selection-start-column="63" selection-end-line="262" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Slicer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-216">
-              <caret line="42" column="48" lean-forward="false" selection-start-line="42" selection-start-column="48" selection-end-line="42" selection-end-column="48" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -150,9 +62,34 @@
       <file leaf-file-name="KnightDCSurfer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-266">
-              <caret line="48" column="85" lean-forward="false" selection-start-line="48" selection-start-column="85" selection-end-line="48" selection-end-column="85" />
+            <state relative-caret-position="3276">
+              <caret line="219" column="29" lean-forward="false" selection-start-line="219" selection-start-column="29" selection-end-line="219" selection-end-column="29" />
+              <folding>
+                <element signature="e#8129#8130#0" expanded="true" />
+                <element signature="e#8174#8175#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TrueSurfing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="467">
+              <caret line="262" column="24" lean-forward="true" selection-start-line="262" selection-start-column="24" selection-end-line="262" selection-end-column="24" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KnightStance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="45" column="45" lean-forward="false" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+              <folding>
+                <element signature="e#1982#1983#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -171,7 +108,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>breaks</find>
       <find>kdnode</find>
       <find>dist</find>
       <find>besthyper</find>
@@ -201,6 +137,7 @@
       <find>crossover</find>
       <find>slicer</find>
       <find>f.accel</find>
+      <find>marginOf</find>
     </findStrings>
     <replaceStrings>
       <replace>FLATTENING_CONDITION</replace>
@@ -246,8 +183,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/baf2/BackAsFrontRobot2.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/core/benchmark/Benchmark.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/structures/WeightedEuclideanKdTree.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/structures/WeightedManhattanKdTree.java" />
@@ -269,33 +204,35 @@
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/predictor/PrecisePredictor.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/KnnFlattenedSurfer.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/baf2/waves/EnemyWave.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/structures/Knn.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingPatternMatcherStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationNormalizer.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/gunning/power/MirrorPowerSelector.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedEntry.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/WeightedSegmentedData.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationHeightNormalizer.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/Slices.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java" />
-        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java" />
+        <option value="$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java" />
         <option value="$PROJECT_DIR$/src/rsalesc/mega/Knight.java" />
       </list>
     </option>
@@ -571,23 +508,6 @@
               <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
               <item name="mega" type="462c0819:PsiDirectoryNode" />
               <item name="radar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
-              <item name="mega" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BackAsFront" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="rsalesc" type="462c0819:PsiDirectoryNode" />
-              <item name="mega" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-              <item name="segmentation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BackAsFront" type="b2602c69:ProjectViewProjectNode" />
@@ -1425,7 +1345,7 @@
       <workItem from="1509677139735" duration="11934000" />
       <workItem from="1509893954850" duration="98786000" />
       <workItem from="1510166486360" duration="18821000" />
-      <workItem from="1510224613097" duration="7656000" />
+      <workItem from="1510224613097" duration="17240000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1505318578286</created>
@@ -1609,7 +1529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510038326607</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="0.6.6S">
+      <created>1510232289581</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1510232289581</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1645,7 +1572,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1133766000" />
+    <option name="totallyTimeSpent" value="1143350000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1657,7 +1584,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="66" width="1924" height="973" extended-state="6" />
+    <frame x="-2" y="42" width="1924" height="997" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1668,14 +1595,14 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32840723" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.67548907" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5132336" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6927503" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.54201186" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2796875" sideWeight="0.48040313" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26035503" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2530795" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1775,7 +1702,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
-    <MESSAGE value="first commit" />
     <MESSAGE value="add knight" />
     <MESSAGE value="improve movement" />
     <MESSAGE value="Monk 0.3.4d" />
@@ -1800,7 +1726,8 @@
     <MESSAGE value="add variance stuff in KdTree" />
     <MESSAGE value="vary stick/distancing and add cb ws" />
     <MESSAGE value="0.6.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.6.0" />
+    <MESSAGE value="0.6.6S" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.6.6S" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1821,59 +1748,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/guns/GuessFactorGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="827">
-          <caret line="214" column="39" lean-forward="false" selection-start-line="214" selection-start-column="39" selection-end-line="214" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/nn/RawStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="42" column="5" lean-forward="false" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/AntiRandomGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="46" column="77" lean-forward="false" selection-start-line="46" selection-start-column="77" selection-end-line="46" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/nn/MLPTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="116" column="52" lean-forward="false" selection-start-line="116" selection-start-column="52" selection-end-line="116" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#4893#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/tracking/RobotLog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="40" column="55" lean-forward="false" selection-start-line="40" selection-start-column="55" selection-end-line="40" selection-end-column="55" />
-          <folding>
-            <element signature="e#2026#2027#0" expanded="false" />
-            <element signature="e#2062#2063#0" expanded="false" />
-            <element signature="e#2113#2114#0" expanded="false" />
-            <element signature="e#2147#2148#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/strategies/dc/SlowDecayStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="32" column="13" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/melee/movement/surfing/MeleeSurfing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="382">
@@ -1943,14 +1817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="48" column="39" lean-forward="false" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/waves/SegmentShadow.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -1990,14 +1856,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="37" column="10" lean-forward="false" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2043,14 +1901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="30" column="89" lean-forward="false" selection-start-line="30" selection-start-column="89" selection-end-line="30" selection-end-column="89" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationHeightNormalizer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -2082,40 +1932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="41" column="13" lean-forward="false" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-186">
-          <caret line="45" column="45" lean-forward="false" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
-          <folding>
-            <element signature="e#1982#1983#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="647">
-          <caret line="69" column="32" lean-forward="false" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-278">
-          <caret line="170" column="45" lean-forward="false" selection-start-line="170" selection-start-column="45" selection-end-line="170" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingAdaptiveStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -2124,50 +1940,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/Segmentation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-674">
-          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="105" column="10" lean-forward="false" selection-start-line="105" selection-start-column="10" selection-end-line="105" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingSimpleStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1440">
           <caret line="104" column="8" lean-forward="false" selection-start-line="104" selection-start-column="8" selection-end-line="114" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1107">
-          <caret line="244" column="45" lean-forward="false" selection-start-line="244" selection-start-column="45" selection-end-line="244" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="562">
-          <caret line="53" column="32" lean-forward="false" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/KnightBaseStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="37" column="16" lean-forward="false" selection-start-line="37" selection-start-column="16" selection-end-line="38" selection-end-column="82" />
           <folding />
         </state>
       </provider>
@@ -2188,40 +1964,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-266">
-          <caret line="48" column="85" lean-forward="false" selection-start-line="48" selection-start-column="85" selection-end-line="48" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="60" column="56" lean-forward="false" selection-start-line="60" selection-start-column="56" selection-end-line="60" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-216">
-          <caret line="42" column="48" lean-forward="false" selection-start-line="42" selection-start-column="48" selection-end-line="42" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1019">
-          <caret line="262" column="63" lean-forward="false" selection-start-line="262" selection-start-column="63" selection-end-line="262" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnnFlattenedSurfer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="341">
@@ -2230,42 +1972,228 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/Knight.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/KnightBaseStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1476">
-          <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+        <state relative-caret-position="252">
+          <caret line="37" column="16" lean-forward="false" selection-start-line="37" selection-start-column="16" selection-end-line="38" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/dc/KnightAdaptiveStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/DefaultSurfingDistancer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/distancing/SurfingDistancer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="28" column="22" lean-forward="false" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/gunning/SlowDecayGun.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="48" column="39" lean-forward="false" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnnSurfer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="46" column="22" lean-forward="false" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+        <state relative-caret-position="216">
+          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java">
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/Segmentation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="156" column="10" lean-forward="false" selection-start-line="156" selection-start-column="10" selection-end-line="156" selection-end-column="10" />
+        <state relative-caret-position="18">
+          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentedData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="50" column="27" lean-forward="false" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
+          <folding>
+            <element signature="e#1505#1506#0" expanded="false" />
+            <element signature="e#1539#1540#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SimpleSegmentationWeighter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="30" column="81" lean-forward="false" selection-start-line="30" selection-start-column="81" selection-end-line="30" selection-end-column="102" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/DrussSegmentationWeighter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="35" column="63" lean-forward="false" selection-start-line="35" selection-start-column="63" selection-end-line="35" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationWeighter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="28" column="45" lean-forward="false" selection-start-line="28" selection-start-column="45" selection-end-line="28" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="103" column="65" lean-forward="false" selection-start-line="103" selection-start-column="65" selection-end-line="103" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/baf2/core/utils/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="191" column="33" lean-forward="false" selection-start-line="191" selection-start-column="25" selection-end-line="191" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/SegmentedDataSurfer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="88" column="81" lean-forward="false" selection-start-line="88" selection-start-column="81" selection-end-line="88" selection-end-column="81" />
+        <state relative-caret-position="954">
+          <caret line="91" column="84" lean-forward="false" selection-start-line="91" selection-start-column="84" selection-end-line="91" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingFlattenerStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1168">
+          <caret line="90" column="0" lean-forward="true" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/NamedStatData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="163" column="75" lean-forward="true" selection-start-line="163" selection-start-column="75" selection-end-line="163" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/learning/Slicer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="59" column="5" lean-forward="true" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/segmentation/SegmentationView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/strategies/vcs/SlicingMixedStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="56" column="75" lean-forward="false" selection-start-line="56" selection-start-column="75" selection-end-line="56" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/TargetingLog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="327" column="28" lean-forward="false" selection-start-line="327" selection-start-column="28" selection-end-line="327" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/BaseSurfing.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2520">
+          <caret line="62" column="49" lean-forward="false" selection-start-line="62" selection-start-column="49" selection-end-line="62" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/utils/StatTracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2206">
+          <caret line="196" column="62" lean-forward="false" selection-start-line="196" selection-start-column="62" selection-end-line="196" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightVCSSurfer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="59" column="56" lean-forward="false" selection-start-line="59" selection-start-column="41" selection-end-line="59" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/TrueSurfing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="467">
+          <caret line="262" column="24" lean-forward="true" selection-start-line="262" selection-start-column="24" selection-end-line="262" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/KnightStance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="45" column="45" lean-forward="false" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+          <folding>
+            <element signature="e#1982#1983#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/movement/surfers/KnightDCSurfer.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3276">
-          <caret line="242" column="26" lean-forward="false" selection-start-line="242" selection-start-column="26" selection-end-line="242" selection-end-column="26" />
+          <caret line="219" column="29" lean-forward="false" selection-start-line="219" selection-start-column="29" selection-end-line="219" selection-end-column="29" />
+          <folding>
+            <element signature="e#8129#8130#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rsalesc/mega/Knight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="54" column="2" lean-forward="false" selection-start-line="54" selection-start-column="2" selection-end-line="54" selection-end-column="2" />
           <folding />
         </state>
       </provider>

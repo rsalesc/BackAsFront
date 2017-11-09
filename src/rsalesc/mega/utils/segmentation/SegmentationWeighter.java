@@ -26,8 +26,8 @@ package rsalesc.mega.utils.segmentation;
 /**
  * Created by Roberto Sales on 30/09/17.
  */
-public abstract class SegmentationWeighter {
-    public abstract double getWeight(SegmentationSet.SegmentationEntry segmentationEntry);
+public abstract class SegmentationWeighter<T> {
+    public abstract double getWeight(SegmentationSet.SegmentationEntry segmentationEntry, SegmentedData<T> data);
     public abstract double getDepth(SegmentationSet.SegmentationEntry segmentationEntry);
     public abstract int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry);
 }

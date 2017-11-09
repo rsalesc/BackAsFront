@@ -304,7 +304,7 @@ public class TargetingLog implements Serializable, IMea {
         f.timeRevert = 0;
         f.run = 0;
 
-        for (int i = 0; i < backInTime; i++) {
+        for (int i = 0; i < 80; i++) {
             // biggest interpolate change
             RobotSnapshot curRobot = log.interpolate(f.time - i);
             RobotSnapshot lastRobot = log.interpolate(f.time - i - 1);
@@ -323,16 +323,16 @@ public class TargetingLog implements Serializable, IMea {
                 f.run++;
         }
 
-        if(tsCache != null) {
-            if(f.timeAccel == backInTime)
-                f.timeAccel += tsCache.first.timeAccel;
-            if(f.timeDecel == backInTime)
-                f.timeDecel += tsCache.first.timeDecel;
-            if(f.timeRevert == backInTime)
-                f.timeRevert += tsCache.first.timeRevert;
-            if(f.run == backInTime)
-                f.run += tsCache.first.run;
-        }
+//        if(tsCache != null) {
+//            if(f.timeAccel == backInTime)
+//                f.timeAccel += tsCache.first.timeAccel;
+//            if(f.timeDecel == backInTime)
+//                f.timeDecel += tsCache.first.timeDecel;
+//            if(f.timeRevert == backInTime)
+//                f.timeRevert += tsCache.first.timeRevert;
+//            if(f.run == backInTime)
+//                f.run += tsCache.first.run;
+//        }
 
         saveTimeSinceCache(robot, log, f, reference);
 
