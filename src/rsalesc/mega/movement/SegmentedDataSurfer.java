@@ -26,17 +26,18 @@ package rsalesc.mega.movement;
 import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
-import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.PredictedHashMap;
 import rsalesc.baf2.tracking.EnemyLog;
 import rsalesc.baf2.waves.BreakType;
-import rsalesc.mega.utils.*;
+import rsalesc.mega.utils.IMea;
+import rsalesc.mega.utils.NamedStatData;
+import rsalesc.mega.utils.TargetingLog;
+import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.mega.utils.segmentation.SegmentationView;
-import rsalesc.mega.utils.segmentation.SegmentedData;
+import rsalesc.mega.utils.segmentation.WeightedEntry;
 import rsalesc.mega.utils.segmentation.WeightedSegmentedData;
-import rsalesc.mega.utils.stats.BinKernelDensity;
 import rsalesc.mega.utils.stats.GuessFactorStats;
-import rsalesc.mega.utils.stats.UncutGaussianKernelDensity;
+import rsalesc.mega.utils.stats.PowerKernelDensity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,6 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
         getSegmentationView(enemyLog.getName()).add(log, KnnSurfer.getGfRange(log, mea), type);
     }
 
-    // TODO: fix that
     @Override
     public GuessFactorStats getStats(EnemyLog enemyLog, TargetingLog f, IMea mea, long cacheIndex, NamedStatData o) {
         if(f == null)
@@ -85,21 +85,16 @@ public abstract class SegmentedDataSurfer extends StoreComponent implements Surf
         }
 
         List<WeightedSegmentedData<TimestampedGFRange>> data = view.query(f, o);
-        double totalWeight = SegmentedData.getTotalWeight(data);
 
-        double width = Physics.hitAngle(f.distance); // multiplied by two because the deviation is good
-        double bandwidth = width / Math.max(f.preciseMea.maxAbsolute(),
-                f.preciseMea.minAbsolute());
-
-        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
-
-        GuessFactorStats stats = new GuessFactorStats(new BinKernelDensity(new UncutGaussianKernelDensity(), binBandwidth));
+        GuessFactorStats stats = new GuessFactorStats(new PowerKernelDensity(0.15));
 
         for(WeightedSegmentedData<TimestampedGFRange> entry : data) {
-            for(TimestampedGFRange range : entry.getData()) {
-                stats.logGuessFactor(range.mean, entry.getWeight() / totalWeight);
+            for(WeightedEntry<TimestampedGFRange> range : entry.getWeightedData()) {
+                stats.add(stats.getBucket(range.payload.mean), range.weight, 1);
             }
         }
+
+        stats.normalize();
 
         statsCache.put(cacheIndex, stats);
         return stats;

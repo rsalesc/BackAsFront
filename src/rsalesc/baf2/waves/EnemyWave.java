@@ -26,6 +26,7 @@ package rsalesc.baf2.waves;
 import robocode.Bullet;
 import robocode.ScannedRobotEvent;
 import rsalesc.baf2.core.utils.BattleTime;
+import rsalesc.baf2.core.utils.Physics;
 import rsalesc.baf2.core.utils.R;
 import rsalesc.baf2.core.utils.geometry.AngularRange;
 import rsalesc.baf2.core.utils.geometry.LineSegment;
@@ -146,16 +147,16 @@ public class EnemyWave extends RobotWave {
             return null;
         }
 
-//        Point middle = intersection.middle();
-//
-//        double absBearing = Physics.absoluteBearing(wave.getSource(), middle);
-//        AngularRange range = new AngularRange(absBearing, -1e-8, +1e-8);
-//
-//        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
-//        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
+        Point middle = intersection.middle();
+
+        double absBearing = Physics.absoluteBearing(wave.getSource(), middle);
+        AngularRange range = new AngularRange(absBearing, -1e-8, +1e-8);
+
+        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p1));
+        range.pushAngle(Physics.absoluteBearing(wave.getSource(), intersection.p2));
 
         R.FAST_MATH = oldFastMath;
-        return new SegmentShadow(intersection, bullet, wave);
+        return new Shadow(range, bullet);
     }
 
     public static LineSegment getShadowSegment(EnemyWave wave, BulletWave bullet) {

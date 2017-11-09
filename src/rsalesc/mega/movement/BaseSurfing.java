@@ -136,7 +136,7 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         MyRobot decisionMe = MyLog.getInstance().atLeastAt(wave.getTime() - 1);
 
         TargetingLog f = TargetingLog.getEnemyLog(decisionMe, wave.getSource(),
-                getMediator(), Physics.bulletPower(wave.getVelocity()));
+                getMediator(), Physics.bulletPower(wave.getVelocity()), wave.getEnemy().getName());
 
         wave.setData(LOG_HINT, f);
     }
@@ -234,9 +234,13 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         int iBucket = stats.getBucket(gfRange.min);
         int jBucket = stats.getBucket(gfRange.max);
 
+        int countedBins = 0;
+
         for (int i = iBucket; i <= jBucket; i++) {
             if(wave.isShadowed(mea.getAngle(stats.getGuessFactor(i))))
                 continue;
+
+            countedBins++;
 
             value += stats.getValueFromBucket(i);
         }
@@ -246,8 +250,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
             value *= Math.abs(mea.getOffset(gfRange.max) - mea.getOffset(gfRange.min));
         }
 
-        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
-        value *= shadowFactor;
+//        double shadowFactor = 1.0 - wave.getShadowFactor(intersection);
+//        value *= shadowFactor;
 
         Benchmark.getInstance().stop();
         return value;

@@ -43,14 +43,19 @@ import java.util.function.Function;
 public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
     public static final Knn.ParametrizedCondition ADAPTIVE_CONDITION = new NamedStatData.HitCondition(new Range(0.02, 1), 0);
 
-    public static final Knn.ParametrizedCondition LIGHT_CONDITION =
-            new NamedStatData.HitCondition(new Range(0.05, 1), 1);
-
     public static final Knn.ParametrizedCondition FLAT_CONDITION =
             new Knn.OrCondition()
                     .add(new NamedStatData.WeightedHitCondition(new Range(0.09, 1), 2, 17))
-                    .add(new NamedStatData.WeightedHitCondition(new Range(0.08, 1), 4, 17))
+                    .add(new NamedStatData.WeightedHitCondition(new Range(0.08, 1), 6, 17))
             ;
+
+    public static final Knn.ParametrizedCondition LIGHT_CONDITION =
+                    new Knn.OrCondition()
+                            .add(new NamedStatData.HitCondition(new Range(0.075, 1), 2))
+                            .add(new NamedStatData.HitCondition(new Range(0.06, 1), 4))
+                            .add(new NamedStatData.HitCondition(new Range(0.05, 1), 6))
+            ;
+
 
 //    public static final Knn.ParametrizedCondition FLAT_CONDITION =
 //            new Knn.OrCondition()
@@ -85,6 +90,7 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
                 .setK(25)
                 .setRatio(0.3)
                 .setStrategy(new UnsegStrats())
+                .setDistanceWeighter(new Knn.NormalizeManhattanWeighter<>(new UnsegStrats(), BASE_STRATEGY))
                 .setScanWeight(0.03)
                 .logsHit())
         ;
@@ -165,6 +171,18 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
     public KnnView<TimestampedGFRange> getNewFlattenerKnnSet() {
         KnnView<TimestampedGFRange> set = new KnnView<TimestampedGFRange>();
         set.setDistanceWeighter(new Knn.GaussDistanceWeighter<>(1.0));
+
+//        set.add(new KnnTree<TimestampedGFRange>()
+//                .setMode(KnnTree.Mode.MANHATTAN)
+//                .setK(10)
+//                .setRatio(0.2)
+//                .setScanWeight(0.15)
+//                .setCondition(LIGHT_CONDITION)
+//                .setStrategy(BASE_STRATEGY)
+//                .setDistanceWeighter(new Knn.NormalizeManhattanWeighter<>(BASE_STRATEGY, ADAPTIVE_STRATEGY))
+//                .logsHit()
+//                .logsBreak())
+//        ;
 
         set.add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)

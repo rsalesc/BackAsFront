@@ -30,12 +30,15 @@ import rsalesc.baf2.predictor.PrecisePredictor;
 import rsalesc.baf2.predictor.PredictedPoint;
 
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Roberto Sales on 11/09/17.
  */
 public abstract class RobotLog {
     private Hashtable<Pair<RobotSnapshot, RobotSnapshot>, PredictedPoint[]> cache = new Hashtable<>();
+    private Map<String, Object> data = new TreeMap<>();
 
     public abstract RobotSnapshot exactlyAt(long time);
 
@@ -55,8 +58,16 @@ public abstract class RobotLog {
 
     public abstract int size();
 
+    public Object getData(String key) {
+        return data.get(key);
+    }
+
+    public void setData(String key, Object obj) {
+        data.put(key, obj);
+    }
+
     // TODO: optimize this function in general
-    // TODO: return null if interpolation is to harsh
+    // TODO: return null if interpolation is too harsh
     public InterpolatedSnapshot interpolate(long time) {
         RobotSnapshot atMost = atMostAt(time);
 

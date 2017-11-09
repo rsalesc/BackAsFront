@@ -192,22 +192,25 @@ public class TrueSurfing extends BaseSurfing {
         IMea mea = getMea(f);
 
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
+        EnemyRobot latestEnemy = enemyLog.getLatest();
+
+        Point orbitCenter = latestEnemy.getPoint();
 
         AxisRectangle field = getMediator().getBattleField();
-        double distance = nextWave.getSource().distance(initialPoint);
+        double distance = nextWave.getSource().distance(orbitCenter);
         double perp = distancer.getPerpendiculator(distance);
 
-        int stopDirection = initialPoint.getDirection(nextWave.getSource());
+        int stopDirection = initialPoint.getDirection(orbitCenter);
         if (stopDirection == 0) stopDirection = 1;
 
         List<PredictedPoint> clockwisePoints = PrecisePredictor
-                .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, +1, perp, true, false);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, +1, perp, true, false);
 
         List<PredictedPoint> counterPoints = PrecisePredictor
-                .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, -1, perp, true, false);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, -1, perp, true, false);
 
         List<PredictedPoint> stopPoints = PrecisePredictor
-                .predictOnWaveImpact(field, WALL_STICK, initialPoint, nextWave, stopDirection, perp, true, true);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, stopDirection, perp, true, true);
 
         PredictedPoint clockwisePass = R.getLast(clockwisePoints);
         PredictedPoint counterPass = R.getLast(counterPoints);
@@ -257,7 +260,7 @@ public class TrueSurfing extends BaseSurfing {
 
             double passDistance = Math.min(
                     res[i].transitionPoint.distance(nextWave.getSource()),
-                    res[i].transitionPoint.distance(enemyLog.getLatest().getPoint()));
+                    res[i].transitionPoint.distance(orbitCenter));
 
             res[i].danger *= Rules.getBulletDamage(Physics.bulletPower(nextWave.getVelocity()));
 //            res[i].danger /= impactTime / Math.pow(1.0, wavePosition);

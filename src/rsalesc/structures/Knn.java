@@ -438,6 +438,46 @@ public abstract class Knn<T extends Timestamped> {
         }
     }
 
+    private static double getStrategyWeight(Strategy strategy) {
+        double sum = 1e-22;
+        double[] weights = strategy.getWeights();
+        for (double weight : weights) sum += weight;
+
+        return sum;
+    }
+
+    public static class NormalizeManhattanWeighter<T extends Timestamped> extends DistanceWeighter<T> {
+        private double modifier;
+        private double ratio;
+
+        public NormalizeManhattanWeighter(Strategy strategy, double ratio) {
+            this.modifier = getStrategyWeight(strategy);
+            this.ratio = ratio;
+        }
+
+        public NormalizeManhattanWeighter(Strategy strategy, Strategy strategy2) {
+            this.ratio = getStrategyWeight(strategy2);
+            this.modifier = getStrategyWeight(strategy);
+        }
+
+        @Override
+        public List<Entry<T>> getWeightedEntries(List<Entry<T>> entries) {
+            List<Entry<T>> res = new ArrayList<>();
+
+            for (Knn.Entry<T> entry : entries) {
+                res.add(new Knn.Entry<>(entry.weight,
+                        entry.distance / modifier * ratio, entry.payload));
+            }
+
+            return res;
+        }
+
+        @Override
+        public Entry<T> getWeightedEntry(Entry<T> entry, int K) {
+            return new Knn.Entry<>(entry.weight / Math.pow(entry.distance + 1e-10, ratio), entry.distance, entry.payload);
+        }
+    }
+
     public static class GaussDistanceWeighter<T extends Timestamped> extends DistanceWeighter<T> {
         private double ratio;
         private int ignore = 0;

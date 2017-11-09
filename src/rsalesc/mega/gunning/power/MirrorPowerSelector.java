@@ -105,7 +105,7 @@ public class MirrorPowerSelector extends Component implements PowerSelector {
         manager.add(KeyEvent.VK_M, "power", new Painting() {
             @Override
             public void paint(G g) {
-                if(lastSelectedPower != null) {
+                if(lastSelectedPower != null && lastPredictedPower != null) {
                     g.drawCenteredString(new Point(getMediator().getBattleField().getWidth() / 2, 12),
                             "Selected power: " + R.formattedDouble(lastSelectedPower)
                                 + ", Predicted power: " + R.formattedDouble(lastPredictedPower), Color.LIGHT_GRAY);

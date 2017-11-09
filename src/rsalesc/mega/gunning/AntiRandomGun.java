@@ -28,7 +28,7 @@ import rsalesc.baf2.waves.BulletManager;
 import rsalesc.mega.gunning.guns.GuessFactorGun;
 import rsalesc.mega.gunning.guns.KnnGuessFactorTargeting;
 import rsalesc.mega.gunning.power.PowerSelector;
-import rsalesc.mega.gunning.strategies.dc.YetAnotherRandomStrategy;
+import rsalesc.mega.gunning.strategies.dc.MainStrategy;
 import rsalesc.mega.utils.TimestampedGFRange;
 import rsalesc.structures.Knn;
 import rsalesc.structures.KnnTree;
@@ -36,6 +36,7 @@ import rsalesc.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 15/09/17.
+ * MANHATTAN + /=distance gave good results
  */
 public class AntiRandomGun extends GuessFactorGun {
     public AntiRandomGun(BulletManager manager, PowerSelector selector) {
@@ -46,9 +47,9 @@ public class AntiRandomGun extends GuessFactorGun {
                 set.setDistanceWeighter(new Knn.InverseDistanceWeighter<>(1.0));
                 set.add(new KnnTree<TimestampedGFRange>()
                         .setMode(KnnTree.Mode.MANHATTAN)
-                        .setK(100)
-                        .setRatio(0.2)
-                        .setStrategy(new YetAnotherRandomStrategy())
+                        .setK(200)
+                        .setRatio(0.11)
+                        .setStrategy(new MainStrategy())
                         .logsEverything());
 
                 return set;

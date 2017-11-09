@@ -43,14 +43,15 @@ public abstract class PrecisePredictor {
     public static List<PredictedPoint> lastEscape = null;
     private static boolean MEA_PASS = false;
 
-    public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
+    public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, Point center, double stick,
+                                                           PredictedPoint initialPoint, Wave wave,
                                                            int direction, double perpendiculator, boolean hasToPass, boolean brake) {
 
         if (direction == 0 && !brake)
             throw new IllegalStateException();
 
         if (direction == 0)
-            direction = initialPoint.getDirection(wave.getSource());
+            direction = initialPoint.getDirection(center);
 
         if (direction == 0)
             direction = +1;
@@ -61,7 +62,7 @@ public abstract class PrecisePredictor {
 
         PredictedPoint cur = initialPoint;
         while (hasToPass && !wave.hasPassedRobot(cur, cur.time) || !wave.hasPassed(cur, cur.time)) {
-            double pointingAngle = Physics.absoluteBearing(wave.getSource(), cur) + perpendiculator * direction;
+            double pointingAngle = Physics.absoluteBearing(center, cur) + perpendiculator * direction;
             double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, stick, cur,
                     pointingAngle, direction));
             cur = tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
@@ -69,6 +70,12 @@ public abstract class PrecisePredictor {
         }
 
         return res;
+    }
+
+    public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
+                                                           int direction, double perpendiculator, boolean hasToPass, boolean brake) {
+        return predictOnWaveImpact(field, wave.getSource(), stick, initialPoint, wave,
+                                        direction, perpendiculator, hasToPass, brake);
     }
 
     public static List<PredictedPoint> predictOnWaveImpact(PredictedPoint initialPoint, Wave wave,

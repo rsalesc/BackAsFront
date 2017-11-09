@@ -23,8 +23,10 @@
 
 package rsalesc.mega.utils.segmentation;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Roberto Sales on 30/09/17.
@@ -46,14 +48,13 @@ public class SegmentedData<T> {
     }
 
     public ArrayList<T> getData() {
-        ArrayList<T> rev = new ArrayList<>();
-        rev.addAll(list);
+        ArrayList<T> rev = new ArrayList<>(list);
         Collections.reverse(rev);
         return rev;
     }
 
-    public WeightedSegmentedData<T> weight(double w) {
-        WeightedSegmentedData<T> data = new WeightedSegmentedData<>(maxSize, w);
+    public WeightedSegmentedData<T> weight(double w, double roll) {
+        WeightedSegmentedData<T> data = new WeightedSegmentedData<>(maxSize, w, roll);
         for(T entry : list)
             data.add(entry);
 
@@ -62,8 +63,12 @@ public class SegmentedData<T> {
 
     public static <T> double getTotalWeight(List<WeightedSegmentedData<T>> list) {
         double res = 0;
-        for(WeightedSegmentedData<T> data : list)
-            res += data.getWeight() * data.getData().size();
+
+        // TODO: optimize this
+        for(WeightedSegmentedData<T> data : list) {
+            for(WeightedEntry<T> t : data.getWeightedData())
+                res += t.weight;
+        }
 
         return res;
     }

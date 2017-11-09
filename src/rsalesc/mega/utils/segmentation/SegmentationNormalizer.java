@@ -23,39 +23,10 @@
 
 package rsalesc.mega.utils.segmentation;
 
-/**
- * Created by Roberto Sales on 30/09/17.
- */
-public class SimpleSegmentationWeighter extends SegmentationWeighter {
-    @Override
-    public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry) {
-        return segmentationEntry.getSliceCount();
-    }
+import rsalesc.baf2.core.annotations.Modified;
 
-    @Override
-    public int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry) {
+import java.util.List;
 
-
-        return (int) Math.ceil(2 * getDepth(segmentationEntry) + 1);
-    }
-
-    @Override
-    public double getDepth(SegmentationSet.SegmentationEntry segmentationEntry) {
-        int sliceCount = segmentationEntry.getSliceCount();
-        double depth;
-        if(sliceCount < 2)
-            depth = 10;
-        else if(sliceCount < 4)
-            depth = 4;
-        else if(sliceCount < 8)
-            depth = 2.25;
-        else if(sliceCount < 16)
-            depth = 1.4;
-        else if(sliceCount < 24)
-            depth = 0.75;
-        else
-            depth = 0.3;
-
-        return depth;
-    }
+public abstract class SegmentationNormalizer<T> {
+    public abstract List<WeightedSegmentedData<T>> normalize(@Modified List<WeightedSegmentedData<T>> data);
 }

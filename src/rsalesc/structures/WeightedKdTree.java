@@ -21,13 +21,16 @@
  *    distribution.
  */
 
-package rsalesc.mega.utils.segmentation;
+package rsalesc.structures;
 
-/**
- * Created by Roberto Sales on 30/09/17.
- */
-public abstract class SegmentationWeighter {
-    public abstract double getWeight(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract double getDepth(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry);
+public abstract class WeightedKdTree<T> extends KdTree<T> {
+    public WeightedKdTree(int dimensions, Integer sizeLimit, int bucketLimit) {
+        super(dimensions, sizeLimit, bucketLimit);
+    }
+
+    public WeightedKdTree(int dimensions, Integer sizeLimit) {
+        super(dimensions, sizeLimit);
+    }
+
+    public abstract void setWeights(double[] weights);
 }

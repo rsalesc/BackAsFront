@@ -25,13 +25,11 @@ package rsalesc.mega.movement.surfers;
 
 import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.mega.movement.SegmentedDataSurfer;
-import rsalesc.mega.movement.strategies.vcs.SlicingAdaptiveStrategy;
 import rsalesc.mega.movement.strategies.vcs.SlicingFlattenerStrategy;
+import rsalesc.mega.movement.strategies.vcs.SlicingMixedStrategy;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TimestampedGFRange;
-import rsalesc.mega.utils.segmentation.GFSegmentationSet;
-import rsalesc.mega.utils.segmentation.GFSegmentationView;
-import rsalesc.mega.utils.segmentation.SegmentationView;
+import rsalesc.mega.utils.segmentation.*;
 import rsalesc.structures.Knn;
 
 /**
@@ -39,47 +37,29 @@ import rsalesc.structures.Knn;
  */
 public abstract class KnightVCSSurfer extends SegmentedDataSurfer {
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =
-            new NamedStatData.HitCondition(new Range(0.035, Double.POSITIVE_INFINITY), 0);
+            new NamedStatData.HitCondition(new Range(0.03, Double.POSITIVE_INFINITY), 0);
 
-    private static Knn.ParametrizedCondition NORMAL_CONDITION =
-            new Knn.Tautology();
-
-    private static Knn.ParametrizedCondition FLATTENING_CONDITION =
-            new Knn.AndCondition().add(ADAPTIVE_CONDITION)
-                .add(new Knn.OrCondition().add(new NamedStatData.HitCondition(new Range(0.07, Double.POSITIVE_INFINITY), 1)))
-            ;
 
     @Override
     public SegmentationView<TimestampedGFRange> getNewSegmentationView() {
         GFSegmentationView view = new GFSegmentationView();
 
-//        view.add(
-//            new GFSegmentationSet()
-//            .setScanWeight(0.5)
-//            .setStrategy(new SlicingSimpleStrategy())
-//            .logsHit()
-//        );
-
         view.add(
-                new GFSegmentationSet()
-                .setScanWeight(0.5)
-                .setStrategy(new SlicingAdaptiveStrategy())
-                .setCondition(ADAPTIVE_CONDITION)
-                .logsHit()
+            new GFSegmentationSet()
+            .setScanWeight(1.0)
+            .setStrategy(new SlicingMixedStrategy())
+            .setWeighter(new DrussSegmentationWeighter())
+            .setNormalizer(new SegmentationHeightNormalizer<>())
+            .logsHit()
         );
-
-//        view.add(
-//            new GFSegmentationSet()
-//            .setScanWeight(0.5)
-//            .setCrossoverStrategy(new SlicingAdaptiveStrategy())
-//            .logsHit()
-//        );
 
         view.add(
             new GFSegmentationSet()
-            .setScanWeight(0.35)
+            .setScanWeight(0.7)
             .setStrategy(new SlicingFlattenerStrategy())
-            .setCondition(FLATTENING_CONDITION)
+            .setCondition(KnightDCSurfer.FLAT_CONDITION)
+            .setWeighter(new DrussSegmentationWeighter())
+            .setNormalizer(new SegmentationHeightNormalizer<>())
             .logsHit()
             .logsBreak()
         );

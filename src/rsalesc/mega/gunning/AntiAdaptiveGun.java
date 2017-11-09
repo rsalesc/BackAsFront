@@ -36,6 +36,7 @@ import rsalesc.structures.KnnView;
 
 /**
  * Created by Roberto Sales on 15/09/17.
+ * TODO: log only break?
  */
 public class AntiAdaptiveGun extends GuessFactorGun {
     public AntiAdaptiveGun(BulletManager manager, PowerSelector selector) {

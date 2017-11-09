@@ -179,6 +179,9 @@ public class Benchmark extends Component implements LastBreathListener {
 
     @Override
     public void onLastBreath() {
+        if(!enabled)
+            return;
+
         System.out.println("Profiling -----------------------------");
 
         System.out.println(getColumn("avg.") + SEP + getColumn("worst") + SEP + getColumn("error") + SEP

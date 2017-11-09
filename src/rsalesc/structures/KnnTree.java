@@ -23,6 +23,7 @@
 
 package rsalesc.structures;
 
+import rsalesc.mega.utils.Strategy;
 import rsalesc.mega.utils.Timestamped;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.List;
 public class KnnTree<T extends Timestamped> extends Knn<T> {
     private Mode mode;
     private Integer limit = null;
-    private KdTree<T> tree;
+    private WeightedKdTree<T> tree;
 
     public KnnTree<T> setLimit(int limit) {
         this.limit = limit;
@@ -44,6 +45,13 @@ public class KnnTree<T extends Timestamped> extends Knn<T> {
     public KnnTree<T> setMode(Mode mode) {
         this.mode = mode;
         return this;
+    }
+
+    @Override
+    public Knn<T> setStrategy(Strategy strategy) {
+        if(tree != null)
+            tree.setWeights(strategy.getWeights());
+        return super.setStrategy(strategy);
     }
 
     @Override

@@ -23,17 +23,42 @@
 
 package rsalesc.mega.utils.segmentation;
 
+import java.util.ArrayList;
+
 /**
  * Created by Roberto Sales on 30/09/17.
  */
 public class WeightedSegmentedData<T> extends SegmentedData<T> {
-    private final double weight;
-    public WeightedSegmentedData(int maxSize, double weight) {
+    private double weight;
+    private double roll;
+
+    public WeightedSegmentedData(int maxSize, double weight, double roll) {
         super(maxSize);
         this.weight = weight;
+        this.roll = 1.0 - 1.0 / (1.0 + roll);
     }
 
     public double getWeight() {
         return weight;
+    }
+
+    public double getRolledWeight(int i) {
+        return weight * Math.pow(roll, i);
+    }
+
+    public void setWeight(double x) {
+        weight = x;
+    }
+
+    public ArrayList<WeightedEntry<T>> getWeightedData() {
+        ArrayList<WeightedEntry<T>> rev = new ArrayList<>();
+
+        double factor = 1.0;
+        for(T t : getData()) {
+            rev.add(new WeightedEntry<>(weight * factor, t));
+            factor *= roll;
+        }
+
+        return rev;
     }
 }

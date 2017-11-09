@@ -21,13 +21,19 @@
  *    distribution.
  */
 
-package rsalesc.mega.utils.segmentation;
+package rsalesc.mega.utils.nn;
 
 /**
- * Created by Roberto Sales on 30/09/17.
+ * Created by Roberto Sales on 18/08/17.
  */
-public abstract class SegmentationWeighter {
-    public abstract double getWeight(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract double getDepth(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry);
+public abstract class MLPRegularization {
+    protected int outputSize;
+
+    public MLPRegularization setOutputSize(int x) {
+        outputSize = x;
+        return this;
+    }
+
+    public abstract double getValue(double[][][] weights);
+    public abstract double[][] getDerivative(double[][] w);
 }

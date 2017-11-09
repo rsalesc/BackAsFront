@@ -31,38 +31,53 @@ import java.util.Comparator;
  */
 public class Slicer {
     private static final String[] adaptiveNames =
-            new String[]{"BFT", "LAT_VEL", "ADV_VEL", "ESCAPE", "ESCAPE", "ACCEL", "RUN", "D10"};
+            new String[]{"BFT", "LAT_VEL", "ADV_VEL", "ESCAPE", "ESCAPE", "ACCEL", "DECEL", "REVERT", "D10"};
 
     private static final double[] simpleChances =
-            new double[]{0.7, 0.9, 0.4, 0, 0, 0, 0, 0};
+            new double[]{0.7, 0.9, 0.4, 0.6, 0.35, 0.15, 0, 0, 0};
 
     private static final double[] adaptiveChances =
-            new double[]{0.5, 0.8, 0.45, 0.6, 0.4, 0.6, 0.45, 0.45};
+            new double[]{0.75, 0.75, 0.2, 0.5, 0.2, 0.2, 0.25, 0.25, 0.25};
 
     private static final double[] flattenerChances =
-            new double[]{0.6, 0.6, 0.35, 0.4, 0.3, 0.4, 0.6, 0.45};
+            new double[]{0.6, 0.6, 0.4, 0.6, 0.4, 0.65, 0.4, 0.4, 0.4};
 
     private static final double[] tickChances =
-            new double[]{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+            new double[]{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.45, 0.5};
 
     private static final double[] pmChances =
-            new double[]{0, 1.0, 0.8, 0, 0, 0.3, 0.7, 0.7};
+            new double[]{0.2, 1.0, 0.3, 0, 0, 0.3, 0.7, 0.4, 0.75};
 
-
-    private static final int sliceCount = 40;
-    private static final String[] names = adaptiveNames;
-    private static final double[] chances = flattenerChances;
 
     public static void main(String[] args) {
-        String[][] slices = new String[sliceCount][names.length];
+//        printSlices(
+//                generateSliced("simple", 35, 2.0, adaptiveNames, simpleChances),
+//                generateSliced("pm", 25, 10.0, adaptiveNames, pmChances),
+//                generateSliced("adaptive", 40, 10.0, adaptiveNames, adaptiveChances)
+//        );
 
-        for(int i = 0; i < sliceCount; i++) {
+        printSlices(generateSliced("flattener", 50, Double.POSITIVE_INFINITY, adaptiveNames, flattenerChances));
+    }
+
+    private static Sliced generateSliced(String name, int count, double density, String[] names, double[] chances) {
+        String[][] slices = new String[count][names.length];
+
+        for(int i = 0; i < count; i++) {
+            double proportion = Math.min(-Math.log(1 - (double) i / count) / Math.log(1.5) * density, 1);
+//            System.out.println(proportion);
+
             for(int j = 0; j < names.length; j++) {
                 double rnd = Math.random();
+                if(rnd > proportion) {
+                    slices[i][j] = getName(names, j, 0);
+                    continue;
+                }
+
+                rnd = (proportion - rnd) / proportion;
                 if(rnd > chances[j])
-                    slices[i][j] = getName(j, 0);
+                    slices[i][j] = getName(names, j, 0);
                 else
-                    slices[i][j] = getName(j, (int) (rnd / chances[j] * 2.999999999) + 1);
+                    slices[i][j] = getName(names, j, (int) (rnd / chances[j] * 2.999999999) + 1);
             }
         }
 
@@ -77,10 +92,11 @@ public class Slicer {
                 return 0;
             }
         });
-        printSlices(slices);
+
+        return new Sliced(name, slices);
     }
 
-    private static String getName(int i, int type) {
+    private static String getName(String[] names, int i, int type) {
         if(type == 0)
             return "EMPTY";
         else if(type == 1)
@@ -90,18 +106,33 @@ public class Slicer {
         else return names[i] + "_P";
     }
 
-    static void printSlices(String[][] slices) {
+    static void printSlices(Sliced... sliceds) {
         System.out.println("return new double[][][]{");
-        for(int i = 0; i < slices.length; i++) {
-            System.out.print("\t{");
-            for(int j = 0; j < slices[i].length; j++) {
-                if(j > 0)
-                    System.out.print(", ");
-                System.out.print(slices[i][j]);
+
+        for(int k = 0; k < sliceds.length; k++) {
+            System.out.println("\t// " + sliceds[k].name);
+            String[][] slices = sliceds[k].slices;
+            for (int i = 0; i < slices.length; i++) {
+                System.out.print("\t{");
+                for (int j = 0; j < slices[i].length; j++) {
+                    if (j > 0)
+                        System.out.print(", ");
+                    System.out.print(slices[i][j]);
+                }
+                System.out.println("}" + (i + 1 == slices.length && k + 1 == sliceds.length ? "" : ","));
             }
-            System.out.println("}" + (i + 1 == slices.length ? "" : ","));
         }
 
         System.out.println("};");
+    }
+
+    private static class Sliced {
+        private final String name;
+        private final String[][] slices;
+
+        private Sliced(String name, String[][] slices) {
+            this.name = name;
+            this.slices = slices;
+        }
     }
 }

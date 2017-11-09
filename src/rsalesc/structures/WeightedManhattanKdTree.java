@@ -26,11 +26,15 @@ package rsalesc.structures;
 /**
  * Created by Roberto Sales on 25/07/17.
  */
-public class WeightedManhattanKdTree<T> extends KdTree<T> {
+public class WeightedManhattanKdTree<T> extends WeightedKdTree<T> {
     private double[] weights;
 
     public WeightedManhattanKdTree(double[] weights, Integer sizeLimit) {
         super(weights.length, sizeLimit);
+        this.weights = weights;
+    }
+
+    public void setWeights(double[] weights) {
         this.weights = weights;
     }
 

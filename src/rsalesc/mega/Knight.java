@@ -32,7 +32,7 @@ import rsalesc.baf2.tracking.Tracker;
 import rsalesc.baf2.waves.BulletManager;
 import rsalesc.baf2.waves.ShadowManager;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.gunning.FastDecayGun;
+import rsalesc.mega.gunning.AntiAdaptiveGun;
 import rsalesc.mega.gunning.RaikoGun;
 import rsalesc.mega.gunning.SlowDecayGun;
 import rsalesc.mega.gunning.guns.*;
@@ -51,11 +51,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 11/09/17.
+ * TODO: targetinglog is a bit weird with the new time-since stuff
  *
  * Change log:
- * 0.6.0
- * - wait two rounds to decide gun
- * - add fast decay gun in place of old adaptive gun
+ * - Tweak VCS, bandwidth in VCS is 0.15
+ * - Don't use shadow factor, just do not log shadowed bins
+ * - Imprecise MEA in movement
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
@@ -91,7 +92,7 @@ public class Knight extends BackAsFrontRobot2 {
         KnightStance move = new KnightStance(waveManager);
 
         AutomaticGun generalPurposeGun = new SlowDecayGun(bulletManager, null);
-        AutomaticGun adaptiveGun = new FastDecayGun(bulletManager, null);
+        AutomaticGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
 
         AutomaticGunArray array = new GunArray(generalPurposeGun, adaptiveGun, new RandomGun());
 

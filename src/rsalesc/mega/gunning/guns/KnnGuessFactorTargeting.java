@@ -76,8 +76,6 @@ public abstract class KnnGuessFactorTargeting extends StoreComponent implements 
 //        double bandwidth = Physics.hitAngle(f.distance) / 2 /
 //                Math.min(f.preciseMea.minAbsolute(), f.preciseMea.maxAbsolute());
 //
-//        double binBandwidth = bandwidth * GuessFactorStats.BUCKET_MID;
-//
 //        GuessFactorStats stats = new GuessFactorStats(new GaussianKernelDensity());
 //
 //        for(Knn.Entry<TimestampedGFRange> entry : found) {

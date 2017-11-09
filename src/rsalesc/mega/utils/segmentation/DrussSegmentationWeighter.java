@@ -26,7 +26,7 @@ package rsalesc.mega.utils.segmentation;
 /**
  * Created by Roberto Sales on 30/09/17.
  */
-public class SimpleSegmentationWeighter extends SegmentationWeighter {
+public class DrussSegmentationWeighter extends SegmentationWeighter {
     @Override
     public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry) {
         return segmentationEntry.getSliceCount();
@@ -44,17 +44,17 @@ public class SimpleSegmentationWeighter extends SegmentationWeighter {
         int sliceCount = segmentationEntry.getSliceCount();
         double depth;
         if(sliceCount < 2)
-            depth = 10;
+            depth = 3;
         else if(sliceCount < 4)
-            depth = 4;
-        else if(sliceCount < 8)
-            depth = 2.25;
-        else if(sliceCount < 16)
-            depth = 1.4;
-        else if(sliceCount < 24)
-            depth = 0.75;
+            depth = 1;
+        else if(sliceCount < 10)
+            depth = 0.7;
+        else if(sliceCount < 30)
+            depth = 0.5;
+        else if(sliceCount < 100)
+            depth = 0.2;
         else
-            depth = 0.3;
+            depth = 0.1;
 
         return depth;
     }

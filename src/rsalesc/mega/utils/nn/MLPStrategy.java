@@ -21,13 +21,17 @@
  *    distribution.
  */
 
-package rsalesc.mega.utils.segmentation;
+package rsalesc.mega.utils.nn;
 
 /**
- * Created by Roberto Sales on 30/09/17.
+ * Created by Roberto Sales on 17/08/17.
  */
-public abstract class SegmentationWeighter {
-    public abstract double getWeight(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract double getDepth(SegmentationSet.SegmentationEntry segmentationEntry);
-    public abstract int getDataLimit(SegmentationSet.SegmentationEntry segmentationEntry);
+public abstract class MLPStrategy {
+    public abstract double[] getActivation(double[] output);
+    public abstract double getActivationDerivative(double a);
+//    public abstract double getCostGradient(double a, double y);
+    public abstract double getCost(double[][] a, double[][] y);
+
+    public abstract double[][] getLastLayerGradient(double[][] a, double[][] y);
+    public abstract double[][] getNextLayerGradient(double[][] a, double[][] y);
 }
