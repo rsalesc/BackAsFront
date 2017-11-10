@@ -195,8 +195,8 @@ public class TrueSurfing extends BaseSurfing {
         Point orbitCenter = nextWave.getSource();
 
         AxisRectangle field = getMediator().getBattleField();
-        double distance = initialPoint.distance(orbitCenter);
-        double perp = distancer.getPerpendiculator(distance);
+        double distanceToCenter = initialPoint.distance(orbitCenter);
+        double perp = distancer.getPerpendiculator(distanceToCenter);
 
         int stopDirection = initialPoint.getDirection(orbitCenter);
         if (stopDirection == 0) stopDirection = 1;
@@ -261,7 +261,7 @@ public class TrueSurfing extends BaseSurfing {
 
 //            res[i].danger += namedData.getEnemyHitPercentage();
 
-            res[i].danger *= Rules.getBulletDamage(Physics.bulletPower(nextWave.getVelocity()));
+            res[i].danger *= nextWave.getDamage();
 //            res[i].danger /= impactTime / Math.pow(1.0, wavePosition);
             res[i].danger *= R.sqr(impactTime - 100);
             res[i].danger /= Math.max((passDistance - 40), 1);

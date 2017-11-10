@@ -194,10 +194,10 @@ public class StatTracker extends StoreComponent implements StatusListener, Bulle
         else
             System.out.println("FLATTENER DISABLED!");
 
-        if(onlyEnemy != null && KnightDCSurfer.MFLAT_CONDITION.test(new NamedStatData(getCurrentStatData(), onlyEnemy)))
-            System.out.println("MoE FLATTENER ENABLED!");
+        if(onlyEnemy != null && KnightDCSurfer.LIGHT_CONDITION.test(new NamedStatData(getCurrentStatData(), onlyEnemy)))
+            System.out.println("LIGHT FLATTENER ENABLED!");
         else
-            System.out.println("MoE FLATTENER DISABLED!");
+            System.out.println("LIGHT FLATTENER DISABLED!");
 
 //        getMediator().setDebugProperty("duel-statdata", SerializeHelper.convertToString(getDuelStatData()).get());
 //        getMediator().setDebugProperty("melee-statdata", SerializeHelper.convertToString(getMeleeStatData()).get());

@@ -23,7 +23,6 @@
 
 package rsalesc.mega.movement.surfers;
 
-import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.mega.movement.KnnFlattenedSurfer;
 import rsalesc.mega.movement.strategies.dc.KnightAdaptiveStrategy;
 import rsalesc.mega.movement.strategies.dc.KnightBaseStrategy;
@@ -41,23 +40,29 @@ import java.util.function.Function;
  * Created by Roberto Sales on 13/09/17.
  */
 public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
-    public static final Knn.ParametrizedCondition ADAPTIVE_CONDITION = new NamedStatData.HitCondition(new Range(0.02, 1), 0);
+    public static final Knn.ParametrizedCondition ADAPTIVE_CONDITION = new NamedStatData.HitCondition(0.02, 0);
 
     public static final Knn.ParametrizedCondition FLAT_CONDITION =
             new Knn.OrCondition()
                     .add(new NamedStatData.WeightedHitCondition(0.09, 2, 15))
-                    .add(new NamedStatData.WeightedHitCondition(0.08, 4, 15))
-            ;
-
-    public static final Knn.ParametrizedCondition MFLAT_CONDITION =
-            new NamedStatData.WeightedHitCondition(0.075, 2, 1000, 1.25);
-
+                    .add(new NamedStatData.WeightedHitCondition(0.08, 4, 15));
+//            ;
+//
+//    public static final Knn.ParametrizedCondition MFLAT_CONDITION =
+//            new NamedStatData.WeightedHitCondition(0.075, 2, 1000, 1.25);
+//
     public static final Knn.ParametrizedCondition LIGHT_CONDITION =
                     new Knn.OrCondition()
-                            .add(new NamedStatData.HitCondition(new Range(0.075, 1), 2))
-                            .add(new NamedStatData.HitCondition(new Range(0.06, 1), 4))
-                            .add(new NamedStatData.HitCondition(new Range(0.05, 1), 6))
-            ;
+                            .add(new NamedStatData.HitCondition(0.075, 2))
+                            .add(new NamedStatData.HitCondition(0.06, 4))
+                            .add(new NamedStatData.HitCondition(0.05, 6));
+//            ;
+
+//    public static final Knn.ParametrizedCondition FLAT_CONDITION =
+//           new NamedStatData.WeightedHitCondition(0.075, 2, 15, 2.0);
+
+//    public static final Knn.ParametrizedCondition LIGHT_CONDITION =
+//            new NamedStatData.WeightedHitCondition(0.05, 2, 1000, 1.5);
 
 
 //    public static final Knn.ParametrizedCondition FLAT_CONDITION =
@@ -179,14 +184,14 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
 //                .setMode(KnnTree.Mode.MANHATTAN)
 //                .setK(10)
 //                .setRatio(0.2)
-//                .setScanWeight(0.15)
+//                .setScanWeight(0.1)
 //                .setCondition(LIGHT_CONDITION)
 //                .setStrategy(BASE_STRATEGY)
 //                .setDistanceWeighter(new Knn.NormalizeManhattanWeighter<>(BASE_STRATEGY, ADAPTIVE_STRATEGY))
 //                .logsHit()
 //                .logsBreak())
 //        ;
-
+//
         set.add(new KnnTree<TimestampedGFRange>()
                 .setMode(KnnTree.Mode.MANHATTAN)
                 .setLimit(300)
@@ -218,5 +223,10 @@ public abstract class KnightDCSurfer extends KnnFlattenedSurfer {
     @Override
     public boolean flattenerEnabled(NamedStatData o) {
         return FLAT_CONDITION.test(o);
+    }
+
+    @Override
+    public boolean lightFlattenerEnabled(NamedStatData o) {
+        return LIGHT_CONDITION.test(o);
     }
 }

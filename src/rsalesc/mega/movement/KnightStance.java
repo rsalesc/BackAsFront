@@ -34,7 +34,7 @@ import rsalesc.baf2.waves.EnemyWave;
 import rsalesc.baf2.waves.EnemyWaveListener;
 import rsalesc.baf2.waves.EnemyWavePreciseListener;
 import rsalesc.baf2.waves.WaveManager;
-import rsalesc.mega.movement.surfers.KnightDCSurfer;
+import rsalesc.mega.movement.surfers.KnightHybridSurfer;
 
 /**
  * Created by Roberto Sales on 13/09/17.
@@ -43,7 +43,7 @@ public class KnightStance extends Component implements RoundStartedListener, Ene
     private TrueSurfing surfing;
 
     public KnightStance(WaveManager manager) {
-        Surfer surfer = new KnightDCSurfer() {
+        Surfer surfer = new KnightHybridSurfer() {
             @Override
             public StorageNamespace getStorageNamespace() {
                 return getGlobalStorage().namespace("knight-stance-surfer");

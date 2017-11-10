@@ -23,7 +23,6 @@
 
 package rsalesc.mega.movement.surfers;
 
-import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.mega.movement.KnnSurfer;
 import rsalesc.mega.movement.strategies.dc.OldFlatteningStrategy;
 import rsalesc.mega.movement.strategies.dc.OldNormalStrategy;
@@ -39,7 +38,7 @@ import rsalesc.structures.KnnView;
  */
 public abstract class OldKnightDCSurfer extends KnnSurfer {
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =
-            new NamedStatData.HitCondition(new Range(0.035, Double.POSITIVE_INFINITY), 0);
+            new NamedStatData.HitCondition(0.035, 0);
 
     private static Knn.ParametrizedCondition NORMAL_CONDITION =
             new Knn.Tautology();
@@ -47,7 +46,7 @@ public abstract class OldKnightDCSurfer extends KnnSurfer {
     private static Knn.ParametrizedCondition FLATTENING_CONDITION =
             new Knn.AndCondition().add(ADAPTIVE_CONDITION)
                     .add(new Knn.OrCondition()
-                                    .add(new NamedStatData.HitCondition(new Range(0.08, 1), 1))
+                                    .add(new NamedStatData.HitCondition(0.08, 1))
 //                                    .add(new NamedStatData.HitCondition(new Range(0.13, 1), 2))
 //                                    .add(new NamedStatData.HitCondition(new Range(0.11, 1), 3))
 //                                    .add(new NamedStatData.HitCondition(new Range(0.095, 1), 5))

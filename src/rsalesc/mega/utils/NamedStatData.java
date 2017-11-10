@@ -24,7 +24,6 @@
 package rsalesc.mega.utils;
 
 import rsalesc.baf2.core.utils.R;
-import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.structures.Knn;
 
 /**
@@ -96,12 +95,30 @@ public class NamedStatData {
     }
 
     public static class HitCondition extends Knn.ParametrizedCondition {
-        private final Range range;
+        private final double th;
         private final int meetings;
+        private final int atLeast;
+        private final double moeMult;
 
-        public HitCondition(Range range, int meetings) {
-            this.range = range;
+        public HitCondition(double p, int meetings) {
+            this.th = p;
             this.meetings = meetings;
+            this.atLeast = 10000;
+            this.moeMult = 0;
+        }
+
+        public HitCondition(double p, int meetings, int atLeast) {
+            this.th = p;
+            this.meetings = meetings;
+            this.atLeast = atLeast;
+            this.moeMult = 0;
+        }
+
+        public HitCondition(double p, int meetings, int atLeast, double moe) {
+            this.th = p;
+            this.meetings = meetings;
+            this.atLeast = atLeast;
+            this.moeMult = moe;
         }
 
         @Override
@@ -113,8 +130,15 @@ public class NamedStatData {
             double p = data.getEnemyHitPercentage();
             int samples = data.getEnemyShotsFired();
 
-            return range.isNearlyContained(p, /*-R.marginOfError(th, samples)*/ 1e-9)
-                    && data.getMeetings() >= meetings;
+            Integer lastMeeting = (Integer) data.getData(this);
+
+            boolean turnOn = p > th + R.marginOfError(p, samples) * moeMult
+                    && data.getMeetings() >= meetings || (lastMeeting != null && lastMeeting >= atLeast);
+
+            if(turnOn)
+                data.setData(this, data.getMeetings());
+
+            return turnOn;
         }
 
         @Override

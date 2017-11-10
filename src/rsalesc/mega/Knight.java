@@ -51,13 +51,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 11/09/17.
- * Change log 0.6.7
- * - Rollback TargetingLog to 7/11
- * - Rollback shadow factor
- * - Rollback # of meetings flat threshold
- * - Rollback check if wave is heat before adding to var breaks
- * - Revert DuelPowerPredictor
- * - Fix distance-to-wave-center calculation (bug introduced somewhere in the 0.6 series)
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;

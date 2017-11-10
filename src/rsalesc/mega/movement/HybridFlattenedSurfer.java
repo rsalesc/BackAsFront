@@ -23,6 +23,7 @@
 
 package rsalesc.mega.movement;
 
+import robocode.Rules;
 import rsalesc.baf2.core.StorageNamespace;
 import rsalesc.baf2.core.StoreComponent;
 import rsalesc.baf2.core.benchmark.Benchmark;
@@ -33,36 +34,36 @@ import rsalesc.mega.utils.IMea;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TargetingLog;
 import rsalesc.mega.utils.TimestampedGFRange;
+import rsalesc.mega.utils.segmentation.SegmentationView;
+import rsalesc.mega.utils.segmentation.WeightedEntry;
+import rsalesc.mega.utils.segmentation.WeightedSegmentedData;
 import rsalesc.mega.utils.stats.GuessFactorStats;
 import rsalesc.mega.utils.stats.PowerKernelDensity;
 import rsalesc.structures.Knn;
-import rsalesc.structures.KnnProvider;
 import rsalesc.structures.KnnView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
 /**
  * Created by Roberto Sales on 12/09/17.
  */
-public abstract class KnnFlattenedSurfer extends StoreComponent implements Surfer, KnnProvider<TimestampedGFRange> {
-    private TreeMap<Long, List<Knn.Entry<TimestampedGFRange>>> cache = new TreeMap<>();
-    private TreeMap<Long, List<Knn.Entry<TimestampedGFRange>>> flatCache = new TreeMap<>();
+public abstract class HybridFlattenedSurfer extends StoreComponent implements Surfer {
     private TreeMap<Long, GuessFactorStats> statsCache = new TreeMap<>();
 
+    public abstract SegmentationView<TimestampedGFRange> getNewSegmentationView();
     public abstract KnnView<TimestampedGFRange> getNewFlattenerKnnSet();
     public abstract boolean flattenerEnabled(NamedStatData o);
     public abstract boolean lightFlattenerEnabled(NamedStatData o);
 
-    public KnnView<TimestampedGFRange> getKnnSet(String name) {
+    public SegmentationView<TimestampedGFRange> getSegmentationView(String name) {
         StorageNamespace ns = getStorageNamespace().namespace(name);
-        if (ns.contains("knn"))
-            return (KnnView) ns.get("knn");
+        if(ns.contains("segview"))
+            return (SegmentationView) ns.get("segview");
 
-        KnnView<TimestampedGFRange> knn = getNewKnnSet();
-        ns.put("knn", knn);
-        return knn;
+        SegmentationView<TimestampedGFRange> view = getNewSegmentationView();
+        ns.put("segview", view);
+        return view;
     }
 
     public KnnView<TimestampedGFRange> getFlattenerKnnSet(String name) {
@@ -77,7 +78,7 @@ public abstract class KnnFlattenedSurfer extends StoreComponent implements Surfe
 
     @Override
     public boolean hasData(EnemyLog enemyLog, NamedStatData o) {
-        return getKnnSet(enemyLog.getName()).availableData(o) > 0;
+        return getSegmentationView(enemyLog.getName()).availableData(o) > 0;
     }
 
     public static TimestampedGFRange getGfRange(TargetingLog log, IMea mea) {
@@ -102,37 +103,20 @@ public abstract class KnnFlattenedSurfer extends StoreComponent implements Surfe
     public void log(EnemyLog enemyLog, TargetingLog log, IMea mea, BreakType type) {
         TimestampedGFRange range = getGfRange(log, mea);
 
-        getKnnSet(enemyLog.getName()).add(log, range, type);
+        getSegmentationView(enemyLog.getName()).add(log, range, type);
         getFlattenerKnnSet(enemyLog.getName()).add(log, range, type);
     }
 
-    public List<Knn.Entry<TimestampedGFRange>> getMatches(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
-        List<Knn.Entry<TimestampedGFRange>> res = cacheIndex == -1 ? null : cache.get(cacheIndex);
-        if(res == null) {
-            KnnView<TimestampedGFRange> view = getKnnSet(enemyLog.getName());
+    public List<WeightedSegmentedData<TimestampedGFRange>> getMatches(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
+        SegmentationView<TimestampedGFRange> view = getSegmentationView(enemyLog.getName());
 
-            if(view.availableData(o) == 0) {
-                return BaseSurfing.getFallbackScans();
-            }
-
-            res = view.query(f, o);
-            cache.put(cacheIndex, res);
-        }
-        return res;
+        return view.query(f, o);
     }
 
     public List<Knn.Entry<TimestampedGFRange>> getFlattenerMatches(EnemyLog enemyLog, TargetingLog f, long cacheIndex, NamedStatData o) {
-        List<Knn.Entry<TimestampedGFRange>> res = cacheIndex == -1 ? null : flatCache.get(cacheIndex);
-        if(res == null) {
-            KnnView<TimestampedGFRange> view = getFlattenerKnnSet(enemyLog.getName());
+        KnnView<TimestampedGFRange> view = getFlattenerKnnSet(enemyLog.getName());
 
-            if(view.availableData(o) == 0) {
-                return new ArrayList<>();
-            }
-
-            res = view.query(f, o);
-            flatCache.put(cacheIndex, res);
-        }
+        List<Knn.Entry<TimestampedGFRange>> res = view.query(f, o);
         return res;
     }
 
@@ -145,35 +129,28 @@ public abstract class KnnFlattenedSurfer extends StoreComponent implements Surfe
         if(statsCache.containsKey(cacheIndex))
             return statsCache.get(cacheIndex);
 
-        Benchmark.getInstance().start("KnnFlattenedSurfer.getStats() non-cached");
+        Benchmark.getInstance().start("HybridFlattenedSurfer.getStats() non-cached");
 
-        List<Knn.Entry<TimestampedGFRange>> found = getMatches(enemyLog, f, cacheIndex, o);
+        SegmentationView<TimestampedGFRange> view = getSegmentationView(enemyLog.getName());
 
-//        double sum = 1e-21;
-//        for(Knn.Entry<TimestampedGFRange> entry : found) {
-//            sum += entry.distance;
-//        }
-//
-//        double invMean = found.size() / sum;
-
-        GuessFactorStats stats = new GuessFactorStats(new PowerKernelDensity(0.1)); // TODO: rethink
-
-        for (Knn.Entry<TimestampedGFRange> entry : found) {
-            double gf = entry.payload.mean;
-
-            stats.add(stats.getBucket(gf), entry.weight, 1);
+        if(view.availableData(o) == 0) {
+            return BaseSurfing.getFallbackStats(f.distance, Rules.getBulletSpeed(f.velocity));
         }
 
-        found = getFlattenerMatches(enemyLog, f, cacheIndex, o);
+        List<WeightedSegmentedData<TimestampedGFRange>> data = getMatches(enemyLog, f, cacheIndex, o);
 
-//        sum = 1e-21;
-//        for(Knn.Entry<TimestampedGFRange> entry : found) {
-//            sum += entry.distance;
-//        }
-//
-//        invMean = found.size() / sum;
+        GuessFactorStats stats = new GuessFactorStats(new PowerKernelDensity(0.15));
 
-        GuessFactorStats flatStats = new GuessFactorStats(new PowerKernelDensity(0.1)); // TODO: rethink
+        for(WeightedSegmentedData<TimestampedGFRange> entry : data) {
+            for(WeightedEntry<TimestampedGFRange> range : entry.getWeightedData()) {
+                stats.add(stats.getBucket(range.payload.mean), range.weight, 1);
+            }
+        }
+
+
+        List<Knn.Entry<TimestampedGFRange>> found = getFlattenerMatches(enemyLog, f, cacheIndex, o);
+
+        GuessFactorStats flatStats = new GuessFactorStats(new PowerKernelDensity(0.15)); // TODO: rethink
 
         for (Knn.Entry<TimestampedGFRange> entry : found) {
             double gf = entry.payload.mean;

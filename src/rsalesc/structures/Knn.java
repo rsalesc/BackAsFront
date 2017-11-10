@@ -438,14 +438,6 @@ public abstract class Knn<T extends Timestamped> {
         }
     }
 
-    private static double getStrategyWeight(Strategy strategy) {
-        double sum = 1e-22;
-        double[] weights = strategy.getWeights();
-        for (double weight : weights) sum += weight;
-
-        return sum;
-    }
-
     public static class NormalizeManhattanWeighter<T extends Timestamped> extends DistanceWeighter<T> {
         private double modifier;
         private double ratio;
@@ -458,6 +450,14 @@ public abstract class Knn<T extends Timestamped> {
         public NormalizeManhattanWeighter(Strategy strategy, Strategy strategy2) {
             this.ratio = getStrategyWeight(strategy2);
             this.modifier = getStrategyWeight(strategy);
+        }
+
+        private static double getStrategyWeight(Strategy strategy) {
+            double sum = 1e-22;
+            double[] weights = strategy.getWeights();
+            for (double weight : weights) sum += weight;
+
+            return sum;
         }
 
         @Override

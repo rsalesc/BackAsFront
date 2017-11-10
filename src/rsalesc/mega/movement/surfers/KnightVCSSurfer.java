@@ -23,7 +23,6 @@
 
 package rsalesc.mega.movement.surfers;
 
-import rsalesc.baf2.core.utils.geometry.Range;
 import rsalesc.mega.movement.SegmentedDataSurfer;
 import rsalesc.mega.movement.strategies.vcs.SlicingFlattenerStrategy;
 import rsalesc.mega.movement.strategies.vcs.SlicingMixedStrategy;
@@ -37,31 +36,37 @@ import rsalesc.structures.Knn;
  */
 public abstract class KnightVCSSurfer extends SegmentedDataSurfer {
     private static Knn.ParametrizedCondition ADAPTIVE_CONDITION =
-            new NamedStatData.HitCondition(new Range(0.03, Double.POSITIVE_INFINITY), 0);
+            new NamedStatData.HitCondition(0.03, 0);
 
 
     @Override
     public SegmentationView<TimestampedGFRange> getNewSegmentationView() {
-        GFSegmentationView view = new GFSegmentationView();
+        SegmentationView<TimestampedGFRange> view = getNewNormalSegmentationView();
 
         view.add(
             new GFSegmentationSet()
-            .setScanWeight(1.0)
-            .setStrategy(new SlicingMixedStrategy())
-            .setWeighter(new DrussSegmentationWeighter<>())
-            .setNormalizer(new SegmentationHeightNormalizer<>())
-            .logsHit()
-        );
-
-        view.add(
-            new GFSegmentationSet()
-            .setScanWeight(2.0)
+            .setScanWeight(0.8)
             .setStrategy(new SlicingFlattenerStrategy())
-            .setCondition(KnightDCSurfer.MFLAT_CONDITION)
+            .setCondition(KnightDCSurfer.FLAT_CONDITION)
             .setWeighter(new DrussSegmentationWeighter<>())
             .setNormalizer(new SegmentationHeightNormalizer<>())
             .logsHit()
             .logsBreak()
+        );
+
+        return view;
+    }
+
+    public SegmentationView<TimestampedGFRange> getNewNormalSegmentationView() {
+        GFSegmentationView view = new GFSegmentationView();
+
+        view.add(
+                new GFSegmentationSet()
+                        .setScanWeight(1.0)
+                        .setStrategy(new SlicingMixedStrategy())
+                        .setWeighter(new DrussSegmentationWeighter<>())
+                        .setNormalizer(new SegmentationHeightNormalizer<>())
+                        .logsHit()
         );
 
         return view;
