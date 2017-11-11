@@ -257,7 +257,7 @@ public class TrueSurfing extends BaseSurfing {
         for (int i = 0; i < 3; i++) {
             double passDistance = Math.min(
                     res[i].transitionPoint.distance(nextWave.getSource()),
-                    res[i].transitionPoint.distance(orbitCenter));
+                    res[i].transitionPoint.distance(latestEnemy.getPoint()));
 
 //            res[i].danger += namedData.getEnemyHitPercentage();
 
