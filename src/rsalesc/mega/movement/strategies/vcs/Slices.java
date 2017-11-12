@@ -31,7 +31,7 @@ public class Slices {
 
     public static double[] BFT_S = new double[]{20, 40, 60};
     public static double[] BFT = new double[]{10, 30, 50, 70};
-    public static double[] BFT_P = new double[]{10, 20, 30, 40, 50, 60, 70};
+    public static double[] BFT_P = new double[]{8, 16, 24, 32, 40, 48, 56, 64, 72};
 
     public static double[] LAT_VEL_S = new double[]{2, 4, 6};
     public static double[] LAT_VEL = new double[]{1, 3, 5, 7};
@@ -63,5 +63,5 @@ public class Slices {
 
     public static double[] D10_S = new double[]{20, 40, 60};
     public static double[] D10 = new double[]{10, 20, 30, 40, 50, 60, 70};
-    public static double[] D10_P = new double[]{10, 20, 30, 40, 50, 60, 70};
+    public static double[] D10_P = new double[]{5, 15, 25, 35, 45, 55, 65, 75};
 }

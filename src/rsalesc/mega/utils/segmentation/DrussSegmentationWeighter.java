@@ -30,6 +30,13 @@ public class DrussSegmentationWeighter<T> extends SegmentationWeighter<T> {
     @Override
     public double getWeight(SegmentationSet.SegmentationEntry segmentationEntry, SegmentedData<T> data) {
         return data.size() * segmentationEntry.getSliceCount();
+//        double roll = 1.0 - 1.0 / (1.0 + getDepth(segmentationEntry));
+//        double res = data.size() * (1.0 - roll) / (roll - Math.pow(roll, data.size() + 1));
+//
+//        if(Double.isNaN(res))
+//            return 0.0;
+//
+//        return res;
     }
 
     @Override

@@ -24,7 +24,6 @@
 package rsalesc.mega.movement.surfers;
 
 import rsalesc.mega.movement.SegmentedDataSurfer;
-import rsalesc.mega.movement.strategies.vcs.SlicingFlattenerStrategy;
 import rsalesc.mega.movement.strategies.vcs.SlicingMixedStrategy;
 import rsalesc.mega.utils.NamedStatData;
 import rsalesc.mega.utils.TimestampedGFRange;
@@ -43,16 +42,16 @@ public abstract class KnightVCSSurfer extends SegmentedDataSurfer {
     public SegmentationView<TimestampedGFRange> getNewSegmentationView() {
         SegmentationView<TimestampedGFRange> view = getNewNormalSegmentationView();
 
-        view.add(
-            new GFSegmentationSet()
-            .setScanWeight(0.8)
-            .setStrategy(new SlicingFlattenerStrategy())
-            .setCondition(KnightDCSurfer.FLAT_CONDITION)
-            .setWeighter(new DrussSegmentationWeighter<>())
-            .setNormalizer(new SegmentationHeightNormalizer<>())
-            .logsHit()
-            .logsBreak()
-        );
+//        view.add(
+//            new GFSegmentationSet()
+//            .setScanWeight(0.7)
+//            .setStrategy(new SlicingFlattenerStrategy())
+//            .setCondition(KnightDCSurfer.FLAT_CONDITION)
+//            .setWeighter(new DrussSegmentationWeighter<>())
+//            .setNormalizer(new SegmentationHeightNormalizer<>())
+//            .logsHit()
+//            .logsBreak()
+//        );
 
         return view;
     }

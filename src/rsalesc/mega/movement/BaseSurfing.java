@@ -143,8 +143,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
 
     @Override
     public void onEnemyWaveBreak(EnemyWave wave, MyRobot me) {
-        // TODO: check if wave is heat?
-        breaks++;
+        if(!wave.isHeat())
+            breaks++;
     }
 
 
@@ -246,7 +246,8 @@ public abstract class BaseSurfing extends StoreComponent implements EnemyWaveLis
         }
 
         if (gfRange.getLength() > R.EPSILON) {
-            value /= Math.max(jBucket - iBucket + 1, 1);
+//            value /= Math.max(jBucket - iBucket + 1, 1);
+            value /= Math.max(countedBins, 1);
             value *= Math.abs(mea.getOffset(gfRange.max) - mea.getOffset(gfRange.min));
         }
 

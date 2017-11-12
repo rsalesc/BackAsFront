@@ -52,6 +52,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by Roberto Sales on 12/09/17.
@@ -126,7 +127,8 @@ public class TrueSurfing extends BaseSurfing {
             };
 
             AxisRectangle shrinkedField = getMediator().getBattleField().shrinkX(18).shrinkY(18);
-            secondWave = getManager().earliestWave(me, enemy, (long) (nextWave.getBreakTime(me.getPoint()) + 1), hasLogCondition);
+            secondWave =
+                    getManager().earliestWave(me, enemy, (long) (nextWave.getBreakTime(me.getPoint()) + 1), hasLogCondition);
             SurfingCandidate[] firstCandidates = getSurfingCandidates(PredictedPoint.from(me), nextWave, 0);
 
             for (int i = 0; i < 3; i++) {
@@ -192,23 +194,35 @@ public class TrueSurfing extends BaseSurfing {
         EnemyLog enemyLog = EnemyTracker.getInstance().getLog(nextWave.getEnemy());
         EnemyRobot latestEnemy = enemyLog.getLatest();
 
-        Point orbitCenter = nextWave.getSource();
+        Point orbitCenter = getMediator().getTime() - latestEnemy.getTime() > 10
+                ? nextWave.getSource()
+                : latestEnemy.getPoint();
 
         AxisRectangle field = getMediator().getBattleField();
         double distanceToCenter = initialPoint.distance(orbitCenter);
-        double perp = distancer.getPerpendiculator(distanceToCenter);
+//        double perp = distancer.getPerpendiculator(distanceToCenter);
+
+        Function<PredictedPoint, Double> perpFn = new Function<PredictedPoint, Double>() {
+            @Override
+            public Double apply(PredictedPoint predictedPoint) {
+                return distancer.getPerpendiculator(predictedPoint.distance(orbitCenter));
+            }
+        };
 
         int stopDirection = initialPoint.getDirection(orbitCenter);
         if (stopDirection == 0) stopDirection = 1;
 
         List<PredictedPoint> clockwisePoints = PrecisePredictor
-                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, +1, perp, true, false);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, +1, perpFn,
+                        true, false);
 
         List<PredictedPoint> counterPoints = PrecisePredictor
-                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, -1, perp, true, false);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, -1, perpFn,
+                        true, false);
 
         List<PredictedPoint> stopPoints = PrecisePredictor
-                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, stopDirection, perp, true, true);
+                .predictOnWaveImpact(field, orbitCenter, WALL_STICK, initialPoint, nextWave, stopDirection, perpFn,
+                        true, true);
 
         PredictedPoint clockwisePass = R.getLast(clockwisePoints);
         PredictedPoint counterPass = R.getLast(counterPoints);
@@ -235,7 +249,8 @@ public class TrueSurfing extends BaseSurfing {
             counterDanger = getDanger(nextWave, found, counterIntersection, counterPass, PRECISE);
             stopDanger = getDanger(nextWave, found, stopIntersection, stopPass, PRECISE);
         } else {
-            GuessFactorStats stats = getSurfer().getStats(enemyLog, f, mea, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
+            GuessFactorStats stats =
+                    getSurfer().getStats(enemyLog, f, mea, getCacheIndex(nextWave), getViewCondition(enemyLog.getName()));
             clockwiseDanger = getDanger(nextWave, stats, clockwiseIntersection, clockwisePass, PRECISE);
             counterDanger = getDanger(nextWave, stats, counterIntersection, counterPass, PRECISE);
             stopDanger = getDanger(nextWave, stats, stopIntersection, stopPass, PRECISE);

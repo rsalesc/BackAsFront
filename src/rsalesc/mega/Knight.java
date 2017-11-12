@@ -51,6 +51,19 @@ import java.util.ArrayList;
 
 /**
  * Created by Roberto Sales on 11/09/17.
+ * Change log 0.6.11:
+ * - fix distance to enemy taken into consideration in surfing
+ * - rollback little things in monotonic KnightDCSurfer's tree
+ * - remove random gun
+ * - do not add to breaks if gun is heat wave
+ * Change log 0.6.12:
+ * - Reduce unsegmented weight to 4 (from 10)
+ * Change log 0.6.13:
+ * - Rescale shadow
+ * Change log 0.6.14:
+ * - Orbit the enemy
+ * Change log 0.6.15?
+ * - Constantly recompute the perpendiculator (with no enemy prediction)
  */
 public class Knight extends BackAsFrontRobot2 {
     private boolean MC2k6 = false;
@@ -87,7 +100,7 @@ public class Knight extends BackAsFrontRobot2 {
         AutomaticGun generalPurposeGun = new SlowDecayGun(bulletManager, null);
         AutomaticGun adaptiveGun = new AntiAdaptiveGun(bulletManager, null);
 
-        AutomaticGunArray array = new GunArray(generalPurposeGun, adaptiveGun, new RandomGun());
+        AutomaticGunArray array = new GunArray(generalPurposeGun, adaptiveGun, null);
 
         if(!MC) {
             array.setPowerSelector(selector);
@@ -204,7 +217,7 @@ public class Knight extends BackAsFrontRobot2 {
                             maxHits <= gpScore.score
                             )) {
                         return generalPurpose;
-                    } else if(asScore != null && asScore.score >= maxHits)
+                    } else if(asScore != null && (randomScore == null || asScore.score > randomScore.score))
                         return antiSurfer;
                     else if(random != null)
                         return random;

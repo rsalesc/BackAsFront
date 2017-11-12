@@ -181,7 +181,7 @@ public abstract class KnnFlattenedSurfer extends StoreComponent implements Surfe
             flatStats.add(flatStats.getBucket(gf), entry.weight, 1);
         }
 
-        double flatWeight = flattenerEnabled(o) ? 0.35 : 0.1;
+        double flatWeight = flattenerEnabled(o) ? 0.35 : 0.03;
         GuessFactorStats finalStats = GuessFactorStats.merge(new GuessFactorStats[]{stats, flatStats},
                                                             new double[]{0.5, flatWeight});
 

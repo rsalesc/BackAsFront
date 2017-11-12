@@ -34,6 +34,7 @@ import rsalesc.baf2.waves.Wave;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * This class has methods to support precise movement prediction.
@@ -45,7 +46,8 @@ public abstract class PrecisePredictor {
 
     public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, Point center, double stick,
                                                            PredictedPoint initialPoint, Wave wave,
-                                                           int direction, double perpendiculator, boolean hasToPass, boolean brake) {
+                                                           int direction, Function<PredictedPoint, Double> perpendiculator,
+                                                           boolean hasToPass, boolean brake) {
 
         if (direction == 0 && !brake)
             throw new IllegalStateException();
@@ -62,7 +64,8 @@ public abstract class PrecisePredictor {
 
         PredictedPoint cur = initialPoint;
         while (hasToPass && !wave.hasPassedRobot(cur, cur.time) || !wave.hasPassed(cur, cur.time)) {
-            double pointingAngle = Physics.absoluteBearing(center, cur) + perpendiculator * direction;
+            double perp = perpendiculator.apply(cur);
+            double pointingAngle = Physics.absoluteBearing(center, cur) + perp * direction;
             double angle = R.normalAbsoluteAngle(WallSmoothing.smooth(shrinkedField, stick, cur,
                     pointingAngle, direction));
             cur = tick(cur, angle, brake ? 0 : Rules.MAX_VELOCITY, Double.POSITIVE_INFINITY);
@@ -75,7 +78,12 @@ public abstract class PrecisePredictor {
     public static List<PredictedPoint> predictOnWaveImpact(AxisRectangle field, double stick, PredictedPoint initialPoint, Wave wave,
                                                            int direction, double perpendiculator, boolean hasToPass, boolean brake) {
         return predictOnWaveImpact(field, wave.getSource(), stick, initialPoint, wave,
-                                        direction, perpendiculator, hasToPass, brake);
+                direction, new Function<PredictedPoint, Double>() {
+                    @Override
+                    public Double apply(PredictedPoint predictedPoint) {
+                        return perpendiculator;
+                    }
+                }, hasToPass, brake);
     }
 
     public static List<PredictedPoint> predictOnWaveImpact(PredictedPoint initialPoint, Wave wave,

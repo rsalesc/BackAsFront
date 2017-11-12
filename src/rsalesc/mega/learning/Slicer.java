@@ -37,7 +37,7 @@ public class Slicer {
             new double[]{0.6, 0.95, 0.35, 0.0, 0.0, 0, 0, 0, 0};
 
     private static final double[] adaptiveChances =
-            new double[]{0.75, 0.75, 0.2, 0.5, 0.2, 0.2, 0.25, 0.25, 0.25};
+            new double[]{0.8, 0.92, 0.45, 0.65, 0.35, 0.5, 0.35, 0.35, 0.35};
 
     private static final double[] flattenerChances =
             new double[]{0.8, 0.9, 0.4, 0.6, 0.4, 0.65, 0.4, 0.4, 0.4};
@@ -46,17 +46,17 @@ public class Slicer {
             new double[]{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.45, 0.5};
 
     private static final double[] pmChances =
-            new double[]{0, 1.0, 0.5, 0, 0, 0.5, 0.5, 0.5, 0.6};
+            new double[]{0, 0.92, 0.65, 0, 0, 0.75, 0.65, 0.65, 0.65};
 
 
     public static void main(String[] args) {
-//        printSlices(
-//                generateSliced("simple", 25, 2.0, adaptiveNames, simpleChances),
-//                generateSliced("pm", 30, 10.0, adaptiveNames, pmChances),
-//                generateSliced("adaptive", 40, 10.0, adaptiveNames, adaptiveChances)
-//        );
+        printSlices(
+                generateSliced("simple", 25, 2.0, adaptiveNames, simpleChances),
+                generateSliced("pm", 35, 10.0, adaptiveNames, pmChances),
+                generateSliced("adaptive", 65, 10.0, adaptiveNames, adaptiveChances)
+        );
 
-        printSlices(generateSliced("flattener", 50, Double.POSITIVE_INFINITY, adaptiveNames, flattenerChances));
+//        printSlices(generateSliced("flattener", 50, Double.POSITIVE_INFINITY, adaptiveNames, flattenerChances));
     }
 
     private static Sliced generateSliced(String name, int count, double density, String[] names, double[] chances) {
